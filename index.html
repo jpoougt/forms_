@@ -4,56 +4,52 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de Sondeo de Clientes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Century+Gothic&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     body {
       font-family: 'Century Gothic', sans-serif;
+      background-color: #f0f8ff;
       margin: 20px;
+      padding: 20px;
     }
     h1 {
-      color: #2e3d49;
+      color: #333;
       text-align: center;
     }
-    #pais-selection {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    label, select {
-      font-size: 18px;
-      margin: 10px;
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+      margin-top: 20px;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
     button {
-      padding: 10px 20px;
-      font-size: 18px;
-      cursor: pointer;
-      background-color: #2e3d49;
+      background-color: #4CAF50;
       color: white;
-      border: none;
-      border-radius: 5px;
+      cursor: pointer;
     }
     button:hover {
-      background-color: #4a5c6b;
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
-  <h1>Formulario de Sondeo de Clientes</h1>
 
-  <!-- Paso 1: Selección de país -->
+  <h1>Formulario de Sondeo de Clientes</h1>
   <div id="pais-selection">
     <label for="countrySelect">Seleccione un país:</label>
     <select id="countrySelect">
       <option value="">--Seleccione un país--</option>
     </select>
-    <button id="showClientsBtn" class="hidden">Ver clientes</button>
+    <button id="showClientsBtn" class="hidden" onclick="navigateToForm()">Ver clientes</button>
   </div>
 
   <script>
     const countrySelect = document.getElementById('countrySelect');
     const showClientsBtn = document.getElementById('showClientsBtn');
     
-    let clients = []; // Almacenará todos los datos de clientes del archivo Excel
+    let clients = [];
 
     // Cargar el archivo Excel desde GitHub
     fetch('https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx')
@@ -62,10 +58,9 @@
         const workbook = XLSX.read(data, { type: 'array' });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(sheet);
-        clients = jsonData;
 
-        // Cargar países únicos
-        const countries = [...new Set(clients.map(client => client.País))];
+        // Extraer países únicos
+        const countries = [...new Set(jsonData.map(row => row.País))];
         countries.forEach(country => {
           const option = document.createElement('option');
           option.value = country;
@@ -73,17 +68,26 @@
           countrySelect.appendChild(option);
         });
 
-        // Mostrar el botón para continuar
-        showClientsBtn.classList.remove('hidden');
+        // Filtrar clientes por país
+        countrySelect.addEventListener('change', () => {
+          const selectedCountry = countrySelect.value;
+          if (selectedCountry) {
+            clients = jsonData.filter(client => client.País === selectedCountry);
+            showClientsBtn.classList.remove('hidden');
+          } else {
+            showClientsBtn.classList.add('hidden');
+          }
+        });
       });
 
-    // Mostrar formulario con clientes cuando se selecciona un país
-    showClientsBtn.addEventListener('click', () => {
+    // Redirigir a formulario con la lista de clientes
+    function navigateToForm() {
       const selectedCountry = countrySelect.value;
-      if (selectedCountry) {
-        window.location.href = `formulario.html?country=${selectedCountry}`;
-      }
-    });
+      localStorage.setItem('selectedCountry', selectedCountry);
+      localStorage.setItem('clients', JSON.stringify(clients));
+      window.location.href = 'formulario.html';
+    }
   </script>
+
 </body>
 </html>
