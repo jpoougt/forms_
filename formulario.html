@@ -4,122 +4,104 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de Clientes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Century+Gothic&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Century Gothic', sans-serif;
-      background-color: #f4f7fa;
-      margin: 0;
+      background-color: #f0f8ff;
+      margin: 20px;
       padding: 20px;
     }
     h1 {
-      color: #2e3d49;
+      color: #333;
       text-align: center;
     }
     .form-container {
-      background-color: white;
-      padding: 30px;
+      width: 80%;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      max-width: 600px;
-      margin: 0 auto;
     }
-    label, select, input, textarea {
-      font-size: 18px;
-      margin: 10px 0;
+    select, input, textarea, button {
       width: 100%;
       padding: 10px;
+      font-size: 16px;
+      margin-top: 15px;
       border-radius: 5px;
       border: 1px solid #ccc;
     }
     button {
-      padding: 10px 20px;
-      font-size: 18px;
-      cursor: pointer;
-      background-color: #2e3d49;
+      background-color: #4CAF50;
       color: white;
-      border: none;
-      border-radius: 5px;
-      width: 100%;
+      cursor: pointer;
+      margin-top: 20px;
     }
     button:hover {
-      background-color: #4a5c6b;
-    }
-    .hidden {
-      display: none;
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
-  <h1>Formulario de Clientes</h1>
 
+  <h1>Formulario de Cliente</h1>
   <div class="form-container">
-    <h2 id="countryName"></h2>
-
     <form id="clientForm">
-      <!-- Paso 2: Selección de cliente -->
       <label for="clientSelect">Seleccione un cliente:</label>
       <select id="clientSelect">
         <option value="">--Seleccione un cliente--</option>
       </select>
 
-      <!-- Campos adicionales del cliente -->
-      <label for="status">Status Licencia:</label>
-      <input type="text" id="status" disabled>
+      <!-- Aquí puedes agregar otros campos del formulario -->
+      <label for="statusLicencia">Status Licencia:</label>
+      <input type="text" id="statusLicencia" required>
 
       <label for="cultivo">Cultivo:</label>
-      <input type="text" id="cultivo" disabled>
+      <input type="text" id="cultivo" required>
 
-      <label for="accountType">Tipo de Cuenta:</label>
-      <input type="text" id="accountType" disabled>
+      <label for="tipoCuenta">Tipo de Cuenta:</label>
+      <input type="text" id="tipoCuenta" required>
 
-      <label for="services">Servicios Contratados:</label>
-      <textarea id="services" disabled></textarea>
+      <label for="servicios">Servicios Contratados:</label>
+      <textarea id="servicios" rows="4" required></textarea>
 
       <button type="submit">Enviar</button>
     </form>
   </div>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedCountry = urlParams.get('country');
-    const clientSelect = document.getElementById('clientSelect');
-    const countryName = document.getElementById('countryName');
+    document.addEventListener('DOMContentLoaded', () => {
+      const selectedCountry = localStorage.getItem('selectedCountry');
+      const clients = JSON.parse(localStorage.getItem('clients'));
+      const clientSelect = document.getElementById('clientSelect');
 
-    let clients = []; // Almacenará todos los datos de clientes
-
-    // Cargar el archivo Excel desde GitHub
-    fetch('https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx')
-      .then(response => response.arrayBuffer())
-      .then(data => {
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(sheet);
-        clients = jsonData;
-
-        // Filtrar clientes según el país seleccionado
-        const filteredClients = clients.filter(client => client.País === selectedCountry);
-        countryName.textContent = `Clientes en ${selectedCountry}`;
-
-        // Agregar clientes al dropdown
-        filteredClients.forEach(client => {
-          const option = document.createElement('option');
-          option.value = client.Cliente;
-          option.textContent = client.Cliente;
-          clientSelect.appendChild(option);
-        });
-
-        // Mostrar detalles del cliente seleccionado
-        clientSelect.addEventListener('change', () => {
-          const selectedClient = filteredClients.find(client => client.Cliente === clientSelect.value);
-          if (selectedClient) {
-            document.getElementById('status').value = selectedClient.StatusLicencia;
-            document.getElementById('cultivo').value = selectedClient.Cultivo;
-            document.getElementById('accountType').value = selectedClient.TipoCuenta;
-            document.getElementById('services').value = selectedClient['Servicios contratados'];
-          }
-        });
+      // Mostrar clientes del país seleccionado
+      clients.forEach(client => {
+        const option = document.createElement('option');
+        option.value = client.Cliente;
+        option.textContent = client.Cliente;
+        clientSelect.appendChild(option);
       });
+
+      // Mostrar datos al seleccionar un cliente (si es necesario)
+      clientSelect.addEventListener('change', (e) => {
+        const selectedClient = e.target.value;
+        if (selectedClient) {
+          const client = clients.find(c => c.Cliente === selectedClient);
+          document.getElementById('statusLicencia').value = client.StatusLicencia || '';
+          document.getElementById('cultivo').value = client.Cultivo || '';
+          document.getElementById('tipoCuenta').value = client.TipoCuenta || '';
+          document.getElementById('servicios').value = client['Servicios contratados'] || '';
+        }
+      });
+
+      // Enviar formulario (esto solo simula el envío)
+      document.getElementById('clientForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Formulario enviado exitosamente');
+      });
+    });
   </script>
+
 </body>
 </html>
