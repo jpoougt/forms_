@@ -32,6 +32,9 @@
     button:hover {
       background-color: #45a049;
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -45,9 +48,21 @@
     <button id="showClientsBtn" class="hidden" onclick="navigateToForm()">Ver clientes</button>
   </div>
 
+  <!-- Segunda pantalla con formulario de clientes -->
+  <div id="secondScreen" class="hidden">
+    <h2>Formulario de Clientes</h2>
+    <label for="clientSelect">Seleccione un cliente:</label>
+    <select id="clientSelect">
+      <option value="">--Seleccione un cliente--</option>
+    </select>
+    <button onclick="submitForm()">Enviar</button>
+  </div>
+
   <script>
     const countrySelect = document.getElementById('countrySelect');
     const showClientsBtn = document.getElementById('showClientsBtn');
+    const secondScreen = document.getElementById('secondScreen');
+    const clientSelect = document.getElementById('clientSelect');
     
     let clients = [];
 
@@ -86,13 +101,47 @@
     // Navegar a la segunda pantalla con los clientes del país seleccionado
     function navigateToForm() {
       const selectedCountry = countrySelect.value;
-      const filteredClients = clients.filter(client => client.País === selectedCountry);
+      localStorage.setItem('selectedCountry', selectedCountry); // Guardar en localStorage
+      showSecondScreen(selectedCountry);
+    }
+
+    // Función para mostrar la segunda pantalla y cargar los clientes
+    function showSecondScreen(country) {
+      // Ocultar la primera pantalla
+      document.getElementById('pais-selection').style.display = 'none';
+      // Mostrar la segunda pantalla
+      secondScreen.style.display = 'block';
+
+      // Filtrar los clientes según el país seleccionado
+      const countryClients = clients.filter(client => client.País === country);
       
-      // Guardar los clientes filtrados en localStorage
-      localStorage.setItem('selectedClients', JSON.stringify(filteredClients));
-      
-      // Redirigir a formulario.html
-      window.location.href = 'formulario.html';
+      // Llenar el selector de clientes con los clientes del país seleccionado
+      clientSelect.innerHTML = '<option value="">--Seleccione un cliente--</option>'; // Limpiar opciones anteriores
+      countryClients.forEach(client => {
+        const option = document.createElement('option');
+        option.value = client.Cliente;
+        option.textContent = client.Cliente;
+        clientSelect.appendChild(option);
+      });
+    }
+
+    // Verificar el país seleccionado al cargar la página
+    window.onload = function() {
+      const savedCountry = localStorage.getItem('selectedCountry');
+      if (savedCountry) {
+        countrySelect.value = savedCountry;
+        showSecondScreen(savedCountry); // Mostrar la segunda pantalla si ya hay un país seleccionado
+      }
+    };
+
+    // Enviar el formulario (simulación de envío)
+    function submitForm() {
+      const selectedClient = clientSelect.value;
+      if (selectedClient) {
+        alert('Formulario enviado para el cliente: ' + selectedClient);
+      } else {
+        alert('Por favor, seleccione un cliente.');
+      }
     }
   </script>
 </body>
