@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario Sondeo de Clientes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid black;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>Formulario de Sondeo de Clientes</h1>
+  <p>Seleccione un archivo Excel para cargar los datos de clientes:</p>
+  
+  <input type="file" id="fileInput" accept=".xlsx" />
+  <br><br>
+
+  <label for="countrySelect">Seleccione un país:</label>
+  <select id="countrySelect">
+    <option value="">--Seleccione un país--</option>
+  </select>
+
+  <table id="clientTable">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Cliente</th>
+        <th>País</th>
+        <th>Status Licencia</th>
+        <th>Cultivo</th>
+        <th>Tipo de Cuenta</th>
+        <th>Servicios Contratados</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const countrySelect = document.getElementById('countrySelect');
+    const clientTableBody = document.querySelector('#clientTable tbody');
+
+    let clients = []; // Almacenará los datos de clientes desde el Excel
+
+    // Evento para leer el archivo Excel
+    fileInput.addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+
+          // Convertir hoja de Excel a JSON
+          clients = XLSX.utils.sheet_to_json(sheet);
+
+          // Poblar el dropdown de países
+          populateCountrySelect(clients);
+        };
+        reader.readAsArrayBuffer(file);
+      }
+    });
+
+    // Llenar el desplegable con países únicos
+    function populateCountrySelect(data) {
+      const countries = [...new Set(data.map((client) => client.País))];
+      countries.sort().forEach((country) => {
+        const option = document.createElement('option');
+        option.value = country;
+        option.textContent = country;
+        countrySelect.appendChild(option);
+      });
+    }
+
+    // Filtrar clientes por país seleccionado
+    countrySelect.addEventListener('change', () => {
+      const selectedCountry = countrySelect.value;
+      const filteredClients = clients.filter(client => client.País === selectedCountry);
+
+      // Mostrar clientes en la tabla
+      displayClients(filteredClients);
+    });
+
+    // Mostrar clientes en la tabla
+    function displayClients(data) {
+      clientTableBody.innerHTML = ''; // Limpiar tabla
+      data.forEach(client => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${client.No}</td>
+          <td>${client.Cliente}</td>
+          <td>${client.País}</td>
+          <td>${client.StatusLicencia}</td>
+          <td>${client.Cultivo}</td>
+          <td>${client.TipoCuenta}</td>
+          <td>${client['Servicios contratados']}</td>
+        `;
+        clientTableBody.appendChild(row);
+      });
+    }
+  </script>
+</body>
+</html>
