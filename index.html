@@ -58,9 +58,11 @@
         const workbook = XLSX.read(data, { type: 'array' });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-        // Extraer países únicos
-        const countries = [...new Set(jsonData.map(row => row.País))];
+        
+        // Obtener países únicos
+        const countries = [...new Set(jsonData.map(client => client.País))];
+        
+        // Llenar el selector de países
         countries.forEach(country => {
           const option = document.createElement('option');
           option.value = country;
@@ -68,26 +70,30 @@
           countrySelect.appendChild(option);
         });
 
-        // Filtrar clientes por país
-        countrySelect.addEventListener('change', () => {
-          const selectedCountry = countrySelect.value;
-          if (selectedCountry) {
-            clients = jsonData.filter(client => client.País === selectedCountry);
-            showClientsBtn.classList.remove('hidden');
-          } else {
-            showClientsBtn.classList.add('hidden');
-          }
-        });
+        // Guardar los datos de clientes en la variable
+        clients = jsonData;
       });
 
-    // Redirigir a formulario con la lista de clientes
+    // Mostrar botón para ver clientes cuando se selecciona un país
+    countrySelect.addEventListener('change', function() {
+      if (countrySelect.value) {
+        showClientsBtn.classList.remove('hidden');
+      } else {
+        showClientsBtn.classList.add('hidden');
+      }
+    });
+
+    // Navegar a la segunda pantalla con los clientes del país seleccionado
     function navigateToForm() {
       const selectedCountry = countrySelect.value;
-      localStorage.setItem('selectedCountry', selectedCountry);
-      localStorage.setItem('clients', JSON.stringify(clients));
+      const filteredClients = clients.filter(client => client.País === selectedCountry);
+      
+      // Guardar los clientes filtrados en localStorage
+      localStorage.setItem('selectedClients', JSON.stringify(filteredClients));
+      
+      // Redirigir a formulario.html
       window.location.href = 'formulario.html';
     }
   </script>
-
 </body>
 </html>
