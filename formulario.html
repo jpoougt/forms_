@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Sondeo de Clientes</title>
+  <title>Formulario de Clientes</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     body {
@@ -32,68 +32,77 @@
     button:hover {
       background-color: #45a049;
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Formulario de Sondeo de Clientes</h1>
-  <div id="pais-selection">
-    <label for="countrySelect">Seleccione un país:</label>
-    <select id="countrySelect">
-      <option value="">--Seleccione un país--</option>
+  <h1>Formulario de Clientes</h1>
+  <div id="client-selection">
+    <label for="clientSelect">Seleccione un cliente:</label>
+    <select id="clientSelect">
+      <option value="">--Seleccione un cliente--</option>
     </select>
-    <button id="showClientsBtn" class="hidden" onclick="navigateToForm()">Ver clientes</button>
+    <button onclick="submitForm()">Enviar</button>
   </div>
 
   <script>
-    const countrySelect = document.getElementById('countrySelect');
-    const showClientsBtn = document.getElementById('showClientsBtn');
-    
-    let clients = [];
+    // Limpiar todo al cargar la página
+    window.onload = function() {
+      localStorage.clear();  // Limpiar almacenamiento local
+      clearForm();  // Limpiar formulario de la pantalla 2
+      loadClients();  // Cargar los clientes de la pantalla 2
+    };
 
-    // Cargar el archivo Excel desde GitHub
-    fetch('https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx')
-      .then(response => response.arrayBuffer())
-      .then(data => {
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(sheet);
-        
-        // Obtener países únicos
-        const countries = [...new Set(jsonData.map(client => client.País))];
-        
-        // Llenar el selector de países
-        countries.forEach(country => {
-          const option = document.createElement('option');
-          option.value = country;
-          option.textContent = country;
-          countrySelect.appendChild(option);
-        });
+    const clientSelect = document.getElementById('clientSelect');
 
-        // Guardar los datos de clientes en la variable
-        clients = jsonData;
-      });
+    // Recuperar el país seleccionado desde localStorage
+    const selectedCountry = localStorage.getItem('selectedCountry');
 
-    // Mostrar botón para ver clientes cuando se selecciona un país
-    countrySelect.addEventListener('change', function() {
-      if (countrySelect.value) {
-        showClientsBtn.classList.remove('hidden');
-      } else {
-        showClientsBtn.classList.add('hidden');
+    // Cargar clientes para el país seleccionado
+    function loadClients() {
+      if (!selectedCountry) {
+        alert('Por favor, seleccione un país primero.');
+        return;
       }
-    });
 
-    // Navegar a la segunda pantalla con los clientes del país seleccionado
-    function navigateToForm() {
-      const selectedCountry = countrySelect.value;
-      const filteredClients = clients.filter(client => client.País === selectedCountry);
-      
-      // Guardar los clientes filtrados en localStorage
-      localStorage.setItem('selectedClients', JSON.stringify(filteredClients));
-      
-      // Redirigir a formulario.html
-      window.location.href = 'formulario.html';
+      fetch('https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx')
+        .then(response => response.arrayBuffer())
+        .then(data => {
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          const jsonData = XLSX.utils.sheet_to_json(sheet);
+          
+          // Filtrar clientes por el país seleccionado
+          const clients = jsonData.filter(client => client.País === selectedCountry);
+          
+          // Llenar el selector de clientes
+          clients.forEach(client => {
+            const option = document.createElement('option');
+            option.value = client.Cliente;
+            option.textContent = client.Cliente;
+            clientSelect.appendChild(option);
+          });
+        });
+    }
+
+    // Función para limpiar el formulario
+    function clearForm() {
+      clientSelect.innerHTML = '<option value="">--Seleccione un cliente--</option>'; // Limpiar el select
+    }
+
+    // Función para enviar el formulario
+    function submitForm() {
+      const selectedClient = clientSelect.value;
+      if (selectedClient) {
+        alert(`Cliente seleccionado: ${selectedClient}`);
+      } else {
+        alert('Por favor, seleccione un cliente.');
+      }
     }
   </script>
+
 </body>
 </html>
