@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Clientes</title>
+  <title>Formulario de Sondeo de Clientes</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     body {
       font-family: 'Century Gothic', sans-serif;
@@ -15,19 +16,11 @@
       color: #333;
       text-align: center;
     }
-    .form-container {
-      width: 80%;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    select, input, textarea, button {
-      width: 100%;
+    select, button {
       padding: 10px;
       font-size: 16px;
-      margin-top: 15px;
+      margin-top: 20px;
+      width: 100%;
       border-radius: 5px;
       border: 1px solid #ccc;
     }
@@ -35,7 +28,6 @@
       background-color: #4CAF50;
       color: white;
       cursor: pointer;
-      margin-top: 20px;
     }
     button:hover {
       background-color: #45a049;
@@ -44,64 +36,64 @@
 </head>
 <body>
 
-  <h1>Formulario de Cliente</h1>
-  <div class="form-container">
-    <form id="clientForm">
-      <label for="clientSelect">Seleccione un cliente:</label>
-      <select id="clientSelect">
-        <option value="">--Seleccione un cliente--</option>
-      </select>
-
-      <!-- Aquí puedes agregar otros campos del formulario -->
-      <label for="statusLicencia">Status Licencia:</label>
-      <input type="text" id="statusLicencia" required>
-
-      <label for="cultivo">Cultivo:</label>
-      <input type="text" id="cultivo" required>
-
-      <label for="tipoCuenta">Tipo de Cuenta:</label>
-      <input type="text" id="tipoCuenta" required>
-
-      <label for="servicios">Servicios Contratados:</label>
-      <textarea id="servicios" rows="4" required></textarea>
-
-      <button type="submit">Enviar</button>
-    </form>
+  <h1>Formulario de Sondeo de Clientes</h1>
+  <div id="pais-selection">
+    <label for="countrySelect">Seleccione un país:</label>
+    <select id="countrySelect">
+      <option value="">--Seleccione un país--</option>
+    </select>
+    <button id="showClientsBtn" class="hidden" onclick="navigateToForm()">Ver clientes</button>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const selectedCountry = localStorage.getItem('selectedCountry');
-      const clients = JSON.parse(localStorage.getItem('clients'));
-      const clientSelect = document.getElementById('clientSelect');
+    const countrySelect = document.getElementById('countrySelect');
+    const showClientsBtn = document.getElementById('showClientsBtn');
+    
+    let clients = [];
 
-      // Mostrar clientes del país seleccionado
-      clients.forEach(client => {
-        const option = document.createElement('option');
-        option.value = client.Cliente;
-        option.textContent = client.Cliente;
-        clientSelect.appendChild(option);
+    // Cargar el archivo Excel desde GitHub
+    fetch('https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx')
+      .then(response => response.arrayBuffer())
+      .then(data => {
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+        
+        // Obtener países únicos
+        const countries = [...new Set(jsonData.map(client => client.País))];
+        
+        // Llenar el selector de países
+        countries.forEach(country => {
+          const option = document.createElement('option');
+          option.value = country;
+          option.textContent = country;
+          countrySelect.appendChild(option);
+        });
+
+        // Guardar los datos de clientes en la variable
+        clients = jsonData;
       });
 
-      // Mostrar datos al seleccionar un cliente (si es necesario)
-      clientSelect.addEventListener('change', (e) => {
-        const selectedClient = e.target.value;
-        if (selectedClient) {
-          const client = clients.find(c => c.Cliente === selectedClient);
-          document.getElementById('statusLicencia').value = client.StatusLicencia || '';
-          document.getElementById('cultivo').value = client.Cultivo || '';
-          document.getElementById('tipoCuenta').value = client.TipoCuenta || '';
-          document.getElementById('servicios').value = client['Servicios contratados'] || '';
-        }
-      });
-
-      // Enviar formulario (esto solo simula el envío)
-      document.getElementById('clientForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Formulario enviado exitosamente');
-      });
+    // Mostrar botón para ver clientes cuando se selecciona un país
+    countrySelect.addEventListener('change', function() {
+      if (countrySelect.value) {
+        showClientsBtn.classList.remove('hidden');
+      } else {
+        showClientsBtn.classList.add('hidden');
+      }
     });
-  </script>
 
+    // Navegar a la segunda pantalla con los clientes del país seleccionado
+    function navigateToForm() {
+      const selectedCountry = countrySelect.value;
+      const filteredClients = clients.filter(client => client.País === selectedCountry);
+      
+      // Guardar los clientes filtrados en localStorage
+      localStorage.setItem('selectedClients', JSON.stringify(filteredClients));
+      
+      // Redirigir a formulario.html
+      window.location.href = 'formulario.html';
+    }
+  </script>
 </body>
 </html>
