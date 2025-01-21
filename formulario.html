@@ -28,7 +28,7 @@
       }
     });
 
-    // Función para mostrar u ocultar las preguntas adicionales sobre equipos
+    // Función para mostrar u ocultar las preguntas adicionales sobre el módulo de equipo
     function toggleEquiposQuestion() {
       const equiposPreguntaDiv = document.getElementById("equiposPregunta");
       const moduloEquipoSelect = document.querySelector('input[name="moduloEquipo"]:checked');
@@ -39,22 +39,24 @@
       }
     }
 
-    // Función para mostrar u ocultar las preguntas adicionales sobre insumos
+    // Función para mostrar u ocultar las preguntas adicionales sobre el módulo de insumos
     function toggleInsumosQuestion() {
       const insumosPreguntaDiv = document.getElementById("insumosPregunta");
       const moduloInsumosSelect = document.querySelector('input[name="moduloInsumos"]:checked');
       if (moduloInsumosSelect && moduloInsumosSelect.value === "Si") {
         insumosPreguntaDiv.style.display = "block"; // Mostrar la pregunta adicional
+        toggleInventarioQuestion(); // También mostrar la pregunta de inventario
       } else {
         insumosPreguntaDiv.style.display = "none"; // Ocultar la pregunta adicional
+        toggleInventarioQuestion(); // Ocultar la pregunta de inventario
       }
     }
 
     // Función para mostrar u ocultar la pregunta de inventario
     function toggleInventarioQuestion() {
       const inventarioPreguntaDiv = document.getElementById("inventarioPregunta");
-      const manejoInventarioSelect = document.querySelector('input[name="manejoInventario"]:checked');
-      if (manejoInventarioSelect && manejoInventarioSelect.value === "Si") {
+      const moduloInsumosSelect = document.querySelector('input[name="moduloInsumos"]:checked');
+      if (moduloInsumosSelect && moduloInsumosSelect.value === "Si") {
         inventarioPreguntaDiv.style.display = "block"; // Mostrar la pregunta adicional
       } else {
         inventarioPreguntaDiv.style.display = "none"; // Ocultar la pregunta adicional
@@ -121,9 +123,18 @@
       background-color: #0056b3;
     }
 
-    .hidden {
-      display: none;
+    /* Mejorar la alineación de las opciones */
+    .radio-group label {
+      display: inline-block;
+      margin-right: 10px;
     }
+
+    .checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
   </style>
 </head>
 <body>
@@ -132,65 +143,57 @@
 
     <!-- Dropdown de clientes -->
     <label for="clientes">Selecciona un cliente:</label>
-    <select id="clientes" name="clientes">
-      <option value="">Cargando clientes...</option>
+    <select id="clientes">
+      <option value="">Seleccione un cliente</option>
     </select>
 
-    <!-- Pregunta 1: ¿El cliente utiliza el módulo de campos? -->
-    <label>¿El cliente utiliza el módulo de campos?</label>
-    <div class="radio-group">
-      <label><input type="radio" name="moduloCampos" value="Si" required> Sí</label>
-      <label><input type="radio" name="moduloCampos" value="No"> No</label>
-    </div>
-
-    <!-- Pregunta 2: ¿El cliente utiliza el módulo de equipo? -->
+    <!-- Pregunta 1 -->
     <label>¿El cliente utiliza el módulo de equipo?</label>
     <div class="radio-group">
-      <label><input type="radio" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()" required> Sí</label>
+      <label><input type="radio" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()"> Si</label>
       <label><input type="radio" name="moduloEquipo" value="No" onclick="toggleEquiposQuestion()"> No</label>
     </div>
 
-    <!-- Pregunta adicional para módulo de equipo -->
-    <div id="equiposPregunta" class="hidden">
+    <!-- Pregunta adicional sobre equipos -->
+    <div id="equiposPregunta" style="display:none;">
       <label>¿Qué registros tiene el cliente en el módulo de equipos?</label>
       <div class="radio-group">
-        <label><input type="radio" name="registrosEquipo" value="Vehículos"> Vehículos</label>
-        <label><input type="radio" name="registrosEquipo" value="Implementos"> Implementos</label>
-        <label><input type="radio" name="registrosEquipo" value="Ambas"> Ambas</label>
+        <label><input type="radio" name="equiposRegistros" value="Vehículos"> Vehículos</label>
+        <label><input type="radio" name="equiposRegistros" value="Implementos"> Implementos</label>
+        <label><input type="radio" name="equiposRegistros" value="Ambas"> Ambas</label>
       </div>
     </div>
 
-    <!-- Pregunta 3: ¿El cliente utiliza el módulo de Insumos y Materiales? -->
+    <!-- Pregunta 2 -->
     <label>¿El cliente utiliza el módulo de Insumos y Materiales?</label>
     <div class="radio-group">
-      <label><input type="radio" name="moduloInsumos" value="Si" onclick="toggleInsumosQuestion()" required> Sí</label>
+      <label><input type="radio" name="moduloInsumos" value="Si" onclick="toggleInsumosQuestion()"> Si</label>
       <label><input type="radio" name="moduloInsumos" value="No" onclick="toggleInsumosQuestion()"> No</label>
     </div>
 
-    <!-- Pregunta adicional para módulo de insumos -->
-    <div id="insumosPregunta" class="hidden">
+    <!-- Pregunta adicional sobre tipos de productos -->
+    <div id="insumosPregunta" style="display:none;">
       <label>¿Qué tipos de productos registra?</label>
-      <div class="radio-group">
-        <label><input type="checkbox" name="productosInsumos" value="Protección de cultivos"> Protección de cultivos</label>
-        <label><input type="checkbox" name="productosInsumos" value="Fertilizantes"> Fertilizantes</label>
-        <label><input type="checkbox" name="productosInsumos" value="Cal"> Cal</label>
-        <label><input type="checkbox" name="productosInsumos" value="Semillas"> Semillas</label>
-        <label><input type="checkbox" name="productosInsumos" value="Agua"> Agua</label>
-        <label><input type="checkbox" name="productosInsumos" value="Mezclas de Tanque"> Mezclas de Tanque</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="productos" value="Protección de cultivos"> Protección de cultivos</label>
+        <label><input type="checkbox" name="productos" value="Fertilizantes"> Fertilizantes</label>
+        <label><input type="checkbox" name="productos" value="Cal"> Cal</label>
+        <label><input type="checkbox" name="productos" value="Semillas"> Semillas</label>
+        <label><input type="checkbox" name="productos" value="Agua"> Agua</label>
+        <label><input type="checkbox" name="productos" value="Mezclas de Tanque"> Mezclas de Tanque</label>
       </div>
     </div>
 
     <!-- Pregunta adicional sobre manejo de inventario -->
-    <div id="inventarioPregunta" class="hidden">
-      <label>¿El usuario lleva un manejo de inventario?</label>
+    <div id="inventarioPregunta" style="display:none;">
+      <label>¿El cliente lleva un manejo de inventario?</label>
       <div class="radio-group">
-        <label><input type="radio" name="manejoInventario" value="Si" onclick="toggleInventarioQuestion()" required> Sí</label>
-        <label><input type="radio" name="manejoInventario" value="No" onclick="toggleInventarioQuestion()"> No</label>
+        <label><input type="radio" name="manejoInventario" value="Si"> Si</label>
+        <label><input type="radio" name="manejoInventario" value="No"> No</label>
       </div>
     </div>
 
-    <!-- Botón para enviar -->
-    <button type="submit">Enviar</button>
+    <button>Enviar</button>
   </div>
 </body>
 </html>
