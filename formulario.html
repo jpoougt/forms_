@@ -152,7 +152,7 @@
       </div>
     </div>
 
-          // Función para enviar los datos a Google Sheets
+   Función para enviar los datos a Google Sheets
       function sendDataToGoogleSheet() {
         const cliente = document.getElementById("clientes").value;
         const moduloEquipo = document.querySelector('input[name="moduloEquipo"]:checked')?.value;
@@ -162,7 +162,7 @@
         const manejoInventarios = document.querySelector('input[name="manejoInventarios"]:checked')?.value;
 
         // Configura la URL del webhook o del Google Sheets para enviar los datos
-        const webhookUrl = "TU_WEBHOOK_URL_O_GOOGLE_SHEET_URL_AQUÍ";
+        const webhookUrl = "https://docs.google.com/spreadsheets/d/1dRhSpgJKGL3wrpCMCNcqhWLe1Vc9SmEX31oFwm4Jagk/edit?pli=1&gid=0#gid=0";
 
         const formData = {
           cliente,
