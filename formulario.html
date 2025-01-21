@@ -3,99 +3,124 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario - Cuestionario</title>
+  <title>Cuestionario - Formulario</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     body {
       font-family: 'Century Gothic', sans-serif;
-      background-color: #f9f9f9;
+      background-color: #f7f9fc;
       margin: 0;
+      padding: 0;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       height: 100vh;
     }
-    .container {
-      background-color: #fff;
+    .form-container {
+      background-color: #ffffff;
+      width: 90%;
+      max-width: 500px;
       padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      width: 500px;
-      max-width: 90%;
-      text-align: center;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
     h1 {
       color: #333;
-      font-size: 1.8rem;
+      text-align: center;
+      font-size: 24px;
       margin-bottom: 20px;
     }
     label {
       display: block;
-      text-align: left;
-      margin-top: 10px;
+      font-size: 16px;
+      margin-bottom: 8px;
       color: #555;
     }
-    select, button, input[type="radio"] {
-      padding: 10px;
+    select, input[type="radio"] {
       font-size: 16px;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+    }
+    select {
       width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      appearance: none;
+      background: #f9f9f9;
+      outline: none;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .radio-group {
+      display: flex;
+      justify-content: flex-start;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .radio-group label {
+      font-size: 14px;
+      margin: 0;
     }
     button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
       background-color: #4caf50;
       color: white;
-      cursor: pointer;
       border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease;
     }
     button:hover {
       background-color: #45a049;
     }
-    .radio-group {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
-    }
-    .radio-group label {
-      margin: 0;
-    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Formulario de Cliente</h1>
-    <label for="cliente">Seleccione un Cliente:</label>
-    <select id="cliente">
-      <option value="">Seleccione un cliente</option>
-      <!-- Los clientes se cargarán dinámicamente aquí -->
-    </select>
+  <div class="form-container">
+    <h1>Cuestionario del Cliente</h1>
+    <form id="customer-form">
+      <label for="cliente">Seleccione un cliente:</label>
+      <select id="cliente">
+        <!-- Aquí se insertarán dinámicamente los clientes -->
+      </select>
 
-    <label>¿El cliente utiliza el módulo de campos?</label>
-    <div class="radio-group">
-      <label><input type="radio" name="modulo" value="Si"> Sí</label>
-      <label><input type="radio" name="modulo" value="No"> No</label>
-    </div>
+      <label>¿El cliente utiliza el módulo de campos?</label>
+      <div class="radio-group">
+        <label>
+          <input type="radio" name="modulo_campos" value="Si"> Sí
+        </label>
+        <label>
+          <input type="radio" name="modulo_campos" value="No"> No
+        </label>
+      </div>
 
-    <button onclick="enviar()">Enviar</button>
+      <button type="submit">Enviar</button>
+    </form>
   </div>
 
   <script>
-    // Cargar los clientes desde localStorage
-    window.onload = () => {
+    // Cargar clientes desde localStorage
+    document.addEventListener('DOMContentLoaded', () => {
       const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
       const clienteDropdown = document.getElementById('cliente');
+
+      // Llenar el dropdown con los clientes
       clientes.forEach(cliente => {
         const option = document.createElement('option');
         option.value = cliente;
         option.textContent = cliente;
         clienteDropdown.appendChild(option);
       });
-    };
+    });
 
-    function enviar() {
-      alert('Formulario enviado con éxito.');
-      // Aquí puedes agregar lógica para procesar y guardar los datos
-    }
+    // Enviar formulario
+    document.getElementById('customer-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Formulario enviado exitosamente.');
+      // Aquí puedes agregar lógica para guardar los datos en Google Sheets u otro sistema
+    });
   </script>
 </body>
 </html>
