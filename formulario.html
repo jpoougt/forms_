@@ -152,45 +152,60 @@
       </div>
     </div>
 
-  
-      function sendDataToGoogleSheet() {
-        const cliente = document.getElementById("clientes").value;
-        const moduloEquipo = document.querySelector('input[name="moduloEquipo"]:checked')?.value;
-        const registrosEquipo = document.querySelector('input[name="registrosEquipo"]:checked')?.value;
-        const moduloInsumos = document.querySelector('input[name="moduloInsumos"]:checked')?.value;
-        const tiposProductos = Array.from(document.querySelectorAll('input[name="tiposProductos"]:checked')).map(input => input.value);
-        const manejoInventarios = document.querySelector('input[name="manejoInventarios"]:checked')?.value;
 
-        // Configura la URL del webhook o del Google Sheets para enviar los datos
-        const webhookUrl = "https://docs.google.com/spreadsheets/d/1dRhSpgJKGL3wrpCMCNcqhWLe1Vc9SmEX31oFwm4Jagk/edit?pli=1&gid=0#gid=0";
 
-        const formData = {
-          cliente,
-          moduloEquipo,
-          registrosEquipo,
-          moduloInsumos,
-          tiposProductos: tiposProductos.join(", "), // Unir los tipos de productos seleccionados
-          manejoInventarios
-        };
+    <!-- Pregunta 3: ¿El cliente maneja inventarios? -->
+    <div id="inventarioPregunta" style="display: none;">
+      <label>¿El cliente maneja inventarios?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="manejoInventarios" value="Si"> Sí</label>
+        <label><input type="radio" name="manejoInventarios" value="No"> No</label>
+      </div>
+    </div>
 
-        // Enviar los datos a la URL configurada (puede ser un Google Sheet o un webhook)
-        fetch(webhookUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log("Datos enviados correctamente:", data);
-          alert("¡Formulario enviado exitosamente!");
-        })
-        .catch(error => {
-          console.error("Error al enviar los datos:", error);
-          alert("Ocurrió un error al enviar el formulario. Intenta nuevamente.");
-        });
-      }
+    <button type="button" onclick="sendDataToGoogleSheet()">Enviar</button>
+  </div> <!-- Fin del contenedor del formulario -->
+
+  <script>
+    // Función para enviar los datos a Google Sheets
+    function sendDataToGoogleSheet() {
+      const cliente = document.getElementById("clientes").value;
+      const moduloEquipo = document.querySelector('input[name="moduloEquipo"]:checked')?.value;
+      const registrosEquipo = document.querySelector('input[name="registrosEquipo"]:checked')?.value;
+      const moduloInsumos = document.querySelector('input[name="moduloInsumos"]:checked')?.value;
+      const tiposProductos = Array.from(document.querySelectorAll('input[name="tiposProductos"]:checked')).map(input => input.value);
+      const manejoInventarios = document.querySelector('input[name="manejoInventarios"]:checked')?.value;
+
+      // Configura la URL del webhook o del Google Sheets para enviar los datos
+      const webhookUrl = "TU_WEBHOOK_URL_O_GOOGLE_SHEET_URL_AQUÍ";
+
+      const formData = {
+        cliente,
+        moduloEquipo,
+        registrosEquipo,
+        moduloInsumos,
+        tiposProductos: tiposProductos.join(", "), // Unir los tipos de productos seleccionados
+        manejoInventarios
+      };
+
+      // Enviar los datos a la URL configurada (puede ser un Google Sheet o un webhook)
+      fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Datos enviados correctamente:", data);
+        alert("¡Formulario enviado exitosamente!");
+      })
+      .catch(error => {
+        console.error("Error al enviar los datos:", error);
+        alert("Ocurrió un error al enviar el formulario. Intenta nuevamente.");
+      });
+    }
   </script>
 </body>
 </html>
