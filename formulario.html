@@ -63,29 +63,176 @@
       }
     }
 
-    // Función para enviar los datos al Google Sheets (será en la parte 2)
-    function sendFormDataToGoogleSheets() {
-      // Capturar los valores de las respuestas
+  </script>
+  <style>
+    body {
+      font-family: 'Century Gothic', sans-serif;
+      background-color: #f0f8ff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .form-container {
+      max-width: 700px;
+      width: 100%;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px 30px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    select, button, .radio-group {
+      margin-top: 15px;
+      margin-bottom: 20px;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .radio-group {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 20px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h1>Cuestionario</h1>
+
+    <!-- Dropdown de clientes -->
+    <label for="clientes">Selecciona un cliente:</label>
+    <select id="clientes">
+      <option value="">Cargando clientes...</option>
+    </select>
+
+    <div>
+      <label>¿El cliente utiliza el módulo de equipo?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()"> Sí</label>
+        <label><input type="radio" name="moduloEquipo" value="No" onclick="toggleEquiposQuestion()"> No</label>
+      </div>
+    </div>
+
+    <div id="equiposPregunta" style="display: none;">
+      <label>¿Qué registros tiene el cliente en el módulo de equipos?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="registrosEquipo" value="Vehículos"> Vehículos</label>
+        <label><input type="radio" name="registrosEquipo" value="Implementos"> Implementos</label>
+        <label><input type="radio" name="registrosEquipo" value="Ambas"> Ambas</label>
+      </div>
+    </div>
+
+    <div>
+      <label>¿El cliente utiliza el módulo de insumos y materiales?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="moduloInsumos" value="Si" onclick="toggleInsumosQuestion()"> Sí</label>
+        <label><input type="radio" name="moduloInsumos" value="No" onclick="toggleInsumosQuestion()"> No</label>
+      </div>
+    </div>
+
+    <div id="insumosPregunta" style="display: none;">
+      <label>¿Qué tipos de productos registra?</label>
+      <div class="radio-group">
+        <label><input type="checkbox" name="tiposProductos" value="Protección de cultivos"> Protección de cultivos</label>
+        <label><input type="checkbox" name="tiposProductos" value="Fertilizantes"> Fertilizantes</label>
+        <label><input type="checkbox" name="tiposProductos" value="Cal"> Cal</label>
+        <label><input type="checkbox" name="tiposProductos" value="Semillas"> Semillas</label>
+        <label><input type="checkbox" name="tiposProductos" value="Agua"> Agua</label>
+        <label><input type="checkbox" name="tiposProductos" value="Mezclas de Tanque"> Mezclas de Tanque</label>
+      </div>
+    </div>
+
+    <div id="inventarioPregunta" style="display: none;">
+      <label>¿El cliente maneja inventarios?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="manejoInventarios" value="Si"> Sí</label>
+        <label><input type="radio" name="manejoInventarios" value="No"> No</label>
+      </div>
+    </div>
+
+    <button type="submit" onclick="submitForm()">Enviar</button>
+  </div>
+
+  <script>
+    // Función para enviar el formulario a Google Sheets
+    function submitForm() {
       const cliente = document.getElementById("clientes").value;
       const moduloEquipo = document.querySelector('input[name="moduloEquipo"]:checked')?.value;
-      const tipoEquipos = document.querySelector('input[name="tipoEquipos"]:checked')?.value;
+      const registrosEquipo = document.querySelector('input[name="registrosEquipo"]:checked')?.value;
       const moduloInsumos = document.querySelector('input[name="moduloInsumos"]:checked')?.value;
-      const tiposProductos = [];
-      const tiposProductosSeleccionados = document.querySelectorAll('input[name="tiposProductos"]:checked');
-      tiposProductosSeleccionados.forEach(option => tiposProductos.push(option.value));
+      const tiposProductos = Array.from(document.querySelectorAll('input[name="tiposProductos"]:checked')).map(input => input.value);
+      const manejoInventarios = document.querySelector('input[name="manejoInventarios"]:checked')?.value;
+        inventarioPreguntaDiv.style.display = "block"; // Mostrar la pregunta de inventario
+      } else {
+        inventarioPreguntaDiv.style.display = "none"; // Ocultar la pregunta de inventario
+      }
+    }
+
+    // Función para enviar los datos del formulario a Google Sheets
+    function sendDataToGoogleSheet() {
+      const cliente = document.getElementById("clientes").value;
+      const moduloEquipo = document.querySelector('input[name="moduloEquipo"]:checked')?.value;
+      const registrosEquipo = document.querySelector('input[name="registrosEquipo"]:checked')?.value;
+      const moduloInsumos = document.querySelector('input[name="moduloInsumos"]:checked')?.value;
+      const tiposProducto = Array.from(document.querySelectorAll('input[name="tiposProducto"]:checked'))
+                                  .map(input => input.value);
       const manejoInventario = document.querySelector('input[name="manejoInventario"]:checked')?.value;
 
+      // Configura el objeto de los datos a enviar
       const formData = {
-        cliente,
-        moduloEquipo,
-        tipoEquipos,
-        moduloInsumos,
-        tiposProductos: tiposProductos.join(", "), // Unir los tipos de productos seleccionados en un solo string
-        manejoInventario
+        cliente: cliente,
+        moduloEquipo: moduloEquipo,
+        registrosEquipo: registrosEquipo,
+        moduloInsumos: moduloInsumos,
+        tiposProducto: tiposProducto.join(", "), // Unir las opciones seleccionadas
+        manejoInventario: manejoInventario
       };
 
-      console.log("Datos a enviar:", formData); // Para ver los datos que se están enviando
-      // Aquí continúa el código para enviar estos datos a Google Sheets, que es lo que veremos en la Parte 2.
+      // Usar fetch para enviar los datos al script de Google Sheets
+      fetch('https://script.google.com/macros/s/AKfycbx0QdbOjRY00yXWzTkFfQ9z6qF_sjZhfyz5uxkp96dGnX3Q/exec', {
+        method: 'POST',
+        body: new URLSearchParams(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert("Formulario enviado correctamente.");
+        console.log(data); // Ver la respuesta del servidor
+      })
+      .catch(error => {
+        alert("Hubo un error al enviar el formulario.");
+        console.error("Error:", error);
+      });
     }
   </script>
   <style>
@@ -156,54 +303,61 @@
     <!-- Dropdown de clientes -->
     <label for="clientes">Selecciona un cliente:</label>
     <select id="clientes">
-      <!-- Opciones cargadas desde el localStorage -->
+      <option value="">Cargando clientes...</option>
     </select>
 
-    <!-- Pregunta sobre el módulo de equipo -->
+    <!-- Pregunta 1: ¿El cliente utiliza el módulo de equipo? -->
     <label>¿El cliente utiliza el módulo de equipo?</label>
     <div class="radio-group">
-      <input type="radio" id="moduloEquipoSi" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()"> Sí
-      <input type="radio" id="moduloEquipoNo" name="moduloEquipo" value="No" onclick="toggleEquiposQuestion()"> No
+      <label><input type="radio" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()"> Sí</label>
+      <label><input type="radio" name="moduloEquipo" value="No" onclick="toggleEquiposQuestion()"> No</label>
     </div>
 
-    <!-- Pregunta adicional si se selecciona "Sí" en el módulo de equipo -->
-    <div id="equiposPregunta" style="display:none;">
+    <!-- Pregunta adicional si "Sí" en la pregunta 1 -->
+    <div id="equiposPregunta" style="display: none;">
       <label>¿Qué registros tiene el cliente en el módulo de equipos?</label>
       <div class="radio-group">
-        <input type="radio" name="tipoEquipos" value="Vehículos"> Vehículos
-        <input type="radio" name="tipoEquipos" value="Implementos"> Implementos
-        <input type="radio" name="tipoEquipos" value="Ambas"> Ambas
+        <label><input type="radio" name="registrosEquipo" value="Vehículos"> Vehículos</label>
+        <label><input type="radio" name="registrosEquipo" value="Implementos"> Implementos</label>
+        <label><input type="radio" name="registrosEquipo" value="Ambas"> Ambas</label>
       </div>
     </div>
 
-    <!-- Pregunta sobre el módulo de insumos -->
-    <label>¿El cliente utiliza el módulo de Insumos y Materiales?</label>
+    <!-- Pregunta 2: ¿El cliente utiliza el módulo de insumos? -->
+    <label>¿El cliente utiliza el módulo de insumos y materiales?</label>
     <div class="radio-group">
-      <input type="radio" id="moduloInsumosSi" name="moduloInsumos" value="Si" onclick="toggleInsumosQuestion()"> Sí
-      <input type="radio" id="moduloInsumosNo" name="moduloInsumos" value="No" onclick="toggleInsumosQuestion()"> No
+      <label><input type="radio" name="moduloInsumos" value="Si" onclick="toggleInsumosQuestion()"> Sí</label>
+      <label><input type="radio" name="moduloInsumos" value="No" onclick="toggleInsumosQuestion()"> No</label>
     </div>
 
-    <!-- Pregunta adicional sobre el tipo de productos -->
-    <div id="insumosPregunta" style="display:none;">
-      <label>¿Qué tipos de productos registra el cliente?</label>
+    <!-- Pregunta adicional si "Sí" en la pregunta 2 -->
+    <div id="insumosPregunta" style="display: none;">
+      <label>¿Qué tipos de productos registra?</label>
       <div class="radio-group">
-        <input type="checkbox" name="tiposProductos" value="Protección de cultivos"> Protección de cultivos
-        <input type="checkbox" name="tiposProductos" value="Fertilizantes"> Fertilizantes
-        <input type="checkbox" name="tiposProductos" value="Cal"> Cal
-        <input type="checkbox" name="tiposProductos" value="Semillas"> Semillas
-        <input type="checkbox" name="tiposProductos" value="Agua"> Agua
-        <input type="checkbox" name="tiposProductos" value="Mezclas de Tanque"> Mezclas de Tanque
+        <label><input type="checkbox" name="tiposProducto" value="Protección de cultivos"> Protección de cultivos</label>
+        <label><input type="checkbox" name="tiposProducto" value="Fertilizantes"> Fertilizantes</label>
+        <label><input type="checkbox" name="tiposProducto" value="Cal"> Cal</label>
+        <label><input type="checkbox" name="tiposProducto" value="Semillas"> Semillas</label>
+        <label><input type="checkbox" name="tiposProducto" value="Agua"> Agua</label>
+        <label><input type="checkbox" name="tiposProducto" value="Mezclas de Tanque"> Mezclas de Tanque</label>
       </div>
     </div>
 
-    <!-- Pregunta sobre el manejo de inventarios -->
-    <div id="inventarioPregunta" style="display:none;">
-      <label>¿El cliente lleva un manejo de inventarios?</label>
+    <!-- Pregunta 3: ¿El cliente maneja inventarios? -->
+    <div id="inventarioPregunta" style="display: none;">
+      <label>¿El cliente maneja inventarios?</label>
       <div class="radio-group">
-        <input type="radio" name="manejoInventario" value="Si"> Sí
-        <input type="radio" name="manejoInventario" value="No"> No
+        <label><input type="radio" name="manejoInventario" value="Si"> Sí</label>
+        <label><input type="radio" name="manejoInventario" value="No"> No</label>
       </div>
     </div>
 
-    <!-- Botón para enviar el formulario -->
-    <button onclick="sendFormDataToGoogle
+    <button type="button" onclick="sendDataToGoogleSheet()">Enviar</button>
+  </div>
+</body>
+</html>
+
+    }
+  </script>
+</body>
+</html>
