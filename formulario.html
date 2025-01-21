@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,12 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cuestionario - Formulario</title>
   <script>
-    // Cargar clientes desde el localStorage
     document.addEventListener("DOMContentLoaded", () => {
       const clientesDropdown = document.getElementById("clientes");
       const clientesFiltrados = JSON.parse(localStorage.getItem("clientesFiltrados")) || [];
 
-      // Ordenar clientes alfabéticamente por nombre
       clientesFiltrados.sort((a, b) => a.Cliente.localeCompare(b.Cliente));
 
       if (clientesFiltrados.length > 0) {
@@ -28,39 +27,73 @@
       }
     });
 
-    // Función para mostrar u ocultar las preguntas adicionales sobre el módulo de equipo
     function toggleEquiposQuestion() {
       const equiposPreguntaDiv = document.getElementById("equiposPregunta");
       const moduloEquipoSelect = document.querySelector('input[name="moduloEquipo"]:checked');
       if (moduloEquipoSelect && moduloEquipoSelect.value === "Si") {
-        equiposPreguntaDiv.style.display = "block"; // Mostrar la pregunta adicional
+        equiposPreguntaDiv.style.display = "block";
       } else {
-        equiposPreguntaDiv.style.display = "none"; // Ocultar la pregunta adicional
+        equiposPreguntaDiv.style.display = "none";
       }
     }
 
-    // Función para mostrar u ocultar las preguntas adicionales sobre el módulo de insumos
     function toggleInsumosQuestion() {
       const insumosPreguntaDiv = document.getElementById("insumosPregunta");
       const moduloInsumosSelect = document.querySelector('input[name="moduloInsumos"]:checked');
       if (moduloInsumosSelect && moduloInsumosSelect.value === "Si") {
-        insumosPreguntaDiv.style.display = "block"; // Mostrar la pregunta adicional
-        toggleInventarioQuestion(); // También mostrar la pregunta de inventario
+        insumosPreguntaDiv.style.display = "block";
+        toggleInventarioQuestion();
       } else {
-        insumosPreguntaDiv.style.display = "none"; // Ocultar la pregunta adicional
-        toggleInventarioQuestion(); // Ocultar la pregunta de inventario
+        insumosPreguntaDiv.style.display = "none";
+        toggleInventarioQuestion();
       }
     }
 
-    // Función para mostrar u ocultar la pregunta de inventario
     function toggleInventarioQuestion() {
       const inventarioPreguntaDiv = document.getElementById("inventarioPregunta");
       const moduloInsumosSelect = document.querySelector('input[name="moduloInsumos"]:checked');
       if (moduloInsumosSelect && moduloInsumosSelect.value === "Si") {
-        inventarioPreguntaDiv.style.display = "block"; // Mostrar la pregunta adicional
+        inventarioPreguntaDiv.style.display = "block";
       } else {
-        inventarioPreguntaDiv.style.display = "none"; // Ocultar la pregunta
+        inventarioPreguntaDiv.style.display = "none";
       }
+    }
+
+    function sendDataToGoogleSheet() {
+      const cliente = document.getElementById("clientes").value;
+      const moduloEquipo = document.querySelector('input[name="moduloEquipo"]:checked')?.value;
+      const registrosEquipo = document.querySelector('input[name="registrosEquipo"]:checked')?.value;
+      const moduloInsumos = document.querySelector('input[name="moduloInsumos"]:checked')?.value;
+      const tiposProductos = Array.from(document.querySelectorAll('input[name="tiposProductos"]:checked')).map(input => input.value);
+      const manejoInventarios = document.querySelector('input[name="manejoInventarios"]:checked')?.value;
+
+      const formData = {
+        cliente,
+        moduloEquipo,
+        registrosEquipo,
+        moduloInsumos,
+        tiposProductos: tiposProductos.join(", "),
+        manejoInventarios
+      };
+
+      const webhookUrl = "TU_WEBHOOK_URL_O_GOOGLE_SHEET_URL_AQUÍ";
+
+      fetch(webhookUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Datos enviados correctamente:", data);
+        alert("¡Formulario enviado exitosamente!");
+      })
+      .catch(error => {
+        console.error("Error al enviar los datos:", error);
+        alert("Ocurrió un error al enviar el formulario. Intenta nuevamente.");
+      });
     }
   </script>
   <style>
@@ -125,24 +158,20 @@
   </style>
 </head>
 <body>
-
   <div class="form-container">
-    <h1>Formulario de Encuesta</h1>
-    
-    <!-- Pregunta 1: Selección de cliente -->
+    <h1>Cuestionario</h1>
+
     <label for="clientes">Selecciona un cliente:</label>
     <select id="clientes" name="clientes">
-      <option value="">Cargando clientes...</option>
+      <option value="" disabled selected>Selecciona un cliente</option>
     </select>
-    
-    <!-- Pregunta 2: Módulo de equipo -->
-    <label>¿El cliente utiliza el módulo de equipo?</label>
+
+    <label for="moduloEquipo">¿El cliente utiliza el módulo de equipo?</label>
     <div class="radio-group">
-      <label><input type="radio" name="moduloEquipo" value="Si" onchange="toggleEquiposQuestion()"> Sí</label>
-      <label><input type="radio" name="moduloEquipo" value="No" onchange="toggleEquiposQuestion()"> No</label>
+      <label><input type="radio" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()"> Sí</label>
+      <label><input type="radio" name="moduloEquipo" value="No" onclick="toggleEquiposQuestion()"> No</label>
     </div>
-    
-    <!-- Pregunta adicional sobre registros de equipo (sólo si se selecciona "Sí") -->
+
     <div id="equiposPregunta" style="display: none;">
       <label>¿Qué registros tiene el cliente en el módulo de equipos?</label>
       <div class="radio-group">
@@ -152,9 +181,24 @@
       </div>
     </div>
 
+    <label for="moduloInsumos">¿El cliente utiliza el módulo de Insumos y Materiales?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="moduloInsumos" value="Si" onclick="toggleInsumosQuestion()"> Sí</label>
+      <label><input type="radio" name="moduloInsumos" value="No" onclick="toggleInsumosQuestion()"> No</label>
+    </div>
 
+    <div id="insumosPregunta" style="display: none;">
+      <label>¿Qué tipos de productos registra?</label>
+      <div class="radio-group">
+        <label><input type="checkbox" name="tiposProductos" value="Protección de cultivos"> Protección de cultivos</label>
+        <label><input type="checkbox" name="tiposProductos" value="Fertilizantes"> Fertilizantes</label>
+        <label><input type="checkbox" name="tiposProductos" value="Cal"> Cal</label>
+        <label><input type="checkbox" name="tiposProductos" value="Semillas"> Semillas</label>
+        <label><input type="checkbox" name="tiposProductos" value="Agua"> Agua</label>
+        <label><input type="checkbox" name="tiposProductos" value="Mezclas de Tanque"> Mezclas de Tanque</label>
+      </div>
+    </div>
 
-    <!-- Pregunta 3: ¿El cliente maneja inventarios? -->
     <div id="inventarioPregunta" style="display: none;">
       <label>¿El cliente maneja inventarios?</label>
       <div class="radio-group">
@@ -164,49 +208,7 @@
     </div>
 
     <button type="button" onclick="sendDataToGoogleSheet()">Enviar</button>
-  </div> <!-- Fin del contenedor del formulario -->
-
-  <script>
-    // Función para enviar los datos a Google Sheets
-    function sendDataToGoogleSheet() {
-      const cliente = document.getElementById("clientes").value;
-      const moduloEquipo = document.querySelector('input[name="moduloEquipo"]:checked')?.value;
-      const registrosEquipo = document.querySelector('input[name="registrosEquipo"]:checked')?.value;
-      const moduloInsumos = document.querySelector('input[name="moduloInsumos"]:checked')?.value;
-      const tiposProductos = Array.from(document.querySelectorAll('input[name="tiposProductos"]:checked')).map(input => input.value);
-      const manejoInventarios = document.querySelector('input[name="manejoInventarios"]:checked')?.value;
-
-      // Configura la URL del webhook o del Google Sheets para enviar los datos
-      const webhookUrl = "https://docs.google.com/spreadsheets/d/1dRhSpgJKGL3wrpCMCNcqhWLe1Vc9SmEX31oFwm4Jagk/edit?pli=1&gid=0#gid=0";
-
-      const formData = {
-        cliente,
-        moduloEquipo,
-        registrosEquipo,
-        //moduloInsumos,
-        //tiposProductos: tiposProductos.join(", "), // Unir los tipos de productos seleccionados
-        //manejoInventarios
-      };
-
-      // Enviar los datos a la URL configurada (puede ser un Google Sheet o un webhook)
-      fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(formData)
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log("Datos enviados correctamente:", data);
-        alert("¡Formulario enviado exitosamente!");
-      })
-      .catch(error => {
-        console.error("Error al enviar los datos:", error);
-        alert("Ocurrió un error al enviar el formulario. Intenta nuevamente.");
-      });
-    }
-  </script>
+  </div>
 </body>
 </html>
-
+```
