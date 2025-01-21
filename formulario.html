@@ -3,97 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Clientes</title>
+  <title>Formulario - Cuestionario</title>
   <style>
     body {
       font-family: 'Century Gothic', sans-serif;
-      background-color: #f0f8ff;
-      margin: 20px;
+      background-color: #f9f9f9;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
       padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 500px;
+      max-width: 90%;
+      text-align: center;
     }
     h1 {
       color: #333;
-      text-align: center;
-    }
-    select, input[type="radio"] {
-      padding: 10px;
-      font-size: 16px;
-      margin: 10px 0;
-      width: auto;
-    }
-    .form-group {
+      font-size: 1.8rem;
       margin-bottom: 20px;
     }
-    button {
-      padding: 10px 20px;
+    label {
+      display: block;
+      text-align: left;
+      margin-top: 10px;
+      color: #555;
+    }
+    select, button, input[type="radio"] {
+      padding: 10px;
       font-size: 16px;
-      background-color: #4CAF50;
-      color: white;
-      border: none;
+      margin-top: 10px;
       border-radius: 5px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+    button {
+      background-color: #4caf50;
+      color: white;
       cursor: pointer;
+      border: none;
     }
     button:hover {
       background-color: #45a049;
     }
     .radio-group {
       display: flex;
-      gap: 10px;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .radio-group label {
+      margin: 0;
     }
   </style>
 </head>
 <body>
-  <h1>Formulario del Cliente</h1>
-
-  <div class="form-group">
-    <label for="clientDropdown">Seleccione un cliente:</label>
-    <select id="clientDropdown">
+  <div class="container">
+    <h1>Formulario de Cliente</h1>
+    <label for="cliente">Seleccione un Cliente:</label>
+    <select id="cliente">
       <option value="">Seleccione un cliente</option>
+      <!-- Los clientes se cargarán dinámicamente aquí -->
     </select>
-  </div>
 
-  <div class="form-group">
     <label>¿El cliente utiliza el módulo de campos?</label>
     <div class="radio-group">
-      <label><input type="radio" name="moduloCampos" value="Si"> Sí</label>
-      <label><input type="radio" name="moduloCampos" value="No"> No</label>
+      <label><input type="radio" name="modulo" value="Si"> Sí</label>
+      <label><input type="radio" name="modulo" value="No"> No</label>
     </div>
+
+    <button onclick="enviar()">Enviar</button>
   </div>
 
-  <button onclick="submitForm()">Enviar</button>
-
   <script>
-    function loadClients() {
-      const selectedCountry = localStorage.getItem('selectedCountry');
-      const clientData = JSON.parse(localStorage.getItem('clientData'));
-      const filteredClients = clientData.filter(row => row.País === selectedCountry);
-
-      const clientDropdown = document.getElementById('clientDropdown');
-      filteredClients.forEach(client => {
+    // Cargar los clientes desde localStorage
+    window.onload = () => {
+      const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+      const clienteDropdown = document.getElementById('cliente');
+      clientes.forEach(cliente => {
         const option = document.createElement('option');
-        option.value = client.Cliente;
-        option.textContent = client.Cliente;
-        clientDropdown.appendChild(option);
+        option.value = cliente;
+        option.textContent = cliente;
+        clienteDropdown.appendChild(option);
       });
+    };
+
+    function enviar() {
+      alert('Formulario enviado con éxito.');
+      // Aquí puedes agregar lógica para procesar y guardar los datos
     }
-
-    function submitForm() {
-      const selectedClient = document.getElementById('clientDropdown').value;
-      const moduleUsage = document.querySelector('input[name="moduloCampos"]:checked')?.value;
-
-      if (!selectedClient || !moduleUsage) {
-        alert('Por favor, complete todos los campos.');
-        return;
-      }
-
-      console.log('Cliente seleccionado:', selectedClient);
-      console.log('Usa el módulo de campos:', moduleUsage);
-
-      // Aquí podrías enviar los datos a una base de datos o procesarlos como desees
-      alert('Formulario enviado exitosamente.');
-    }
-
-    loadClients();
   </script>
 </body>
 </html>
