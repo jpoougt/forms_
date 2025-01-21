@@ -16,8 +16,8 @@
       if (clientesFiltrados.length > 0) {
         clientesFiltrados.forEach(cliente => {
           const option = document.createElement("option");
-          option.value = cliente.Cliente; // Ajusta el campo según los datos de tu Excel
-          option.textContent = cliente.Cliente; // Ajusta el campo según los datos de tu Excel
+          option.value = cliente.Cliente;
+          option.textContent = cliente.Cliente;
           clientesDropdown.appendChild(option);
         });
       } else {
@@ -28,15 +28,36 @@
       }
     });
 
-    // Función para mostrar u ocultar la pregunta adicional
+    // Función para mostrar u ocultar las preguntas adicionales sobre equipos
     function toggleEquiposQuestion() {
       const equiposPreguntaDiv = document.getElementById("equiposPregunta");
       const moduloEquipoSelect = document.querySelector('input[name="moduloEquipo"]:checked');
-
       if (moduloEquipoSelect && moduloEquipoSelect.value === "Si") {
         equiposPreguntaDiv.style.display = "block"; // Mostrar la pregunta adicional
       } else {
         equiposPreguntaDiv.style.display = "none"; // Ocultar la pregunta adicional
+      }
+    }
+
+    // Función para mostrar u ocultar las preguntas adicionales sobre insumos
+    function toggleInsumosQuestion() {
+      const insumosPreguntaDiv = document.getElementById("insumosPregunta");
+      const moduloInsumosSelect = document.querySelector('input[name="moduloInsumos"]:checked');
+      if (moduloInsumosSelect && moduloInsumosSelect.value === "Si") {
+        insumosPreguntaDiv.style.display = "block"; // Mostrar la pregunta adicional
+      } else {
+        insumosPreguntaDiv.style.display = "none"; // Ocultar la pregunta adicional
+      }
+    }
+
+    // Función para mostrar u ocultar la pregunta de inventario
+    function toggleInventarioQuestion() {
+      const inventarioPreguntaDiv = document.getElementById("inventarioPregunta");
+      const manejoInventarioSelect = document.querySelector('input[name="manejoInventario"]:checked');
+      if (manejoInventarioSelect && manejoInventarioSelect.value === "Si") {
+        inventarioPreguntaDiv.style.display = "block"; // Mostrar la pregunta adicional
+      } else {
+        inventarioPreguntaDiv.style.display = "none"; // Ocultar la pregunta adicional
       }
     }
   </script>
@@ -109,27 +130,27 @@
   <div class="form-container">
     <h1>Cuestionario</h1>
 
-    <!-- Pregunta 1: Seleccionar cliente -->
+    <!-- Dropdown de clientes -->
     <label for="clientes">Selecciona un cliente:</label>
-    <select id="clientes">
-      <option value="">Selecciona un cliente...</option>
+    <select id="clientes" name="clientes">
+      <option value="">Cargando clientes...</option>
     </select>
 
-    <!-- Pregunta 2: ¿El cliente utiliza el módulo de campos? -->
+    <!-- Pregunta 1: ¿El cliente utiliza el módulo de campos? -->
     <label>¿El cliente utiliza el módulo de campos?</label>
     <div class="radio-group">
-      <label><input type="radio" name="moduloCampo" value="Si" onchange="toggleEquiposQuestion()"> Sí</label>
-      <label><input type="radio" name="moduloCampo" value="No" onchange="toggleEquiposQuestion()"> No</label>
+      <label><input type="radio" name="moduloCampos" value="Si" required> Sí</label>
+      <label><input type="radio" name="moduloCampos" value="No"> No</label>
     </div>
 
-    <!-- Pregunta 3: ¿El cliente utiliza el módulo de equipo? -->
+    <!-- Pregunta 2: ¿El cliente utiliza el módulo de equipo? -->
     <label>¿El cliente utiliza el módulo de equipo?</label>
     <div class="radio-group">
-      <label><input type="radio" name="moduloEquipo" value="Si" onchange="toggleEquiposQuestion()"> Sí</label>
-      <label><input type="radio" name="moduloEquipo" value="No" onchange="toggleEquiposQuestion()"> No</label>
+      <label><input type="radio" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()" required> Sí</label>
+      <label><input type="radio" name="moduloEquipo" value="No" onclick="toggleEquiposQuestion()"> No</label>
     </div>
 
-    <!-- Pregunta adicional (se muestra solo si se selecciona "Sí" en el módulo de equipo) -->
+    <!-- Pregunta adicional para módulo de equipo -->
     <div id="equiposPregunta" class="hidden">
       <label>¿Qué registros tiene el cliente en el módulo de equipos?</label>
       <div class="radio-group">
@@ -139,7 +160,37 @@
       </div>
     </div>
 
-    <button>Enviar</button>
+    <!-- Pregunta 3: ¿El cliente utiliza el módulo de Insumos y Materiales? -->
+    <label>¿El cliente utiliza el módulo de Insumos y Materiales?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="moduloInsumos" value="Si" onclick="toggleInsumosQuestion()" required> Sí</label>
+      <label><input type="radio" name="moduloInsumos" value="No" onclick="toggleInsumosQuestion()"> No</label>
+    </div>
+
+    <!-- Pregunta adicional para módulo de insumos -->
+    <div id="insumosPregunta" class="hidden">
+      <label>¿Qué tipos de productos registra?</label>
+      <div class="radio-group">
+        <label><input type="checkbox" name="productosInsumos" value="Protección de cultivos"> Protección de cultivos</label>
+        <label><input type="checkbox" name="productosInsumos" value="Fertilizantes"> Fertilizantes</label>
+        <label><input type="checkbox" name="productosInsumos" value="Cal"> Cal</label>
+        <label><input type="checkbox" name="productosInsumos" value="Semillas"> Semillas</label>
+        <label><input type="checkbox" name="productosInsumos" value="Agua"> Agua</label>
+        <label><input type="checkbox" name="productosInsumos" value="Mezclas de Tanque"> Mezclas de Tanque</label>
+      </div>
+    </div>
+
+    <!-- Pregunta adicional sobre manejo de inventario -->
+    <div id="inventarioPregunta" class="hidden">
+      <label>¿El usuario lleva un manejo de inventario?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="manejoInventario" value="Si" onclick="toggleInventarioQuestion()" required> Sí</label>
+        <label><input type="radio" name="manejoInventario" value="No" onclick="toggleInventarioQuestion()"> No</label>
+      </div>
+    </div>
+
+    <!-- Botón para enviar -->
+    <button type="submit">Enviar</button>
   </div>
 </body>
 </html>
