@@ -25,60 +25,60 @@
       border: 1px solid #ccc;
     }
     button {
-      background-color: #007bff;
+      background-color: #4CAF50;
       color: white;
       cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
-  <h1>Seleccione un país</h1>
+  <h1>Selecciona un País</h1>
   <select id="countryDropdown">
     <option value="">Seleccione un país</option>
   </select>
-  <button onclick="proceed()">Continuar</button>
+  <button onclick="goToNextPage()">Continuar</button>
 
   <script>
-    // Simulación de datos del archivo Excel
-    const clientsData = [
-      { Cliente: "Cliente 1", País: "México" },
-      { Cliente: "Cliente 2", País: "México" },
-      { Cliente: "Cliente 3", País: "Colombia" },
-      { Cliente: "Cliente 4", País: "Perú" },
-    ];
+    const fileUrl = 'https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx';
 
-    // Cargar países únicos en el dropdown
-    const uniqueCountries = [...new Set(clientsData.map(client => client.País))];
-    const countryDropdown = document.getElementById("countryDropdown");
+    async function loadCountries() {
+      const response = await fetch(fileUrl);
+      const arrayBuffer = await response.arrayBuffer();
+      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      const data = XLSX.utils.sheet_to_json(sheet);
 
-    uniqueCountries.forEach(country => {
-      const option = document.createElement("option");
-      option.value = country;
-      option.textContent = country;
-      countryDropdown.appendChild(option);
-    });
+      // Obtener países únicos
+      const countries = [...new Set(data.map(row => row.País))];
+      const countryDropdown = document.getElementById('countryDropdown');
 
-    // Función para proceder al formulario
-    function proceed() {
-      const selectedCountry = countryDropdown.value;
+      // Poblar el dropdown
+      countries.forEach(country => {
+        const option = document.createElement('option');
+        option.value = country;
+        option.textContent = country;
+        countryDropdown.appendChild(option);
+      });
 
+      // Guardar datos en localStorage para ser reutilizados
+      localStorage.setItem('clientData', JSON.stringify(data));
+    }
+
+    function goToNextPage() {
+      const selectedCountry = document.getElementById('countryDropdown').value;
       if (!selectedCountry) {
-        alert("Por favor, seleccione un país.");
+        alert('Por favor, selecciona un país.');
         return;
       }
-
-      // Filtrar clientes por el país seleccionado
-      const filteredClients = clientsData.filter(client => client.País === selectedCountry);
-
-      // Guardar los clientes filtrados en localStorage
-      localStorage.setItem("filteredClients", JSON.stringify(filteredClients));
-
-      // Redirigir a la segunda pantalla
-      window.location.href = "formulario.html";
+      localStorage.setItem('selectedCountry', selectedCountry);
+      window.location.href = 'formulario.html';
     }
+
+    loadCountries();
   </script>
 </body>
 </html>
