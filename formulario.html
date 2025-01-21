@@ -8,118 +8,125 @@
   <style>
     body {
       font-family: 'Century Gothic', sans-serif;
-      background-color: #f7f9fc;
+      background-color: #f0f8ff;
       margin: 0;
       padding: 0;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
       height: 100vh;
     }
-    .form-container {
-      background-color: #ffffff;
-      width: 90%;
-      max-width: 500px;
+
+    .container {
+      background-color: white;
+      width: 80%;
+      margin: 20px auto;
       padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
-      color: #333;
-      text-align: center;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      font-size: 16px;
-      margin-bottom: 8px;
-      color: #555;
-    }
-    select, input[type="radio"] {
-      font-size: 16px;
-    }
-    select {
-      width: 100%;
-      padding: 10px;
       border-radius: 10px;
-      border: 1px solid #ccc;
-      margin-bottom: 20px;
-      appearance: none;
-      background: #f9f9f9;
-      outline: none;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ddd;
     }
+
+    h1 {
+      font-size: 20px;
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      font-size: 16px;
+      margin: 10px 0;
+      display: inline-block;
+    }
+
+    select, input[type="radio"] {
+      font-size: 14px;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: auto;
+      display: inline-block;
+    }
+
+    .question-container {
+      margin-top: 20px;
+    }
+
     .radio-group {
       display: flex;
-      justify-content: flex-start;
-      gap: 15px;
-      margin-bottom: 20px;
+      gap: 20px;
     }
-    .radio-group label {
-      font-size: 14px;
-      margin: 0;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
+
+    .btn {
+      padding: 10px 20px;
       font-size: 16px;
-      background-color: #4caf50;
-      color: white;
       border: none;
-      border-radius: 10px;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
       cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      transition: background-color 0.3s ease;
     }
-    button:hover {
-      background-color: #45a049;
+
+    .btn:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h1>Cuestionario del Cliente</h1>
-    <form id="customer-form">
-      <label for="cliente">Seleccione un cliente:</label>
-      <select id="cliente">
-        <!-- Aquí se insertarán dinámicamente los clientes -->
-      </select>
-
-      <label>¿El cliente utiliza el módulo de campos?</label>
-      <div class="radio-group">
-        <label>
-          <input type="radio" name="modulo_campos" value="Si"> Sí
-        </label>
-        <label>
-          <input type="radio" name="modulo_campos" value="No"> No
-        </label>
+  <div class="container">
+    <h1>Cuestionario</h1>
+    <form id="questionnaire">
+      <!-- Dropdown de clientes -->
+      <div class="question-container">
+        <label for="clientes">Seleccione un cliente:</label>
+        <select id="clientes">
+          <option value="" disabled selected>Seleccione...</option>
+        </select>
       </div>
 
-      <button type="submit">Enviar</button>
+      <!-- Pregunta: módulo de campos -->
+      <div class="question-container">
+        <label>¿El cliente utiliza el módulo de campos?</label>
+        <div class="radio-group">
+          <label><input type="radio" name="modulo" value="si"> Sí</label>
+          <label><input type="radio" name="modulo" value="no"> No</label>
+        </div>
+      </div>
+
+      <!-- Botón de envío -->
+      <div class="question-container">
+        <button type="submit" class="btn">Enviar</button>
+      </div>
     </form>
   </div>
 
   <script>
     // Cargar clientes desde localStorage
-    document.addEventListener('DOMContentLoaded', () => {
-      const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
-      const clienteDropdown = document.getElementById('cliente');
+    document.addEventListener("DOMContentLoaded", () => {
+      const clientesDropdown = document.getElementById("clientes");
+      const clientes = JSON.parse(localStorage.getItem("clientesFiltrados")) || [];
 
-      // Llenar el dropdown con los clientes
-      clientes.forEach(cliente => {
-        const option = document.createElement('option');
-        option.value = cliente;
-        option.textContent = cliente;
-        clienteDropdown.appendChild(option);
-      });
+      // Verificar si hay clientes para el país seleccionado
+      if (clientes.length > 0) {
+        clientes.forEach(cliente => {
+          const option = document.createElement("option");
+          option.value = cliente;
+          option.textContent = cliente;
+          clientesDropdown.appendChild(option);
+        });
+      } else {
+        const option = document.createElement("option");
+        option.textContent = "No hay clientes disponibles";
+        clientesDropdown.appendChild(option);
+      }
     });
 
     // Enviar formulario
-    document.getElementById('customer-form').addEventListener('submit', (e) => {
+    document.getElementById("questionnaire").addEventListener("submit", e => {
       e.preventDefault();
-      alert('Formulario enviado exitosamente.');
-      // Aquí puedes agregar lógica para guardar los datos en Google Sheets u otro sistema
+      alert("Formulario enviado exitosamente.");
     });
   </script>
 </body>
