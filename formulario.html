@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Clientes</title>
+  <title>Formulario de Cliente</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     body {
@@ -16,93 +16,94 @@
       color: #333;
       text-align: center;
     }
-    select, button {
-      padding: 10px;
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
       font-size: 16px;
-      margin-top: 20px;
-      width: 100%;
+      margin-top: 15px;
+    }
+    select, input[type="radio"], button {
+      font-size: 16px;
+      margin-top: 10px;
+      padding: 10px;
       border-radius: 5px;
       border: 1px solid #ccc;
+    }
+    select {
+      width: 80%;
+    }
+    .radio-group {
+      margin-top: 10px;
     }
     button {
       background-color: #4CAF50;
       color: white;
+      border: none;
       cursor: pointer;
+      padding: 10px 15px;
+      margin-top: 20px;
+      width: 100%;
     }
     button:hover {
       background-color: #45a049;
     }
-    .hidden {
-      display: none;
-    }
   </style>
 </head>
 <body>
-
-  <h1>Formulario de Clientes</h1>
-  <div id="client-selection">
+  <h1>Formulario de Cliente</h1>
+  <form id="clientForm">
+    <!-- Campo para seleccionar cliente -->
     <label for="clientSelect">Seleccione un cliente:</label>
-    <select id="clientSelect">
-      <option value="">--Seleccione un cliente--</option>
+    <select id="clientSelect" required>
+      <option value="">Seleccione un cliente</option>
+      <!-- Aquí se cargarán dinámicamente los clientes desde localStorage -->
     </select>
-    <button onclick="submitForm()">Enviar</button>
-  </div>
+
+    <!-- Nuevo campo: ¿El cliente utiliza el módulo de campos? -->
+    <label>¿El cliente utiliza el módulo de campos?</label>
+    <div class="radio-group">
+      <input type="radio" id="moduleYes" name="moduleField" value="Sí" required>
+      <label for="moduleYes">Sí</label>
+      <br>
+      <input type="radio" id="moduleNo" name="moduleField" value="No" required>
+      <label for="moduleNo">No</label>
+    </div>
+
+    <!-- Botón para enviar -->
+    <button type="submit">Enviar</button>
+  </form>
 
   <script>
-    // Limpiar todo al cargar la página
-    window.onload = function() {
-      localStorage.clear();  // Limpiar almacenamiento local
-      clearForm();  // Limpiar formulario de la pantalla 2
-      loadClients();  // Cargar los clientes de la pantalla 2
-    };
-
+    // Cargar clientes desde localStorage
+    const clients = JSON.parse(localStorage.getItem('clients')) || [];
     const clientSelect = document.getElementById('clientSelect');
 
-    // Recuperar el país seleccionado desde localStorage
-    const selectedCountry = localStorage.getItem('selectedCountry');
+    // Poblar la lista desplegable con los clientes
+    clients.forEach(client => {
+      const option = document.createElement('option');
+      option.value = client;
+      option.textContent = client;
+      clientSelect.appendChild(option);
+    });
 
-    // Cargar clientes para el país seleccionado
-    function loadClients() {
-      if (!selectedCountry) {
-        alert('Por favor, seleccione un país primero.');
-        return;
-      }
+    // Manejar el envío del formulario
+    const form = document.getElementById('clientForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Evita el refresco de la página
 
-      fetch('https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx')
-        .then(response => response.arrayBuffer())
-        .then(data => {
-          const workbook = XLSX.read(data, { type: 'array' });
-          const sheet = workbook.Sheets[workbook.SheetNames[0]];
-          const jsonData = XLSX.utils.sheet_to_json(sheet);
-          
-          // Filtrar clientes por el país seleccionado
-          const clients = jsonData.filter(client => client.País === selectedCountry);
-          
-          // Llenar el selector de clientes
-          clients.forEach(client => {
-            const option = document.createElement('option');
-            option.value = client.Cliente;
-            option.textContent = client.Cliente;
-            clientSelect.appendChild(option);
-          });
-        });
-    }
-
-    // Función para limpiar el formulario
-    function clearForm() {
-      clientSelect.innerHTML = '<option value="">--Seleccione un cliente--</option>'; // Limpiar el select
-    }
-
-    // Función para enviar el formulario
-    function submitForm() {
       const selectedClient = clientSelect.value;
-      if (selectedClient) {
-        alert(`Cliente seleccionado: ${selectedClient}`);
-      } else {
-        alert('Por favor, seleccione un cliente.');
-      }
-    }
-  </script>
+      const moduleField = document.querySelector('input[name="moduleField"]:checked').value;
 
+      // Aquí puedes enviar los datos a Google Sheets o a cualquier destino deseado
+      alert(`Cliente: ${selectedClient}\n¿Utiliza módulo de campos?: ${moduleField}`);
+    });
+  </script>
 </body>
 </html>
