@@ -7,8 +7,7 @@
   <style>
     body {
       font-family: 'Century Gothic', sans-serif;
-      background-color: #f8f9fa;
-      
+      background-color: #f0f8ff;
       margin: 20px;
       padding: 20px;
     }
@@ -16,76 +15,85 @@
       color: #333;
       text-align: center;
     }
-    select, button, label {
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    select {
+    select, input[type="radio"] {
       padding: 10px;
-      width: 50%; /* Ajusta el ancho para que no ocupe toda la pantalla */
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      font-size: 16px;
+      margin: 10px 0;
+      width: auto;
     }
-    .question {
-      margin: 20px 0;
-    }
-    .options {
-      display: flex;
-      gap: 20px;
-      align-items: center;
+    .form-group {
+      margin-bottom: 20px;
     }
     button {
       padding: 10px 20px;
-      background-color: #007bff;
+      font-size: 16px;
+      background-color: #4CAF50;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: #45a049;
+    }
+    .radio-group {
+      display: flex;
+      gap: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>Formulario de Clientes</h1>
-  <form id="clientForm">
-    <!-- Dropdown de clientes -->
+  <h1>Formulario del Cliente</h1>
+
+  <div class="form-group">
     <label for="clientDropdown">Seleccione un cliente:</label>
     <select id="clientDropdown">
       <option value="">Seleccione un cliente</option>
     </select>
+  </div>
 
-    <!-- Pregunta 1 -->
-    <div class="question">
-      <label>¿El cliente utiliza el módulo de campos?</label>
-      <div class="options">
-        <label><input type="radio" name="moduleUsage" value="Si"> Sí</label>
-        <label><input type="radio" name="moduleUsage" value="No"> No</label>
-      </div>
+  <div class="form-group">
+    <label>¿El cliente utiliza el módulo de campos?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="moduloCampos" value="Si"> Sí</label>
+      <label><input type="radio" name="moduloCampos" value="No"> No</label>
     </div>
+  </div>
 
-    <button type="submit">Enviar</button>
-  </form>
+  <button onclick="submitForm()">Enviar</button>
 
   <script>
-    // Obtener los clientes filtrados del localStorage
-    const filteredClients = JSON.parse(localStorage.getItem("filteredClients")) || [];
-    const clientDropdown = document.getElementById("clientDropdown");
+    function loadClients() {
+      const selectedCountry = localStorage.getItem('selectedCountry');
+      const clientData = JSON.parse(localStorage.getItem('clientData'));
+      const filteredClients = clientData.filter(row => row.País === selectedCountry);
 
-    // Cargar clientes en el dropdown
-    filteredClients.forEach(client => {
-      const option = document.createElement("option");
-      option.value = client.Cliente;
-      option.textContent = client.Cliente;
-      clientDropdown.appendChild(option);
-    });
+      const clientDropdown = document.getElementById('clientDropdown');
+      filteredClients.forEach(client => {
+        const option = document.createElement('option');
+        option.value = client.Cliente;
+        option.textContent = client.Cliente;
+        clientDropdown.appendChild(option);
+      });
+    }
 
-    // Enviar formulario (puedes personalizar este comportamiento)
-    document.getElementById("clientForm").addEventListener("submit", event => {
-      event.preventDefault(); // Evitar recarga de la página
-      alert("Formulario enviado.");
-    });
+    function submitForm() {
+      const selectedClient = document.getElementById('clientDropdown').value;
+      const moduleUsage = document.querySelector('input[name="moduloCampos"]:checked')?.value;
+
+      if (!selectedClient || !moduleUsage) {
+        alert('Por favor, complete todos los campos.');
+        return;
+      }
+
+      console.log('Cliente seleccionado:', selectedClient);
+      console.log('Usa el módulo de campos:', moduleUsage);
+
+      // Aquí podrías enviar los datos a una base de datos o procesarlos como desees
+      alert('Formulario enviado exitosamente.');
+    }
+
+    loadClients();
   </script>
 </body>
 </html>
