@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Cliente</title>
+  <title>Formulario - Cuestionario</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     body {
@@ -17,7 +17,7 @@
       text-align: center;
     }
     form {
-      max-width: 500px;
+      max-width: 600px;
       margin: 0 auto;
       background-color: #fff;
       padding: 20px;
@@ -25,84 +25,93 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
     label {
+      font-size: 16px;
+      margin-bottom: 10px;
       display: block;
-      font-size: 16px;
-      margin-top: 15px;
     }
-    select, input[type="radio"], button {
-      font-size: 16px;
-      margin-top: 10px;
+    select, button {
       padding: 10px;
+      font-size: 16px;
+      margin-bottom: 20px;
+      width: calc(100% - 20px);
       border-radius: 5px;
       border: 1px solid #ccc;
     }
     select {
-      width: 80%;
+      width: 80%; /* Ajustar el ancho del campo de clientes */
+      margin-bottom: 20px;
     }
-    .radio-group {
-      margin-top: 10px;
+    .horizontal-options {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 20px;
     }
     button {
-      background-color: #4CAF50;
+      background-color: #007BFF;
       color: white;
       border: none;
       cursor: pointer;
-      padding: 10px 15px;
-      margin-top: 20px;
-      width: 100%;
     }
     button:hover {
-      background-color: #45a049;
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>Formulario de Cliente</h1>
-  <form id="clientForm">
-    <!-- Campo para seleccionar cliente -->
-    <label for="clientSelect">Seleccione un cliente:</label>
-    <select id="clientSelect" required>
-      <option value="">Seleccione un cliente</option>
-      <!-- Aquí se cargarán dinámicamente los clientes desde localStorage -->
+  <h1>Cuestionario</h1>
+  <form id="questionnaire-form">
+    <!-- Campo de selección de cliente -->
+    <label for="cliente">Seleccione un cliente:</label>
+    <select id="cliente" required>
+      <option value="">Seleccione...</option>
     </select>
 
-    <!-- Nuevo campo: ¿El cliente utiliza el módulo de campos? -->
+    <!-- Pregunta 1 -->
     <label>¿El cliente utiliza el módulo de campos?</label>
-    <div class="radio-group">
-      <input type="radio" id="moduleYes" name="moduleField" value="Sí" required>
-      <label for="moduleYes">Sí</label>
-      <br>
-      <input type="radio" id="moduleNo" name="moduleField" value="No" required>
-      <label for="moduleNo">No</label>
+    <div class="horizontal-options">
+      <label><input type="radio" name="modulo_campos" value="Sí" required> Sí</label>
+      <label><input type="radio" name="modulo_campos" value="No" required> No</label>
     </div>
 
-    <!-- Botón para enviar -->
+    <!-- Agregar más preguntas aquí si es necesario -->
     <button type="submit">Enviar</button>
   </form>
 
   <script>
-    // Cargar clientes desde localStorage
-    const clients = JSON.parse(localStorage.getItem('clients')) || [];
-    const clientSelect = document.getElementById('clientSelect');
+    // Cargar clientes desde el localStorage
+    document.addEventListener('DOMContentLoaded', () => {
+      const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
+      const clienteSelect = document.getElementById('cliente');
 
-    // Poblar la lista desplegable con los clientes
-    clients.forEach(client => {
-      const option = document.createElement('option');
-      option.value = client;
-      option.textContent = client;
-      clientSelect.appendChild(option);
+      // Agregar opciones al menú desplegable
+      clientes.forEach(cliente => {
+        const option = document.createElement('option');
+        option.value = cliente;
+        option.textContent = cliente;
+        clienteSelect.appendChild(option);
+      });
     });
 
     // Manejar el envío del formulario
-    const form = document.getElementById('clientForm');
-    form.addEventListener('submit', (e) => {
-      e.preventDefault(); // Evita el refresco de la página
+    document.getElementById('questionnaire-form').addEventListener('submit', (event) => {
+      event.preventDefault(); // Evitar el refresco de la página
 
-      const selectedClient = clientSelect.value;
-      const moduleField = document.querySelector('input[name="moduleField"]:checked').value;
+      const clienteSeleccionado = document.getElementById('cliente').value;
+      const moduloCampos = document.querySelector('input[name="modulo_campos"]:checked').value;
 
-      // Aquí puedes enviar los datos a Google Sheets o a cualquier destino deseado
-      alert(`Cliente: ${selectedClient}\n¿Utiliza módulo de campos?: ${moduleField}`);
+      if (!clienteSeleccionado) {
+        alert('Por favor, seleccione un cliente.');
+        return;
+      }
+
+      // Aquí puedes enviar los datos a Google Sheets o realizar otra acción
+      console.log({
+        cliente: clienteSeleccionado,
+        modulo_campos: moduloCampos
+      });
+
+      alert('Respuestas enviadas exitosamente.');
     });
   </script>
 </body>
