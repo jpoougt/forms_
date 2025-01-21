@@ -25,89 +25,68 @@
       border: 1px solid #ccc;
     }
     button {
-      background-color: #4CAF50;
+      background-color: #007bff;
       color: white;
       cursor: pointer;
+      border: none;
     }
     button:hover {
-      background-color: #45a049;
-    }
-    .hidden {
-      display: none;
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-
-  <h1>Formulario de Sondeo de Clientes</h1>
-  <div id="pais-selection">
-    <label for="countrySelect">Seleccione un país:</label>
-    <select id="countrySelect">
+  <h1>Seleccione un país</h1>
+  <form id="countryForm">
+    <select id="countrySelect" required>
       <option value="">--Seleccione un país--</option>
     </select>
-    <button id="showClientsBtn" class="hidden" onclick="navigateToForm()">Ver clientes</button>
-  </div>
+    <button type="submit">Continuar</button>
+  </form>
 
   <script>
-    // Limpiar todo al cargar la página
-    window.onload = function() {
-      localStorage.clear();  // Limpiar almacenamiento local
-      clearForm();  // Limpiar formulario de la pantalla 1
-    };
+    // URL del archivo Excel desde el repositorio de GitHub (en formato RAW)
+    const EXCEL_URL = 'https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx';
 
-    const countrySelect = document.getElementById('countrySelect');
-    const showClientsBtn = document.getElementById('showClientsBtn');
-    
-    let clients = [];
+    // Cargar archivo Excel y poblar el selector de países
+    async function loadExcel() {
+      try {
+        const response = await fetch(EXCEL_URL);
+        const arrayBuffer = await response.arrayBuffer();
+        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const data = XLSX.utils.sheet_to_json(sheet);
 
-    // Cargar el archivo Excel desde GitHub
-    fetch('https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx')
-      .then(response => response.arrayBuffer())
-      .then(data => {
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(sheet);
-        
-        // Obtener países únicos
-        const countries = [...new Set(jsonData.map(client => client.País))];
-        
-        // Llenar el selector de países
+        const countries = [...new Set(data.map(row => row['País']))].sort(); // Extraer países únicos
+        const countrySelect = document.getElementById('countrySelect');
+
         countries.forEach(country => {
           const option = document.createElement('option');
           option.value = country;
           option.textContent = country;
           countrySelect.appendChild(option);
         });
+      } catch (error) {
+        console.error('Error al cargar el archivo Excel:', error);
+      }
+    }
 
-        // Guardar los datos de clientes en la variable
-        clients = jsonData;
-      });
+    // Guardar país seleccionado en localStorage y avanzar a la segunda pantalla
+    document.getElementById('countryForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Prevenir recarga de la página
+      const selectedCountry = document.getElementById('countrySelect').value;
 
-    // Mostrar botón para ver clientes cuando se selecciona un país
-    countrySelect.addEventListener('change', function() {
-      if (countrySelect.value) {
-        showClientsBtn.classList.remove('hidden');
+      if (selectedCountry) {
+        localStorage.setItem('selectedCountry', selectedCountry); // Guardar país en localStorage
+        window.location.href = 'formulario.html'; // Ir a la segunda pantalla
       } else {
-        showClientsBtn.classList.add('hidden');
+        alert('Por favor, seleccione un país.');
       }
     });
 
-    // Navegar a la segunda pantalla con los clientes del país seleccionado
-    function navigateToForm() {
-      const selectedCountry = countrySelect.value;
-
-      // Guardar el país seleccionado en el almacenamiento local
-      localStorage.setItem('selectedCountry', selectedCountry);
-
-      // Redirigir a la segunda pantalla (formulario.html)
-      window.location.href = 'formulario.html';
-    }
-
-    // Función para limpiar el formulario
-    function clearForm() {
-      countrySelect.value = '';  // Limpiar el campo de selección
-      showClientsBtn.classList.add('hidden');  // Ocultar el botón
-    }
+    // Inicializar el formulario
+    loadExcel();
   </script>
 </body>
 </html>
