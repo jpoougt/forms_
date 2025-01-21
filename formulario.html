@@ -4,130 +4,107 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cuestionario - Formulario</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <style>
-    body {
-      font-family: 'Century Gothic', sans-serif;
-      background-color: #f0f8ff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: flex-start;
-      height: 100vh;
-    }
-
-    .container {
-      background-color: white;
-      width: 80%;
-      margin: 20px auto;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border: 1px solid #ddd;
-    }
-
-    h1 {
-      font-size: 20px;
-      text-align: center;
-      color: #333;
-    }
-
-    label {
-      font-size: 16px;
-      margin: 10px 0;
-      display: inline-block;
-    }
-
-    select, input[type="radio"] {
-      font-size: 14px;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      width: auto;
-      display: inline-block;
-    }
-
-    .question-container {
-      margin-top: 20px;
-    }
-
-    .radio-group {
-      display: flex;
-      gap: 20px;
-    }
-
-    .btn {
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Cuestionario</h1>
-    <form id="questionnaire">
-      <!-- Dropdown de clientes -->
-      <div class="question-container">
-        <label for="clientes">Seleccione un cliente:</label>
-        <select id="clientes">
-          <option value="" disabled selected>Seleccione...</option>
-        </select>
-      </div>
-
-      <!-- Pregunta: módulo de campos -->
-      <div class="question-container">
-        <label>¿El cliente utiliza el módulo de campos?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="modulo" value="si"> Sí</label>
-          <label><input type="radio" name="modulo" value="no"> No</label>
-        </div>
-      </div>
-
-      <!-- Botón de envío -->
-      <div class="question-container">
-        <button type="submit" class="btn">Enviar</button>
-      </div>
-    </form>
-  </div>
-
   <script>
-    // Cargar clientes desde localStorage
+    // Cargar clientes desde el localStorage
     document.addEventListener("DOMContentLoaded", () => {
       const clientesDropdown = document.getElementById("clientes");
-      const clientes = JSON.parse(localStorage.getItem("clientesFiltrados")) || [];
+      const clientesFiltrados = JSON.parse(localStorage.getItem("clientesFiltrados")) || [];
 
-      // Verificar si hay clientes para el país seleccionado
-      if (clientes.length > 0) {
-        clientes.forEach(cliente => {
+      if (clientesFiltrados.length > 0) {
+        clientesFiltrados.forEach(cliente => {
           const option = document.createElement("option");
-          option.value = cliente;
-          option.textContent = cliente;
+          option.value = cliente.Cliente; // Ajusta el campo según los datos de tu Excel
+          option.textContent = cliente.Cliente; // Ajusta el campo según los datos de tu Excel
           clientesDropdown.appendChild(option);
         });
       } else {
         const option = document.createElement("option");
         option.textContent = "No hay clientes disponibles";
+        option.disabled = true;
         clientesDropdown.appendChild(option);
       }
     });
-
-    // Enviar formulario
-    document.getElementById("questionnaire").addEventListener("submit", e => {
-      e.preventDefault();
-      alert("Formulario enviado exitosamente.");
-    });
   </script>
+  <style>
+    body {
+      font-family: 'Century Gothic', sans-serif;
+      background-color: #f0f8ff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .form-container {
+      max-width: 700px;
+      width: 100%;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px 30px;
+      margin-top: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      font-weight: bold;
+      color: #555;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    select, button, .radio-group {
+      margin-top: 15px;
+      margin-bottom: 20px;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    .radio-group {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 20px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Cuestionario</h1>
+
+    <!-- Dropdown de clientes -->
+    <label for="clientes">Selecciona un cliente:</label>
+    <select id="clientes">
+      <option value="" disabled selected>Selecciona un cliente</option>
+    </select>
+
+    <!-- Pregunta del módulo -->
+    <label>¿El cliente utiliza el módulo de campos?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="modulo_campos" value="Sí"> Sí</label>
+      <label><input type="radio" name="modulo_campos" value="No"> No</label>
+    </div>
+
+    <!-- Botón para continuar -->
+    <button type="submit">Enviar</button>
+  </div>
 </body>
 </html>
