@@ -10,38 +10,37 @@
       font-family: 'Century Gothic', sans-serif;
       background-color: #f0f8ff;
       margin: 0;
+      padding: 0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
     .container {
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       width: 400px;
-      max-width: 90%;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
     h1 {
       color: #333;
-      font-size: 1.8rem;
       margin-bottom: 20px;
     }
     select, button {
-      padding: 10px;
-      font-size: 16px;
-      margin-top: 20px;
       width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
       border-radius: 5px;
       border: 1px solid #ccc;
     }
     button {
-      background-color: #4caf50;
+      background-color: #4CAF50;
       color: white;
-      cursor: pointer;
       border: none;
+      cursor: pointer;
     }
     button:hover {
       background-color: #45a049;
@@ -50,23 +49,50 @@
 </head>
 <body>
   <div class="container">
-    <h1>Seleccione su País</h1>
-    <select id="pais" name="pais">
-      <option value="">Seleccione un país</option>
-      <!-- Los países se cargarán dinámicamente aquí -->
+    <h1>Selecciona un País</h1>
+    <select id="countrySelect">
+      <option value="">Cargando países...</option>
     </select>
-    <button onclick="continuar()">Continuar</button>
+    <button onclick="goToNextScreen()">Continuar</button>
   </div>
 
   <script>
-    // Aquí está la lógica de carga del archivo Excel y el filtrado por países
-    function continuar() {
-      const paisSeleccionado = document.getElementById('pais').value;
-      if (!paisSeleccionado) {
-        alert("Por favor, seleccione un país.");
+    const excelUrl = "https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx";
+
+    // Leer el archivo Excel
+    fetch(excelUrl)
+      .then(response => response.arrayBuffer())
+      .then(data => {
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+        // Obtener la lista única de países
+        const countries = [...new Set(jsonData.map(row => row['País']))].sort();
+
+        // Rellenar el dropdown
+        const countrySelect = document.getElementById("countrySelect");
+        countrySelect.innerHTML = `<option value="">Selecciona un país</option>`;
+        countries.forEach(country => {
+          const option = document.createElement("option");
+          option.value = country;
+          option.textContent = country;
+          countrySelect.appendChild(option);
+        });
+      })
+      .catch(error => console.error("Error al cargar el archivo Excel:", error));
+
+    // Función para avanzar a la siguiente pantalla
+    function goToNextScreen() {
+      const selectedCountry = document.getElementById("countrySelect").value;
+      if (!selectedCountry) {
+        alert("Por favor, selecciona un país.");
         return;
       }
-      // Continuar lógica normal...
+      // Guardar el país seleccionado en localStorage
+      localStorage.setItem("selectedCountry", selectedCountry);
+      // Redirigir a la pantalla 2
       window.location.href = "formulario.html";
     }
   </script>
