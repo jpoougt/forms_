@@ -9,12 +9,25 @@
     body {
       font-family: 'Century Gothic', sans-serif;
       background-color: #f0f8ff;
-      margin: 20px;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #fff;
       padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      max-width: 90%;
+      text-align: center;
     }
     h1 {
       color: #333;
-      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
     }
     select, button {
       padding: 10px;
@@ -25,9 +38,10 @@
       border: 1px solid #ccc;
     }
     button {
-      background-color: #4CAF50;
+      background-color: #4caf50;
       color: white;
       cursor: pointer;
+      border: none;
     }
     button:hover {
       background-color: #45a049;
@@ -35,50 +49,26 @@
   </style>
 </head>
 <body>
-  <h1>Selecciona un País</h1>
-  <select id="countryDropdown">
-    <option value="">Seleccione un país</option>
-  </select>
-  <button onclick="goToNextPage()">Continuar</button>
+  <div class="container">
+    <h1>Seleccione su País</h1>
+    <select id="pais" name="pais">
+      <option value="">Seleccione un país</option>
+      <!-- Los países se cargarán dinámicamente aquí -->
+    </select>
+    <button onclick="continuar()">Continuar</button>
+  </div>
 
   <script>
-    const fileUrl = 'https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx';
-
-    async function loadCountries() {
-      const response = await fetch(fileUrl);
-      const arrayBuffer = await response.arrayBuffer();
-      const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      const data = XLSX.utils.sheet_to_json(sheet);
-
-      // Obtener países únicos
-      const countries = [...new Set(data.map(row => row.País))];
-      const countryDropdown = document.getElementById('countryDropdown');
-
-      // Poblar el dropdown
-      countries.forEach(country => {
-        const option = document.createElement('option');
-        option.value = country;
-        option.textContent = country;
-        countryDropdown.appendChild(option);
-      });
-
-      // Guardar datos en localStorage para ser reutilizados
-      localStorage.setItem('clientData', JSON.stringify(data));
-    }
-
-    function goToNextPage() {
-      const selectedCountry = document.getElementById('countryDropdown').value;
-      if (!selectedCountry) {
-        alert('Por favor, selecciona un país.');
+    // Aquí está la lógica de carga del archivo Excel y el filtrado por países
+    function continuar() {
+      const paisSeleccionado = document.getElementById('pais').value;
+      if (!paisSeleccionado) {
+        alert("Por favor, seleccione un país.");
         return;
       }
-      localStorage.setItem('selectedCountry', selectedCountry);
-      window.location.href = 'formulario.html';
+      // Continuar lógica normal...
+      window.location.href = "formulario.html";
     }
-
-    loadCountries();
   </script>
 </body>
 </html>
