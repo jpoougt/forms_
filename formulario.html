@@ -93,17 +93,25 @@
     <!-- Dropdown de clientes -->
     <label for="clientes">Selecciona un cliente:</label>
     <select id="clientes">
-      <option value="" disabled selected>Selecciona un cliente</option>
+      <option value="">Cargando clientes...</option>
     </select>
 
-    <!-- Pregunta del módulo -->
+    <!-- Pregunta 1: ¿El cliente utiliza el módulo de campos? -->
     <label>¿El cliente utiliza el módulo de campos?</label>
     <div class="radio-group">
-      <label><input type="radio" name="modulo_campos" value="Sí"> Sí</label>
-      <label><input type="radio" name="modulo_campos" value="No"> No</label>
+      <label><input type="radio" name="moduloCampos" value="Si"> Sí</label>
+      <label><input type="radio" name="moduloCampos" value="No"> No</label>
     </div>
 
-    <!-- Botón para continuar -->
+    <!-- Pregunta 2: ¿El cliente ha utilizado el módulo de facturación? -->
+    <label for="moduloFacturacion">¿El cliente ha utilizado el módulo de facturación?</label>
+    <select id="moduloFacturacion">
+      <option value="">Seleccione...</option>
+      <option value="Si">Sí</option>
+      <option value="No">No</option>
+    </select>
+
+    <!-- Botón para enviar el formulario -->
     <button type="submit">Enviar</button>
   </div>
 </body>
