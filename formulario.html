@@ -10,6 +10,9 @@
       const clientesDropdown = document.getElementById("clientes");
       const clientesFiltrados = JSON.parse(localStorage.getItem("clientesFiltrados")) || [];
 
+      // Ordenar clientes alfabéticamente por nombre
+      clientesFiltrados.sort((a, b) => a.Cliente.localeCompare(b.Cliente));
+
       if (clientesFiltrados.length > 0) {
         clientesFiltrados.forEach(cliente => {
           const option = document.createElement("option");
@@ -91,27 +94,26 @@
     <h1>Cuestionario</h1>
 
     <!-- Dropdown de clientes -->
-    <label for="clientes">Seleccione un cliente:</label>
+    <label for="clientes">Selecciona un cliente:</label>
     <select id="clientes">
-      <option value="">Seleccione un cliente...</option>
+      <option value="">Cargando clientes...</option>
     </select>
 
-    <!-- Pregunta 1: ¿El cliente utiliza el módulo de campos? -->
-    <label>¿El cliente utiliza el módulo de campos?</label>
+    <!-- Pregunta 1: Módulo de campos -->
+    <label for="campo">¿El cliente utiliza el módulo de campos?</label>
     <div class="radio-group">
       <label><input type="radio" name="campo" value="Si"> Sí</label>
       <label><input type="radio" name="campo" value="No"> No</label>
     </div>
 
-    <!-- Pregunta 2: ¿El cliente utiliza el módulo de equipo? -->
-    <label>¿El cliente utiliza el módulo de equipo?</label>
+    <!-- Pregunta 2: Módulo de equipo -->
+    <label for="equipo">¿El cliente utiliza el módulo de equipo?</label>
     <div class="radio-group">
       <label><input type="radio" name="equipo" value="Si"> Sí</label>
       <label><input type="radio" name="equipo" value="No"> No</label>
     </div>
 
-    <!-- Botón para enviar formulario -->
-    <button type="submit">Enviar</button>
+    <button>Enviar</button>
   </div>
 </body>
 </html>
