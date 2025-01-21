@@ -147,8 +147,16 @@
       <option value="">Seleccione un cliente</option>
     </select>
 
+
     <!-- Pregunta 1 -->
-    <label>¿El cliente utiliza el módulo de equipo?</label>
+    <label>¿El cliente utiliza el módulo de campos?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="moduloCampos" value="Si" onclick="toggleCamposQuestion()"> Si</label>
+      <label><input type="radio" name="moduloCampos" value="No" onclick="toggleCamposQuestion()"> No</label>
+    </div>
+    
+    <!-- Pregunta 2 -->
+    <label>¿El cliente utiliza el módulo de equipos?</label>
     <div class="radio-group">
       <label><input type="radio" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()"> Si</label>
       <label><input type="radio" name="moduloEquipo" value="No" onclick="toggleEquiposQuestion()"> No</label>
