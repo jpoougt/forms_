@@ -27,6 +27,18 @@
         clientesDropdown.appendChild(option);
       }
     });
+
+    // Función para mostrar u ocultar la pregunta adicional
+    function toggleEquiposQuestion() {
+      const equiposPreguntaDiv = document.getElementById("equiposPregunta");
+      const moduloEquipoSelect = document.querySelector('input[name="moduloEquipo"]:checked');
+
+      if (moduloEquipoSelect && moduloEquipoSelect.value === "Si") {
+        equiposPreguntaDiv.style.display = "block"; // Mostrar la pregunta adicional
+      } else {
+        equiposPreguntaDiv.style.display = "none"; // Ocultar la pregunta adicional
+      }
+    }
   </script>
   <style>
     body {
@@ -78,6 +90,10 @@
       gap: 20px;
     }
 
+    .radio-group label {
+      margin-right: 10px;
+    }
+
     button {
       background-color: #007bff;
       color: white;
@@ -87,6 +103,10 @@
     button:hover {
       background-color: #0056b3;
     }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -94,23 +114,26 @@
     <h1>Cuestionario</h1>
 
     <!-- Dropdown de clientes -->
-    <label for="clientes">Seleccione un cliente:</label>
+    <label for="clientes">Selecciona un cliente:</label>
     <select id="clientes">
-      <option value="">Seleccione un cliente...</option>
+      <option value="">Cargando clientes...</option>
     </select>
 
-    <!-- Pregunta 1: Módulo de campos -->
-    <label for="campo">¿El cliente utiliza el módulo de campos?</label>
+    <!-- Pregunta 1: ¿El cliente utiliza el módulo de equipo? -->
+    <label>¿El cliente utiliza el módulo de equipo?</label>
     <div class="radio-group">
-      <label><input type="radio" name="campo" value="Si"> Sí</label>
-      <label><input type="radio" name="campo" value="No"> No</label>
+      <label><input type="radio" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()"> Sí</label>
+      <label><input type="radio" name="moduloEquipo" value="No" onclick="toggleEquiposQuestion()"> No</label>
     </div>
 
-    <!-- Pregunta 2: Módulo de equipo -->
-    <label for="equipo">¿El cliente utiliza el módulo de equipo?</label>
-    <div class="radio-group">
-      <label><input type="radio" name="equipo" value="Si"> Sí</label>
-      <label><input type="radio" name="equipo" value="No"> No</label>
+    <!-- Pregunta adicional, solo visible si se selecciona "Sí" en la pregunta anterior -->
+    <div id="equiposPregunta" class="hidden">
+      <label>¿Qué registros tiene el cliente en el módulo de equipos?</label>
+      <div class="radio-group">
+        <label><input type="radio" name="registrosEquipo" value="Vehículos"> Vehículos</label>
+        <label><input type="radio" name="registrosEquipo" value="Implementos"> Implementos</label>
+        <label><input type="radio" name="registrosEquipo" value="Ambas"> Ambas</label>
+      </div>
     </div>
 
     <button>Enviar</button>
