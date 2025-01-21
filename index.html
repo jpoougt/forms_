@@ -28,7 +28,6 @@
       background-color: #007bff;
       color: white;
       cursor: pointer;
-      border: none;
     }
     button:hover {
       background-color: #0056b3;
@@ -37,56 +36,49 @@
 </head>
 <body>
   <h1>Seleccione un país</h1>
-  <form id="countryForm">
-    <select id="countrySelect" required>
-      <option value="">--Seleccione un país--</option>
-    </select>
-    <button type="submit">Continuar</button>
-  </form>
+  <select id="countryDropdown">
+    <option value="">Seleccione un país</option>
+  </select>
+  <button onclick="proceed()">Continuar</button>
 
   <script>
-    // URL del archivo Excel desde el repositorio de GitHub (en formato RAW)
-    const EXCEL_URL = 'https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx';
+    // Simulación de datos del archivo Excel
+    const clientsData = [
+      { Cliente: "Cliente 1", País: "México" },
+      { Cliente: "Cliente 2", País: "México" },
+      { Cliente: "Cliente 3", País: "Colombia" },
+      { Cliente: "Cliente 4", País: "Perú" },
+    ];
 
-    // Cargar archivo Excel y poblar el selector de países
-    async function loadExcel() {
-      try {
-        const response = await fetch(EXCEL_URL);
-        const arrayBuffer = await response.arrayBuffer();
-        const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const data = XLSX.utils.sheet_to_json(sheet);
+    // Cargar países únicos en el dropdown
+    const uniqueCountries = [...new Set(clientsData.map(client => client.País))];
+    const countryDropdown = document.getElementById("countryDropdown");
 
-        const countries = [...new Set(data.map(row => row['País']))].sort(); // Extraer países únicos
-        const countrySelect = document.getElementById('countrySelect');
-
-        countries.forEach(country => {
-          const option = document.createElement('option');
-          option.value = country;
-          option.textContent = country;
-          countrySelect.appendChild(option);
-        });
-      } catch (error) {
-        console.error('Error al cargar el archivo Excel:', error);
-      }
-    }
-
-    // Guardar país seleccionado en localStorage y avanzar a la segunda pantalla
-    document.getElementById('countryForm').addEventListener('submit', function (event) {
-      event.preventDefault(); // Prevenir recarga de la página
-      const selectedCountry = document.getElementById('countrySelect').value;
-
-      if (selectedCountry) {
-        localStorage.setItem('selectedCountry', selectedCountry); // Guardar país en localStorage
-        window.location.href = 'formulario.html'; // Ir a la segunda pantalla
-      } else {
-        alert('Por favor, seleccione un país.');
-      }
+    uniqueCountries.forEach(country => {
+      const option = document.createElement("option");
+      option.value = country;
+      option.textContent = country;
+      countryDropdown.appendChild(option);
     });
 
-    // Inicializar el formulario
-    loadExcel();
+    // Función para proceder al formulario
+    function proceed() {
+      const selectedCountry = countryDropdown.value;
+
+      if (!selectedCountry) {
+        alert("Por favor, seleccione un país.");
+        return;
+      }
+
+      // Filtrar clientes por el país seleccionado
+      const filteredClients = clientsData.filter(client => client.País === selectedCountry);
+
+      // Guardar los clientes filtrados en localStorage
+      localStorage.setItem("filteredClients", JSON.stringify(filteredClients));
+
+      // Redirigir a la segunda pantalla
+      window.location.href = "formulario.html";
+    }
   </script>
 </body>
 </html>
