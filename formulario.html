@@ -90,10 +90,6 @@
       gap: 20px;
     }
 
-    .radio-group label {
-      margin-right: 10px;
-    }
-
     button {
       background-color: #007bff;
       color: white;
@@ -113,20 +109,27 @@
   <div class="form-container">
     <h1>Cuestionario</h1>
 
-    <!-- Dropdown de clientes -->
+    <!-- Pregunta 1: Seleccionar cliente -->
     <label for="clientes">Selecciona un cliente:</label>
     <select id="clientes">
-      <option value="">Cargando clientes...</option>
+      <option value="">Selecciona un cliente...</option>
     </select>
 
-    <!-- Pregunta 1: ¿El cliente utiliza el módulo de equipo? -->
-    <label>¿El cliente utiliza el módulo de equipo?</label>
+    <!-- Pregunta 2: ¿El cliente utiliza el módulo de campos? -->
+    <label>¿El cliente utiliza el módulo de campos?</label>
     <div class="radio-group">
-      <label><input type="radio" name="moduloEquipo" value="Si" onclick="toggleEquiposQuestion()"> Sí</label>
-      <label><input type="radio" name="moduloEquipo" value="No" onclick="toggleEquiposQuestion()"> No</label>
+      <label><input type="radio" name="moduloCampo" value="Si" onchange="toggleEquiposQuestion()"> Sí</label>
+      <label><input type="radio" name="moduloCampo" value="No" onchange="toggleEquiposQuestion()"> No</label>
     </div>
 
-    <!-- Pregunta adicional, solo visible si se selecciona "Sí" en la pregunta anterior -->
+    <!-- Pregunta 3: ¿El cliente utiliza el módulo de equipo? -->
+    <label>¿El cliente utiliza el módulo de equipo?</label>
+    <div class="radio-group">
+      <label><input type="radio" name="moduloEquipo" value="Si" onchange="toggleEquiposQuestion()"> Sí</label>
+      <label><input type="radio" name="moduloEquipo" value="No" onchange="toggleEquiposQuestion()"> No</label>
+    </div>
+
+    <!-- Pregunta adicional (se muestra solo si se selecciona "Sí" en el módulo de equipo) -->
     <div id="equiposPregunta" class="hidden">
       <label>¿Qué registros tiene el cliente en el módulo de equipos?</label>
       <div class="radio-group">
