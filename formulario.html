@@ -3,12 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario - Cuestionario</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <title>Formulario de Clientes</title>
   <style>
     body {
       font-family: 'Century Gothic', sans-serif;
-      background-color: #f0f8ff;
+      background-color: #f8f9fa;
       margin: 20px;
       padding: 20px;
     }
@@ -16,41 +15,30 @@
       color: #333;
       text-align: center;
     }
-    form {
-      max-width: 600px;
-      margin: 0 auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    label {
+    select, button, label {
       font-size: 16px;
-      margin-bottom: 10px;
-      display: block;
+      margin-top: 10px;
     }
-    select, button {
+    select {
       padding: 10px;
-      font-size: 16px;
-      margin-bottom: 20px;
-      width: calc(100% - 20px);
+      width: 50%; /* Ajusta el ancho para que no ocupe toda la pantalla */
       border-radius: 5px;
       border: 1px solid #ccc;
     }
-    select {
-      width: 80%; /* Ajustar el ancho del campo de clientes */
-      margin-bottom: 20px;
+    .question {
+      margin: 20px 0;
     }
-    .horizontal-options {
+    .options {
       display: flex;
-      align-items: center;
       gap: 20px;
-      margin-bottom: 20px;
+      align-items: center;
     }
     button {
-      background-color: #007BFF;
+      padding: 10px 20px;
+      background-color: #007bff;
       color: white;
       border: none;
+      border-radius: 5px;
       cursor: pointer;
     }
     button:hover {
@@ -59,59 +47,43 @@
   </style>
 </head>
 <body>
-  <h1>Cuestionario</h1>
-  <form id="questionnaire-form">
-    <!-- Campo de selección de cliente -->
-    <label for="cliente">Seleccione un cliente:</label>
-    <select id="cliente" required>
-      <option value="">Seleccione...</option>
+  <h1>Formulario de Clientes</h1>
+  <form id="clientForm">
+    <!-- Dropdown de clientes -->
+    <label for="clientDropdown">Seleccione un cliente:</label>
+    <select id="clientDropdown">
+      <option value="">Seleccione un cliente</option>
     </select>
 
     <!-- Pregunta 1 -->
-    <label>¿El cliente utiliza el módulo de campos?</label>
-    <div class="horizontal-options">
-      <label><input type="radio" name="modulo_campos" value="Sí" required> Sí</label>
-      <label><input type="radio" name="modulo_campos" value="No" required> No</label>
+    <div class="question">
+      <label>¿El cliente utiliza el módulo de campos?</label>
+      <div class="options">
+        <label><input type="radio" name="moduleUsage" value="Si"> Sí</label>
+        <label><input type="radio" name="moduleUsage" value="No"> No</label>
+      </div>
     </div>
 
-    <!-- Agregar más preguntas aquí si es necesario -->
     <button type="submit">Enviar</button>
   </form>
 
   <script>
-    // Cargar clientes desde el localStorage
-    document.addEventListener('DOMContentLoaded', () => {
-      const clientes = JSON.parse(localStorage.getItem('clientes')) || [];
-      const clienteSelect = document.getElementById('cliente');
+    // Obtener los clientes filtrados del localStorage
+    const filteredClients = JSON.parse(localStorage.getItem("filteredClients")) || [];
+    const clientDropdown = document.getElementById("clientDropdown");
 
-      // Agregar opciones al menú desplegable
-      clientes.forEach(cliente => {
-        const option = document.createElement('option');
-        option.value = cliente;
-        option.textContent = cliente;
-        clienteSelect.appendChild(option);
-      });
+    // Cargar clientes en el dropdown
+    filteredClients.forEach(client => {
+      const option = document.createElement("option");
+      option.value = client.Cliente;
+      option.textContent = client.Cliente;
+      clientDropdown.appendChild(option);
     });
 
-    // Manejar el envío del formulario
-    document.getElementById('questionnaire-form').addEventListener('submit', (event) => {
-      event.preventDefault(); // Evitar el refresco de la página
-
-      const clienteSeleccionado = document.getElementById('cliente').value;
-      const moduloCampos = document.querySelector('input[name="modulo_campos"]:checked').value;
-
-      if (!clienteSeleccionado) {
-        alert('Por favor, seleccione un cliente.');
-        return;
-      }
-
-      // Aquí puedes enviar los datos a Google Sheets o realizar otra acción
-      console.log({
-        cliente: clienteSeleccionado,
-        modulo_campos: moduloCampos
-      });
-
-      alert('Respuestas enviadas exitosamente.');
+    // Enviar formulario (puedes personalizar este comportamiento)
+    document.getElementById("clientForm").addEventListener("submit", event => {
+      event.preventDefault(); // Evitar recarga de la página
+      alert("Formulario enviado.");
     });
   </script>
 </body>
