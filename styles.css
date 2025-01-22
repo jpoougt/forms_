@@ -14,6 +14,8 @@
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* Evita que el contenido se desborde durante la transición */
+  position: relative;
 }
 
 /* Títulos */
@@ -68,13 +70,20 @@ div {
 
 /* Estilo de la sección de preguntas (oculta inicialmente) */
 #preguntas {
-  margin-top: 20px;
-  display: none;
+  display: none; /* Se ocultará inicialmente */
+  transition: transform 0.5s ease; /* Transición hacia la izquierda */
+  transform: translateX(100%); /* Inicialmente está a la derecha (fuera de vista) */
 }
 
-#paisSelection,
+#paisSelection {
+  transition: transform 0.5s ease; /* Transición hacia la izquierda */
+  transform: translateX(0); /* Empieza en su posición inicial */
+}
+
 #clienteSelection {
-  margin-bottom: 30px;
+  display: none; /* Se ocultará inicialmente */
+  transition: transform 0.5s ease; /* Transición hacia la izquierda */
+  transform: translateX(100%); /* Inicialmente está a la derecha (fuera de vista) */
 }
 
 select option {
