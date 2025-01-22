@@ -5,17 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cuestionario - Formulario</title>
   <link rel="stylesheet" href="styles.css">
-  <script src="script.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script defer src="script.js"></script>
 </head>
-<body onload="loadClients()">
+<body>
   <div class="container">
     <h1>Cuestionario</h1>
     <form id="cuestionarioForm">
       <label for="clientes">Seleccione un cliente:</label>
-      <select id="clientes">
-        <!-- Opciones cargadas dinámicamente -->
-      </select>
-      <!-- Otras preguntas aquí -->
+      <select id="clientes"></select>
+      <button type="submit">Enviar</button>
     </form>
   </div>
 </body>
