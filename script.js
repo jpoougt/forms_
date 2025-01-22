@@ -2,7 +2,6 @@ xdocument.addEventListener('DOMContentLoaded', function() {
   // Llamar a la función para cargar los países cuando se cargue el documento
   loadCountries();
 });
-
 // Cargar países desde el archivo Excel en index.html
 function loadCountries() {
   fetch('SondeoClientes.xlsx')
@@ -40,7 +39,6 @@ function loadCountries() {
     })
     .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
-
 
 
 // Cargar los clientes basados en el país seleccionado
