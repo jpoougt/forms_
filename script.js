@@ -87,37 +87,49 @@ function goToCliente() {
 }
 
 // Función para volver a la selección de país
-function goBack() {
-  const paisSelection = document.getElementById('paisSelection');
-  const clienteSelection = document.getElementById('clienteSelection');
-
-  clienteSelection.style.transform = 'translateX(100%)'; // Desplazar fuera de la pantalla
-  setTimeout(() => {
-    paisSelection.style.transform = 'translateX(0)'; // Desplazar de nuevo a su lugar
-  }, 200);
-}
-
-
-// Función para manejar la transición a la siguiente sección
-function goToPregunta() {
+function goBackToPaisSelection() {
   const paisSelection = document.getElementById('paisSelection');
   const clienteSelection = document.getElementById('clienteSelection');
   const preguntas = document.getElementById('preguntas');
-  
-  // Transición de la primera sección (selección de país)
-  paisSelection.style.transform = 'translateX(-100%)'; // Desplazar hacia la izquierda
 
-  // Mostrar la sección de clientes
-  clienteSelection.style.display = 'block'; // Asegúrate de que la sección esté visible
-  setTimeout(() => {
-    clienteSelection.style.transform = 'translateX(0)'; // Desplazar hacia su posición inicial
-  }, 200); // Tiempo para esperar el deslizamiento de la sección anterior
+  // Mostrar la selección de país y ocultar las otras secciones
+  paisSelection.style.display = 'block';
+  clienteSelection.style.display = 'none';
+  preguntas.style.display = 'none';
 
-  // Después de seleccionar el cliente, se mostrará la sección de preguntas
-  setTimeout(() => {
-    preguntas.style.display = 'block'; // Asegurarse de que la sección de preguntas esté visible
-    preguntas.style.transform = 'translateX(0)'; // Desplazar hacia su posición inicial
-  }, 400); // Tiempo para esperar el deslizamiento de la sección de cliente
+  // Limpiar selecciones anteriores
+  document.getElementById('pais').value = '';
+  document.getElementById('clientes').value = '';
+
+  // Resetear transformaciones (reestablecer la posición)
+  clienteSelection.style.transform = 'translateX(100%)';
+}
+
+
+
+// Función para mostrar la siguiente sección con transición
+function goToClienteSelection() {
+  const paisSelection = document.getElementById('paisSelection');
+  const clienteSelection = document.getElementById('clienteSelection');
+  const preguntas = document.getElementById('preguntas');
+
+  // Ocultar la selección de país y mostrar la selección de clientes
+  paisSelection.style.display = 'none';
+  clienteSelection.style.display = 'block';
+
+  // Activar la transición para el movimiento hacia la sección de clientes
+  clienteSelection.style.transform = 'translateX(0)'; // Animación de entrada
+  preguntas.style.display = 'none'; // Las preguntas se ocultan inicialmente
+
+  // Limpiar la selección de cliente anterior (en caso de que lo haya)
+  document.getElementById('clientes').value = '';
+}
+
+
+// Función para mostrar las preguntas
+function showQuestions() {
+  const preguntas = document.getElementById('preguntas');
+  preguntas.style.display = 'block';
 }
 
 
