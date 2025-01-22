@@ -11,7 +11,7 @@ function loadCountries() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Extraer los países (Columna C)
+        // Extraer los países (Columna C = índice 2)
         const countries = new Set(); // Usamos un Set para evitar duplicados
         jsonData.forEach(row => {
           if (row[2]) { // Columna C = índice 2
@@ -64,27 +64,22 @@ function loadClients() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Filtrar clientes por país (Columna C = índice 2 y Columna B = índice 1)
+        // Filtrar clientes por país (Columna C = índice 2, Columna B = índice 1)
         const clients = jsonData
-          .filter(row => row[2] && row[2].trim() === selectedCountry)
-          .map(row => row[1]); // Columna B = índice 1 para clientes
+          .filter(row => row[2] && row[2].trim() === selectedCountry) // Filtramos por el país
+          .map(row => row[1]); // Leemos la columna B para los clientes (índice 1)
 
         // Agregar clientes al dropdown
-        const clientesDropdown = document.getElementById('clientes');
-        clientesDropdown.innerHTML = ''; // Limpiar dropdown de clientes
+        const clientsDropdown = document.getElementById('clientes');
+        clientsDropdown.innerHTML = ''; // Limpiar dropdown antes de agregar nuevos clientes
         clients.forEach(client => {
           const option = document.createElement('option');
           option.value = client;
           option.textContent = client;
-          clientesDropdown.appendChild(option);
+          clientsDropdown.appendChild(option);
         });
       };
       reader.readAsArrayBuffer(blob);
     })
-    .catch(error => console.error('Error al cargar los clientes:', error));
+    .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
-
-// Llamar a la función de cargar clientes cuando la página esté lista
-document.addEventListener('DOMContentLoaded', () => {
-  loadClients();
-});
