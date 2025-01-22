@@ -12,59 +12,61 @@ function loadExcelFile() {
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Procesar los datos del Excel
+        // Extraer países únicos de la columna "C"
+        const countries = new Set();
+        for (let i = 1; i < jsonData.length; i++) {
+          const country = jsonData[i][2]; // Columna C (índice 2)
+          if (country) countries.add(country.trim());
+        }
+
+        // Agregar países al dropdown
+        const paisDropdown = document.getElementById('pais');
+        countries.forEach(country => {
+          const option = document.createElement('option');
+          option.value = country;
+          option.textContent = country;
+          paisDropdown.appendChild(option);
+        });
+
+        // Guardar datos globalmente para uso en el formulario
         clientesData = jsonData;
-
-        // Extraer y mostrar países únicos
-        const uniquePaises = [...new Set(jsonData.map(item => item.País))].sort();
-        populatePaisesDropdown(uniquePaises);
       };
       reader.readAsArrayBuffer(blob);
     })
     .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
 
-// Función para llenar el dropdown de países
-function populatePaisesDropdown(paises) {
-  const paisesDropdown = document.getElementById("paises");
-  paises.forEach(pais => {
-    const option = document.createElement("option");
-    option.value = pais;
-    option.textContent = pais;
-    paisesDropdown.appendChild(option);
+// Función para cargar clientes según el país seleccionado
+function loadClientesByPais() {
+  const paisDropdown = document.getElementById('pais');
+  const clientesDropdown = document.getElementById('clientes');
+  const selectedPais = paisDropdown.value;
+
+  // Limpiar el dropdown de clientes
+  clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
+
+  // Filtrar clientes por país
+  const clientesFiltrados = clientesData.filter(
+    row => row[2]?.trim() === selectedPais // Columna "C" contiene el país
+  );
+
+  // Agregar clientes al dropdown
+  clientesFiltrados.forEach(cliente => {
+    const option = document.createElement('option');
+    option.value = cliente[0]; // Asumimos que el cliente está en la columna "A"
+    option.textContent = cliente[0];
+    clientesDropdown.appendChild(option);
   });
 }
 
-// Función para manejar la selección del país y filtrar clientes
-function handlePaisChange() {
-  const paisSeleccionado = document.getElementById("paises").value;
-  const clientesFiltrados = clientesData.filter(cliente => cliente.País === paisSeleccionado);
-
-  // Guardar los clientes filtrados en localStorage
-  localStorage.setItem("clientesFiltrados", JSON.stringify(clientesFiltrados));
-}
-
-// Evento para redirigir a la pantalla de formulario
-function goToFormulario() {
-  const paisSeleccionado = document.getElementById("paises").value;
-  if (paisSeleccionado) {
-    window.location.href = "formulario.html";
-  } else {
-    alert("Por favor, selecciona un país.");
-  }
-}
-
-// Cargar el archivo Excel al iniciar
-document.addEventListener("DOMContentLoaded", () => {
+// Event listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // Cargar el archivo Excel
   loadExcelFile();
 
-  // Agregar evento para manejar el cambio de país
-  const paisesDropdown = document.getElementById("paises");
-  paisesDropdown.addEventListener("change", handlePaisChange);
-
-  // Agregar evento al botón de continuar
-  const continuarBtn = document.getElementById("continuarBtn");
-  continuarBtn.addEventListener("click", goToFormulario);
+  // Cambiar clientes al seleccionar país
+  const paisDropdown = document.getElementById('pais');
+  paisDropdown.addEventListener('change', loadClientesByPais);
 });
