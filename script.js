@@ -37,3 +37,18 @@ function loadCountries() {
 document.addEventListener('DOMContentLoaded', () => {
   loadCountries();
 });
+
+function btn_siguiente() {
+  const selectedPais = document.getElementById("pais").value;
+
+  if (selectedPais) {
+    // Guardar el país seleccionado en el localStorage
+    localStorage.setItem("paisSeleccionado", selectedPais);
+
+    // Redirigir a la pantalla 2
+    window.location.href = "formulario.html";
+  } else {
+    alert("Por favor, seleccione un país antes de continuar.");
+  }
+}
+
