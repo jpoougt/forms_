@@ -3,20 +3,23 @@ document.addEventListener('DOMContentLoaded', function() {
   loadCountries();
 });
 
-// Cargar países desde el archivo Excel
+// Cargar países desde el archivo Excel en index.html
 function loadCountries() {
   fetch('SondeoClientes.xlsx')
     .then(response => response.blob())
     .then(blob => {
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Extraer los países (Columna C - índice 2)
+        // Eliminar la primera fila (encabezado)
+        jsonData.shift(); // Esto elimina la primera fila (encabezado)
+
+        // Extraer los países (Columna C) después de eliminar la primera fila
         const countries = new Set(); // Usamos un Set para evitar duplicados
         jsonData.forEach(row => {
           if (row[2]) { // Columna C = índice 2
@@ -37,6 +40,7 @@ function loadCountries() {
     })
     .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
+
 
 // Cargar los clientes basados en el país seleccionado
 document.getElementById('pais').addEventListener('change', function() {
