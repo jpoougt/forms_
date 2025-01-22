@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Encuesta</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+</head>
+<body>
+
+  <!-- Contenedor principal -->
+  <div class="container">
+    <h1>Formulario de Encuesta</h1>
+
+    <!-- Paso 1: Selección del País -->
+    <div id="paisSelection">
+      <label for="pais">Seleccione un país:</label>
+      <select id="pais" name="pais">
+        <option value="">Seleccionar...</option>
+      </select>
+      <button id="continueBtn">Continuar</button>
+    </div>
+
+    <!-- Paso 2: Selección de Cliente -->
+    <div id="clienteSelection" style="display: none;">
+      <label for="clientes">Seleccione un cliente:</label>
+      <select id="clientes" name="clientes">
+        <option value="">Seleccionar...</option>
+      </select>
+      
+      <div id="preguntas" style="display: none;">
+        <h3>Responde las preguntas</h3>
+
+        <!-- Pregunta 1 -->
+        <div>
+          <label>¿El cliente utiliza el módulo de campos?</label>
+          <div>
+            <label><input type="radio" name="moduloCampos" value="Si"> Sí</label>
+            <label><input type="radio" name="moduloCampos" value="No"> No</label>
+          </div>
+        </div>
+
+        <!-- Pregunta 2 -->
+        <div>
+          <label>¿El cliente utiliza el módulo de equipo?</label>
+          <div>
+            <label><input type="radio" name="moduloEquipo" value="Si"> Sí</label>
+            <label><input type="radio" name="moduloEquipo" value="No"> No</label>
+          </div>
+        </div>
+
+        <!-- Pregunta 3 -->
+        <div>
+          <label>¿El cliente utiliza el módulo de insumos y materiales?</label>
+          <div>
+            <label><input type="radio" name="moduloInsumos" value="Si"> Sí</label>
+            <label><input type="radio" name="moduloInsumos" value="No"> No</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vinculamos el archivo de JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
