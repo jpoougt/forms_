@@ -14,24 +14,24 @@
     <h1>Formulario de Encuesta</h1>
 
     <!-- Paso 1: Selección del País -->
-    <div id="paisSelection" class="step">
+    <div id="paisSelection">
       <label for="pais">Seleccione un país:</label>
       <select id="pais" name="pais">
         <option value="">Seleccionar...</option>
       </select>
-      <button id="continueBtn" onclick="goToPregunta()">Continuar</button>
+      <button id="continueBtn">Continuar</button>
     </div>
 
-    <!-- Paso 2: Selección de Cliente (ocultado por defecto) -->
-    <div id="clienteSelection" class="step" style="display: none;">
+    <!-- Paso 2: Selección de Cliente -->
+    <div id="clienteSelection" style="display: none;">
       <label for="clientes">Seleccione un cliente:</label>
       <select id="clientes" name="clientes">
         <option value="">Seleccionar...</option>
       </select>
     </div>
 
-    <!-- Paso 3: Preguntas (ocultadas por defecto) -->
-    <div id="preguntas" class="step" style="display: none;">
+    <!-- Paso 3: Preguntas -->
+    <div id="preguntas" style="display: none;">
       <h3>Responde las preguntas</h3>
 
       <!-- Pregunta 1 -->
