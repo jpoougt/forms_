@@ -19,22 +19,22 @@
       <select id="pais" name="pais">
         <option value="">Seleccionar...</option>
       </select>
-      <button id="continueBtn" onclick="goToPregunta()">Continuar</button>
+      <button id="continueBtn" onclick="goToCliente()">Continuar</button>
     </div>
 
-    <!-- Paso 2: Selección de Cliente (ocultado por defecto) -->
+    <!-- Paso 2: Selección de Cliente -->
     <div id="clienteSelection" style="display: none;">
       <label for="clientes">Seleccione un cliente:</label>
       <select id="clientes" name="clientes">
         <option value="">Seleccionar...</option>
       </select>
+      <button id="backBtn" onclick="goBack()">Atrás</button>
+      <button id="continueBtn2" onclick="goToPreguntas()">Continuar</button>
     </div>
 
-    <!-- Paso 3: Preguntas (ocultadas por defecto) -->
+    <!-- Paso 3: Preguntas -->
     <div id="preguntas" style="display: none;">
       <h3>Responde las preguntas</h3>
-
-      <!-- Pregunta 1 -->
       <div>
         <label>¿El cliente utiliza el módulo de campos?</label>
         <div>
@@ -42,8 +42,6 @@
           <label><input type="radio" name="moduloCampos" value="No"> No</label>
         </div>
       </div>
-
-      <!-- Pregunta 2 -->
       <div>
         <label>¿El cliente utiliza el módulo de equipo?</label>
         <div>
@@ -51,8 +49,6 @@
           <label><input type="radio" name="moduloEquipo" value="No"> No</label>
         </div>
       </div>
-
-      <!-- Pregunta 3 -->
       <div>
         <label>¿El cliente utiliza el módulo de insumos y materiales?</label>
         <div>
@@ -63,7 +59,6 @@
     </div>
   </div>
 
-  <!-- Vinculamos el archivo de JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
