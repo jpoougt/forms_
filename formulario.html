@@ -4,35 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cuestionario - Formulario</title>
-  <!-- Enlace al archivo CSS externo -->
   <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
 </head>
-<body>
+<body onload="loadClients()">
   <div class="container">
     <h1>Cuestionario</h1>
     <form id="cuestionarioForm">
-      <!-- Dropdown de clientes -->
       <label for="clientes">Seleccione un cliente:</label>
-      <select id="clientes" name="clientes"></select>
-      
-      <!-- Pregunta 1 -->
-      <div>
-        <label>¿El cliente utiliza el módulo de campos?</label>
-        <div class="radio-group">
-          <label><input type="radio" name="moduloCampos" value="Si"> Sí</label>
-          <label><input type="radio" name="moduloCampos" value="No"> No</label>
-        </div>
-      </div>
-
-      <!-- Preguntas adicionales -->
-      <!-- Agrega aquí más preguntas si es necesario -->
-
-      <!-- Botón de envío -->
-      <button type="button" id="enviarFormulario">Enviar</button>
+      <select id="clientes">
+        <!-- Opciones cargadas dinámicamente -->
+      </select>
+      <!-- Otras preguntas aquí -->
     </form>
   </div>
-
-  <!-- Enlace al archivo JavaScript externo -->
-  <script src="script.js"></script>
 </body>
 </html>
