@@ -33,7 +33,7 @@ function loadCountries() {
     .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
 
-// Guardar el país seleccionado y redirigir a formulario.html
+// Guardar el país seleccionado y redirigir
 function goToFormulario() {
   const selectedCountry = document.getElementById('pais').value;
   if (!selectedCountry) {
@@ -41,15 +41,15 @@ function goToFormulario() {
     return;
   }
   localStorage.setItem('selectedCountry', selectedCountry);
-  window.location.href = 'formulario.html';
+  window.location.href = '#'; // Aquí puedes definir a dónde redirigir (actualmente se queda en la misma página)
 }
 
-// Cargar clientes en formulario.html
+// Cargar clientes según el país seleccionado
 function loadClients() {
   const selectedCountry = localStorage.getItem('selectedCountry');
   if (!selectedCountry) {
     alert('No se ha seleccionado un país. Redirigiendo a la pantalla principal.');
-    window.location.href = 'index.html';
+    window.location.href = '#'; // Aquí rediriges según lo necesites
     return;
   }
 
@@ -64,18 +64,19 @@ function loadClients() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Filtrar clientes por país (Columna C = índice 2 y Columna D = índice 3)
+        // Filtrar clientes por país (Columna C = índice 2 y Columna B = índice 1)
         const clients = jsonData
           .filter(row => row[2] && row[2].trim() === selectedCountry)
-          .map(row => row[3]); // Columna D = índice 3
+          .map(row => row[1]); // Columna B = índice 1 para clientes
 
         // Agregar clientes al dropdown
-        const clientDropdown = document.getElementById('clientes');
+        const clientesDropdown = document.getElementById('clientes');
+        clientesDropdown.innerHTML = ''; // Limpiar dropdown de clientes
         clients.forEach(client => {
           const option = document.createElement('option');
           option.value = client;
           option.textContent = client;
-          clientDropdown.appendChild(option);
+          clientesDropdown.appendChild(option);
         });
       };
       reader.readAsArrayBuffer(blob);
@@ -83,12 +84,7 @@ function loadClients() {
     .catch(error => console.error('Error al cargar los clientes:', error));
 }
 
-// Inicializar funciones según la pantalla
+// Llamar a la función de cargar clientes cuando la página esté lista
 document.addEventListener('DOMContentLoaded', () => {
-  if (document.getElementById('pais')) {
-    loadCountries();
-    document.getElementById('btnContinuar').addEventListener('click', goToFormulario);
-  } else if (document.getElementById('clientes')) {
-    loadClients();
-  }
+  loadClients();
 });
