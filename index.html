@@ -4,114 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de Sondeo de Clientes</title>
+  <!-- Enlace al archivo CSS externo -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Biblioteca XLSX -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <style>
-    body {
-      font-family: 'Century Gothic', sans-serif;
-      background-color: #f0f8ff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .container {
-      width: 400px;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    h1 {
-      color: #333;
-      margin-bottom: 20px;
-    }
-
-    select, button {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 16px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      background-color: #4CAF50;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
 </head>
 <body>
   <div class="container">
-    <h1>Selecciona un País</h1>
-    <select id="countrySelect">
-      <option value="">Cargando países...</option>
+    <h1>Bienvenido</h1>
+    <label for="pais">Seleccione un país:</label>
+    <select id="pais">
+      <!-- Opciones se cargarán dinámicamente -->
     </select>
-    <button onclick="goToNextScreen()">Continuar</button>
+    <button id="btnContinuar">Continuar</button>
   </div>
-
-  <script>
-    const excelUrl = "https://raw.githubusercontent.com/jpoougt/forms_/main/SondeoClientes.xlsx";
-
-    // Leer el archivo Excel
-    fetch(excelUrl)
-      .then(response => response.arrayBuffer())
-      .then(data => {
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-        // Obtener la lista única de países
-        const countries = [...new Set(jsonData.map(row => row['País']))].sort();
-
-        // Rellenar el dropdown
-        const countrySelect = document.getElementById("countrySelect");
-        countrySelect.innerHTML = `<option value="">Selecciona un país</option>`;
-        countries.forEach(country => {
-          const option = document.createElement("option");
-          option.value = country;
-          option.textContent = country;
-          countrySelect.appendChild(option);
-        });
-      })
-      .catch(error => console.error("Error al cargar el archivo Excel:", error));
-
-    // Función para avanzar a la siguiente pantalla
-    function goToNextScreen() {
-      const selectedCountry = document.getElementById("countrySelect").value;
-
-      if (selectedCountry) {
-        // Filtrar clientes por país y guardarlos en localStorage
-        fetch(excelUrl)
-          .then(response => response.arrayBuffer())
-          .then(data => {
-            const workbook = XLSX.read(data, { type: "array" });
-            const sheet = workbook.Sheets[workbook.SheetNames[0]];
-            const jsonData = XLSX.utils.sheet_to_json(sheet);
-
-            const filteredClients = jsonData.filter(client => client.País === selectedCountry);
-            localStorage.setItem("clientesFiltrados", JSON.stringify(filteredClients));
-            
-            // Redirigir a la pantalla del formulario
-            window.location.href = "formulario.html";
-          })
-          .catch(error => console.error("Error al cargar el archivo Excel:", error));
-      } else {
-        alert("Por favor selecciona un país.");
-      }
-    }
-  </script>
+  <!-- Enlace al archivo JavaScript externo -->
+  <script src="index.js"></script>
 </body>
 </html>
