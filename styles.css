@@ -14,8 +14,49 @@
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden; /* Evita que el contenido se desborde durante la transición */
+  overflow: hidden;
   position: relative;
+}
+
+#paisSelection {
+  transition: transform 0.5s ease;
+  transform: translateX(0);
+}
+
+#clienteSelection {
+  display: none;
+  transition: transform 0.5s ease;
+  transform: translateX(100%);
+}
+
+#preguntas {
+  display: none;
+  transition: transform 0.5s ease;
+  transform: translateX(100%);
+}
+
+button {
+  padding: 10px;
+  font-size: 1rem;
+  margin: 10px 0;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button#backBtn {
+  background-color: #f44336; /* Rojo para "Atrás" */
+  color: white;
+}
+
+button#continueBtn {
+  background-color: #4CAF50; /* Verde para "Continuar" */
+  color: white;
+}
+
+button:hover {
+  opacity: 0.8;
 }
 
 /* Títulos */
@@ -46,16 +87,7 @@ button {
   border-radius: 5px;
 }
 
-button {
-  background-color: #4CAF50;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
 
-button:hover {
-  background-color: #45a049;
-}
 
 /* Espaciado entre las preguntas */
 div {
@@ -68,24 +100,4 @@ div {
   gap: 10px;
 }
 
-/* Estilo de la sección de preguntas (oculta inicialmente) */
-#preguntas {
-  display: none; /* Se ocultará inicialmente */
-  transition: transform 0.5s ease; /* Transición hacia la izquierda */
-  transform: translateX(100%); /* Inicialmente está a la derecha (fuera de vista) */
-}
 
-#paisSelection {
-  transition: transform 0.5s ease; /* Transición hacia la izquierda */
-  transform: translateX(0); /* Empieza en su posición inicial */
-}
-
-#clienteSelection {
-  display: none; /* Se ocultará inicialmente */
-  transition: transform 0.5s ease; /* Transición hacia la izquierda */
-  transform: translateX(100%); /* Inicialmente está a la derecha (fuera de vista) */
-}
-
-select option {
-  padding: 10px;
-}
