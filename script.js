@@ -20,12 +20,12 @@ function loadCountries() {
         });
 
         // Agregar países al dropdown
-        const countryDropdown = document.getElementById('pais');
+        const dropdown = document.getElementById('pais');
         countries.forEach(country => {
           const option = document.createElement('option');
           option.value = country;
           option.textContent = country;
-          countryDropdown.appendChild(option);
+          dropdown.appendChild(option);
         });
       };
       reader.readAsArrayBuffer(blob);
@@ -33,27 +33,8 @@ function loadCountries() {
     .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
 
-// Llamar a la función cuando se cargue el DOM
-document.addEventListener('DOMContentLoaded', () => {
-  loadCountries();
-});
-
-function btn_siguiente() {
-  const selectedPais = document.getElementById("pais").value;
-
-  if (selectedPais) {
-    // Guardar el país seleccionado en el localStorage
-    localStorage.setItem("paisSeleccionado", selectedPais);
-
-    // Redirigir a la pantalla 2
-    window.location.href = "formulario.html";
-  } else {
-    alert("Por favor, seleccione un país antes de continuar.");
-  }
-}
-
-// Función para cargar clientes según el país seleccionado
-function loadClientes() {
+// Función para cargar los clientes del país seleccionado
+function loadClientsByCountry(selectedCountry) {
   fetch('SondeoClientes.xlsx')
     .then(response => response.blob())
     .then(blob => {
@@ -65,32 +46,56 @@ function loadClientes() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Recuperar el país seleccionado del localStorage
-        const selectedCountry = localStorage.getItem('selectedCountry');
+        // Filtrar clientes por país (Columna C - País y Columna A - Cliente)
+        const clients = jsonData
+          .filter(row => row[2]?.trim() === selectedCountry) // Filtrar por país
+          .map(row => row[0]?.trim()) // Columna A es índice 0 (Clientes)
+          .filter(Boolean); // Eliminar valores nulos o undefined
 
-        // Filtrar clientes por país
-        const clientes = [];
-        jsonData.forEach(row => {
-          if (row[2] === selectedCountry && row[3]) { // Columna C es el país, columna D es el cliente
-            clientes.push(row[3]); // Agregar cliente a la lista
-          }
-        });
-
-        // Poblar el dropdown de clientes
-        const clientesDropdown = document.getElementById('clientes');
-        clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>'; // Resetear opciones
-        clientes.forEach(cliente => {
+        // Agregar clientes al dropdown
+        const dropdown = document.getElementById('clientes');
+        dropdown.innerHTML = ''; // Limpiar las opciones anteriores
+        clients.forEach(client => {
           const option = document.createElement('option');
-          option.value = cliente;
-          option.textContent = cliente;
-          clientesDropdown.appendChild(option);
+          option.value = client;
+          option.textContent = client;
+          dropdown.appendChild(option);
         });
       };
       reader.readAsArrayBuffer(blob);
     })
-    .catch(error => console.error('Error al cargar los clientes:', error));
+    .catch(error => console.error('Error al cargar clientes:', error));
 }
 
-// Llamar a la función de carga de clientes cuando se cargue la página
-document.addEventListener('DOMContentLoaded', loadClientes);
+// Navegar a la pantalla del formulario
+function btn_siguiente() {
+  const selectedCountry = document.getElementById('pais').value;
+  if (selectedCountry) {
+    localStorage.setItem('selectedCountry', selectedCountry); // Guardar país seleccionado
+    window.location.href = 'formulario.html'; // Redirigir a formulario.html
+  } else {
+    alert('Por favor, seleccione un país.');
+  }
+}
 
+// Cargar clientes en formulario.html
+function populateClientsDropdown() {
+  const selectedCountry = localStorage.getItem('selectedCountry'); // Obtener país guardado
+  if (selectedCountry) {
+    loadClientsByCountry(selectedCountry); // Cargar clientes del país seleccionado
+  } else {
+    console.error('No se encontró un país seleccionado en el localStorage.');
+  }
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+  // Detectar en qué pantalla estamos
+  const path = window.location.pathname;
+  if (path.includes('index.html')) {
+    loadCountries(); // Cargar países en index.html
+    document.getElementById('btnContinuar').addEventListener('click', btn_siguiente);
+  } else if (path.includes('formulario.html')) {
+    populateClientsDropdown(); // Cargar clientes en formulario.html
+  }
+});
