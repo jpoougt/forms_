@@ -1,124 +1,80 @@
-/* General */
-body {
-  font-family: 'Century Gothic', sans-serif;
-  background-color: #f0f8ff;
+/* Resetear algunos márgenes y estilos por defecto */
+* {
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  box-sizing: border-box;
 }
 
+/* Contenedor principal */
 .container {
-  width: 90%;
-  max-width: 500px;
+  width: 80%;
+  max-width: 900px;
+  margin: 0 auto;
   padding: 20px;
-  background-color: #ffffff;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Títulos */
 h1 {
   text-align: center;
-  color: #333;
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin-bottom: 20px;
 }
 
-/* Labels */
+/* Estilo de los formularios */
 label {
   font-size: 1rem;
-  color: #555;
-  display: block;
+  font-weight: bold;
   margin-bottom: 8px;
+  display: inline-block;
 }
 
-/* Dropdown (select) */
-select {
-  width: 100%;
+select,
+button {
   padding: 10px;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  outline: none;
-  transition: border 0.3s ease;
-}
-
-select:focus {
-  border: 1px solid #007BFF;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-/* Buttons */
-button {
+  margin: 10px 0;
   width: 100%;
-  padding: 12px;
-  font-size: 1rem;
-  font-weight: bold;
-  background-color: #007BFF;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #45a049;
 }
 
-/* Radio Buttons */
+/* Espaciado entre las preguntas */
+div {
+  margin-bottom: 15px;
+}
+
+/* Estilo de las preguntas */
 .radio-group {
   display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
-}
-
-.radio-group label {
-  font-size: 1rem;
-  color: #555;
-  display: flex;
-  align-items: center;
-}
-
-.radio-group input[type="radio"] {
-  margin-right: 5px;
-}
-
-/* Checkbox Group */
-.checkbox-group {
-  display: flex;
-  flex-direction: column;
   gap: 10px;
-  margin-bottom: 20px;
 }
 
-.checkbox-group label {
-  font-size: 1rem;
-  color: #555;
-  display: flex;
-  align-items: center;
+/* Estilo de la sección de preguntas (oculta inicialmente) */
+#preguntas {
+  margin-top: 20px;
+  display: none;
 }
 
-.checkbox-group input[type="checkbox"] {
-  margin-right: 10px;
+#paisSelection,
+#clienteSelection {
+  margin-bottom: 30px;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .container {
-    width: 95%;
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-  }
-
-  button {
-    font-size: 0.9rem;
-    padding: 10px;
-  }
+select option {
+  padding: 10px;
 }
