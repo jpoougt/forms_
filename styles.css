@@ -20,14 +20,14 @@
 h1 {
   text-align: center;
   font-size: 2rem;
-font-family: 'Century Gothic', sans-serif;
+  font-family: 'Century Gothic', sans-serif;
   margin-bottom: 20px;
 }
 
 /* Estilo de los formularios */
 label {
   font-size: 1rem;
-font-family: 'Century Gothic', sans-serif;
+  font-family: 'Century Gothic', sans-serif;
   font-weight: bold;
   margin-bottom: 8px;
   display: inline-block;
@@ -44,6 +44,7 @@ button {
   border-radius: 5px;
 }
 
+/* Estilo del botón */
 button {
   background-color: #4CAF50;
   color: white;
@@ -55,26 +56,50 @@ button:hover {
   background-color: #45a049;
 }
 
-/* Espaciado entre las preguntas */
+/* Estilo para el espaciado entre las preguntas */
 div {
   margin-bottom: 15px;
-}
-
-/* Estilo de las preguntas */
-.radio-group {
-  display: flex;
-  gap: 10px;
 }
 
 /* Estilo de la sección de preguntas (oculta inicialmente) */
 #preguntas {
   margin-top: 20px;
-  display: none;
+  display: none; /* Oculto inicialmente */
 }
 
+/* Efectos de transición y visibilidad */
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 1s ease-in-out;
+}
+
+/* Estilo de la sección de selección de país y cliente */
 #paisSelection,
 #clienteSelection {
   margin-bottom: 30px;
+}
+
+/* Animación de deslizamiento hacia arriba */
+.slide-up {
+  animation: slideUp 1s ease-out;
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 select option {
