@@ -75,18 +75,28 @@ function loadClients() {
     .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
 
-// Función para mostrar las preguntas
-function showQuestions() {
-  const selectedClient = document.getElementById('clientes').value;
-  if (!selectedClient) {
-    alert('Seleccione un cliente primero.');
-    return;
-  }
+// Función para manejar la transición a la siguiente sección
+function goToPregunta() {
+  const paisSelection = document.getElementById('paisSelection');
+  const clienteSelection = document.getElementById('clienteSelection');
+  const preguntas = document.getElementById('preguntas');
+  
+  // Transición de la primera sección (selección de país)
+  paisSelection.style.transform = 'translateX(-100%)'; // Desplazar hacia la izquierda
 
-  // Mostrar las preguntas
-  document.getElementById('preguntas').style.display = 'block';
-  window.scrollTo(0, document.body.scrollHeight); // Desplazarse hacia las preguntas
+  // Mostrar la sección de clientes
+  clienteSelection.style.display = 'block'; // Asegúrate de que la sección esté visible
+  setTimeout(() => {
+    clienteSelection.style.transform = 'translateX(0)'; // Desplazar hacia su posición inicial
+  }, 200); // Tiempo para esperar el deslizamiento de la sección anterior
+
+  // Después de seleccionar el cliente, se mostrará la sección de preguntas
+  setTimeout(() => {
+    preguntas.style.display = 'block'; // Asegurarse de que la sección de preguntas esté visible
+    preguntas.style.transform = 'translateX(0)'; // Desplazar hacia su posición inicial
+  }, 400); // Tiempo para esperar el deslizamiento de la sección de cliente
 }
+
 
 // Llamar a la función cuando se cargue el DOM
 document.addEventListener('DOMContentLoaded', () => {
