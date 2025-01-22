@@ -1,9 +1,8 @@
-document.addEventListener('DOMContentLoaded', function() {
+xdocument.addEventListener('DOMContentLoaded', function() {
   // Llamar a la función para cargar los países cuando se cargue el documento
   loadCountries();
 });
 
-// Cargar países desde el archivo Excel en index.html
 // Cargar países desde el archivo Excel en index.html
 function loadCountries() {
   fetch('SondeoClientes.xlsx')
