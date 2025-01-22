@@ -3,17 +3,156 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Sondeo de Clientes</title>
+  <title>Formulario Consolidado</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script defer src="script.js"></script>
 </head>
 <body>
   <div class="container">
-    <h1>Bienvenido</h1>
-    <label for="pais">Seleccione un país:</label>
-    <select id="pais"></select>
-    <button id="btnContinuar">Continuar</button>
+    <h1>Formulario de Clientes</h1>
+    
+    <!-- Selección de país -->
+    <div id="seleccionPais">
+      <label for="pais">Seleccione un país:</label>
+      <select id="pais"></select>
+      <button id="btnContinuar">Continuar</button>
+    </div>
+    
+    <!-- Formulario de preguntas (oculto por defecto) -->
+    <div id="formulario" style="display: none;">
+      <h2>Cuestionario</h2>
+      <form id="cuestionarioForm">
+        <!-- Dropdown de clientes -->
+        <label for="clientes">Seleccione un cliente:</label>
+        <select id="clientes" name="clientes"></select>
+        
+        <!-- Pregunta 1 -->
+        <div>
+          <label>¿El cliente utiliza el módulo de campos?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="moduloCampos" value="Si"> Sí</label>
+            <label><input type="radio" name="moduloCampos" value="No"> No</label>
+          </div>
+        </div>
+        
+        <!-- Pregunta 2 -->
+        <div>
+          <label>¿El cliente utiliza el módulo de Insumos y Materiales?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="moduloInsumos" value="Si"> Sí</label>
+            <label><input type="radio" name="moduloInsumos" value="No"> No</label>
+          </div>
+        </div>
+        
+        <!-- Pregunta 3 -->
+        <div id="inventarioPregunta" style="display: none;">
+          <label>¿El cliente maneja inventarios?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="manejoInventario" value="Si"> Sí</label>
+            <label><input type="radio" name="manejoInventario" value="No"> No</label>
+          </div>
+        </div>
+        
+        <button type="button" id="btnEnviar">Enviar</button>
+      </form>
+    </div>
   </div>
+  
+  <script>
+    // Función para cargar el archivo Excel y extraer los países
+    function loadCountries() {
+      fetch('SondeoClientes.xlsx')
+        .then(response => response.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+            // Extraer la columna "País" (Columna C)
+            const countries = new Set();
+            jsonData.forEach(row => {
+              if (row[2]) { // Columna C es índice 2 (0-A, 1-B, 2-C)
+                countries.add(row[2].trim());
+              }
+            });
+
+            // Agregar países al dropdown
+            const countryDropdown = document.getElementById('pais');
+            countries.forEach(country => {
+              const option = document.createElement('option');
+              option.value = country;
+              option.textContent = country;
+              countryDropdown.appendChild(option);
+            });
+          };
+          reader.readAsArrayBuffer(blob);
+        })
+        .catch(error => console.error('Error al cargar el archivo Excel:', error));
+    }
+
+    // Función para cargar clientes según el país seleccionado
+    function loadClientes() {
+      fetch('SondeoClientes.xlsx')
+        .then(response => response.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, { type: 'array' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+            // Recuperar el país seleccionado del dropdown
+            const selectedCountry = document.getElementById('pais').value;
+
+            // Filtrar clientes por país
+            const clientes = [];
+            jsonData.forEach(row => {
+              if (row[2] === selectedCountry && row[3]) { // Columna C es el país, columna D es el cliente
+                clientes.push(row[3]); // Agregar cliente a la lista
+              }
+            });
+
+            // Poblar el dropdown de clientes
+            const clientesDropdown = document.getElementById('clientes');
+            clientesDropdown.innerHTML = ''; // Limpiar el dropdown antes de agregar opciones
+            clientes.forEach(cliente => {
+              const option = document.createElement('option');
+              option.value = cliente;
+              option.textContent = cliente;
+              clientesDropdown.appendChild(option);
+            });
+          };
+          reader.readAsArrayBuffer(blob);
+        })
+        .catch(error => console.error('Error al cargar los clientes:', error));
+    }
+
+    // Llamar a la función cuando se cargue el DOM
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCountries();
+    });
+
+    // Función para manejar el botón "Continuar"
+    document.getElementById('btnContinuar').addEventListener('click', function() {
+      const selectedPais = document.getElementById("pais").value;
+      
+      if (selectedPais) {
+        // Ocultar la selección de país y mostrar el formulario
+        document.getElementById("seleccionPais").style.display = "none";
+        document.getElementById("formulario").style.display = "block";
+        
+        // Cargar clientes según el país seleccionado
+        loadClientes();
+      } else {
+        alert("Por favor, seleccione un país.");
+      }
+    });
+  </script>
 </body>
 </html>
