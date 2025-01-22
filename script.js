@@ -1,4 +1,4 @@
-// Cargar países desde el archivo Excel en index.html
+// Cargar países desde el archivo Excel
 function loadCountries() {
   fetch('SondeoClientes.xlsx')
     .then(response => response.blob())
@@ -12,9 +12,9 @@ function loadCountries() {
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
         // Extraer los países (Columna C = índice 2)
-        const countries = new Set(); // Usamos un Set para evitar duplicados
+        const countries = new Set();
         jsonData.forEach(row => {
-          if (row[2]) { // Columna C = índice 2
+          if (row[2]) { // Verificar si hay valor en la columna C
             countries.add(row[2].trim());
           }
         });
@@ -33,7 +33,7 @@ function loadCountries() {
     .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
 
-// Guardar el país seleccionado y redirigir
+// Función para redirigir a la segunda parte del formulario (aunque no necesitamos otra página)
 function goToFormulario() {
   const selectedCountry = document.getElementById('pais').value;
   if (!selectedCountry) {
@@ -41,15 +41,15 @@ function goToFormulario() {
     return;
   }
   localStorage.setItem('selectedCountry', selectedCountry);
-  window.location.href = '#'; // Aquí puedes definir a dónde redirigir (actualmente se queda en la misma página)
+  // Ya no hacemos redirección ya que todo está en una sola página, eliminamos window.location.href
+  loadClients();
 }
 
-// Cargar clientes según el país seleccionado
+// Cargar clientes basados en el país seleccionado
 function loadClients() {
   const selectedCountry = localStorage.getItem('selectedCountry');
   if (!selectedCountry) {
-    alert('No se ha seleccionado un país. Redirigiendo a la pantalla principal.');
-    window.location.href = '#'; // Aquí rediriges según lo necesites
+    alert('No se ha seleccionado un país. Redirigiendo...');
     return;
   }
 
@@ -64,22 +64,30 @@ function loadClients() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Filtrar clientes por país (Columna C = índice 2, Columna B = índice 1)
+        // Filtrar clientes según el país seleccionado (Columna C = índice 2 y Columna B = índice 1 para clientes)
         const clients = jsonData
-          .filter(row => row[2] && row[2].trim() === selectedCountry) // Filtramos por el país
-          .map(row => row[1]); // Leemos la columna B para los clientes (índice 1)
+          .filter(row => row[2] && row[2].trim() === selectedCountry)
+          .map(row => row[1]); // Columna B = índice 1
 
-        // Agregar clientes al dropdown
+        // Llenar el dropdown de clientes con las opciones correspondientes
         const clientsDropdown = document.getElementById('clientes');
-        clientsDropdown.innerHTML = ''; // Limpiar dropdown antes de agregar nuevos clientes
+        clientsDropdown.innerHTML = ''; // Limpiar el dropdown actual
         clients.forEach(client => {
           const option = document.createElement('option');
           option.value = client;
           option.textContent = client;
           clientsDropdown.appendChild(option);
         });
+
+        // Habilitar el dropdown de clientes ahora que hay opciones
+        clientsDropdown.disabled = clients.length === 0;
       };
       reader.readAsArrayBuffer(blob);
     })
-    .catch(error => console.error('Error al cargar el archivo Excel:', error));
+    .catch(error => console.error('Error al cargar el archivo Excel para los clientes:', error));
 }
+
+// Llamar a loadCountries cuando el documento esté completamente cargado
+document.addEventListener('DOMContentLoaded', () => {
+  loadCountries();
+});
