@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!--comentario-->
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -20,10 +19,10 @@
       <select id="pais" name="pais">
         <option value="">Seleccionar...</option>
       </select>
-      <button id="continueBtn">Continuar</button>
+      <button id="continueBtn" onclick="goToPregunta()">Continuar</button>
     </div>
 
-    <!-- Paso 2: Selección de Cliente -->
+    <!-- Paso 2: Selección de Cliente (ocultado por defecto) -->
     <div id="clienteSelection" style="display: none;">
       <label for="clientes">Seleccione un cliente:</label>
       <select id="clientes" name="clientes">
@@ -31,7 +30,7 @@
       </select>
     </div>
 
-    <!-- Paso 3: Preguntas -->
+    <!-- Paso 3: Preguntas (ocultadas por defecto) -->
     <div id="preguntas" style="display: none;">
       <h3>Responde las preguntas</h3>
 
