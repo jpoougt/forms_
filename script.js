@@ -1,4 +1,4 @@
-// Función para cargar el archivo Excel y extraer los países en index.html
+// Cargar países desde el archivo Excel en index.html
 function loadCountries() {
   fetch('SondeoClientes.xlsx')
     .then(response => response.blob())
@@ -11,45 +11,45 @@ function loadCountries() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Extraer la columna "País" (Columna C)
-        const countries = new Set();
+        // Extraer los países (Columna C)
+        const countries = new Set(); // Usamos un Set para evitar duplicados
         jsonData.forEach(row => {
-          if (row[2]) {
+          if (row[2]) { // Columna C = índice 2
             countries.add(row[2].trim());
           }
         });
 
-        // Agregar los países al dropdown
-        const countrySelect = document.getElementById("pais");
+        // Agregar países al dropdown
+        const countryDropdown = document.getElementById('pais');
         countries.forEach(country => {
-          const option = document.createElement("option");
+          const option = document.createElement('option');
           option.value = country;
           option.textContent = country;
-          countrySelect.appendChild(option);
+          countryDropdown.appendChild(option);
         });
       };
       reader.readAsArrayBuffer(blob);
     })
-    .catch(err => console.error("Error al cargar el archivo Excel:", err));
+    .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
 
-// Guardar el país seleccionado en localStorage y redirigir a formulario.html
-function btn_siguiente() {
-  const selectedCountry = document.getElementById("pais").value;
+// Guardar el país seleccionado y redirigir a formulario.html
+function goToFormulario() {
+  const selectedCountry = document.getElementById('pais').value;
   if (!selectedCountry) {
-    alert("Por favor, seleccione un país.");
+    alert('Seleccione un país antes de continuar.');
     return;
   }
-  localStorage.setItem("selectedCountry", selectedCountry);
-  window.location.href = "formulario.html";
+  localStorage.setItem('selectedCountry', selectedCountry);
+  window.location.href = 'formulario.html';
 }
 
-// Cargar los clientes del país seleccionado en formulario.html
+// Cargar clientes en formulario.html
 function loadClients() {
-  const selectedCountry = localStorage.getItem("selectedCountry");
+  const selectedCountry = localStorage.getItem('selectedCountry');
   if (!selectedCountry) {
-    alert("No se seleccionó ningún país. Redirigiendo...");
-    window.location.href = "index.html";
+    alert('No se ha seleccionado un país. Redirigiendo a la pantalla principal.');
+    window.location.href = 'index.html';
     return;
   }
 
@@ -64,24 +64,31 @@ function loadClients() {
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Filtrar los clientes por país (Columna B: Cliente, Columna C: País)
-        const clients = [];
-        jsonData.forEach(row => {
-          if (row[2] && row[2].trim() === selectedCountry) {
-            clients.push(row[1]); // Columna B: Cliente
-          }
-        });
+        // Filtrar clientes por país (Columna C = índice 2 y Columna D = índice 3)
+        const clients = jsonData
+          .filter(row => row[2] && row[2].trim() === selectedCountry)
+          .map(row => row[3]); // Columna D = índice 3
 
-        // Agregar los clientes al dropdown
-        const clientSelect = document.getElementById("clientes");
+        // Agregar clientes al dropdown
+        const clientDropdown = document.getElementById('clientes');
         clients.forEach(client => {
-          const option = document.createElement("option");
+          const option = document.createElement('option');
           option.value = client;
           option.textContent = client;
-          clientSelect.appendChild(option);
+          clientDropdown.appendChild(option);
         });
       };
       reader.readAsArrayBuffer(blob);
     })
-    .catch(err => console.error("Error al cargar los clientes:", err));
+    .catch(error => console.error('Error al cargar los clientes:', error));
 }
+
+// Inicializar funciones según la pantalla
+document.addEventListener('DOMContentLoaded', () => {
+  if (document.getElementById('pais')) {
+    loadCountries();
+    document.getElementById('btnContinuar').addEventListener('click', goToFormulario);
+  } else if (document.getElementById('clientes')) {
+    loadClients();
+  }
+});
