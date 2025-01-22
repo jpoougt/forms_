@@ -74,6 +74,29 @@ function loadClients() {
     })
     .catch(error => console.error('Error al cargar el archivo Excel:', error));
 }
+//funcion para ir a la selección de cliente
+function goToCliente() {
+  const paisSelection = document.getElementById('paisSelection');
+  const clienteSelection = document.getElementById('clienteSelection');
+
+  paisSelection.style.transform = 'translateX(-100%)'; // Desplazar hacia la izquierda
+  clienteSelection.style.display = 'block'; // Hacer visible la selección de cliente
+  setTimeout(() => {
+    clienteSelection.style.transform = 'translateX(0)'; // Volver a su lugar
+  }, 200);
+}
+
+// Función para volver a la selección de país
+function goBack() {
+  const paisSelection = document.getElementById('paisSelection');
+  const clienteSelection = document.getElementById('clienteSelection');
+
+  clienteSelection.style.transform = 'translateX(100%)'; // Desplazar fuera de la pantalla
+  setTimeout(() => {
+    paisSelection.style.transform = 'translateX(0)'; // Desplazar de nuevo a su lugar
+  }, 200);
+}
+
 
 // Función para manejar la transición a la siguiente sección
 function goToPregunta() {
