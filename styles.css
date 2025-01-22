@@ -1,11 +1,11 @@
-/* Resetear algunos márgenes y estilos por defecto */
+/* Resetear algunos márgenes y estilos por defecto JP*/
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Contenedor principal---hola */
+/* Contenedor principal---JP */
 .container {
   width: 80%;
   max-width: 900px;
@@ -14,52 +14,10 @@
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-  position: relative;
 }
 
-#paisSelection {
-  transition: transform 0.5s ease;
-  transform: translateX(0);
-}
 
-#clienteSelection {
-  display: none;
-  transition: transform 0.5s ease;
-  transform: translateX(100%);
-}
 
-#preguntas {
-  display: none;
-  transition: transform 0.5s ease;
-  transform: translateX(100%);
-}
-
-button {
-  padding: 10px;
-  font-size: 1rem;
-  margin: 10px 0;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-button#backBtn {
-  background-color: #f44336; /* Rojo para "Atrás" */
-  color: white;
-}
-
-button#continueBtn {
-  background-color: #4CAF50; /* Verde para "Continuar" */
-  color: white;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-/* Títulos */
 h1 {
   text-align: center;
   font-size: 2rem;
@@ -67,7 +25,8 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* Estilo de los formularios */
+
+/* Estilo de los formularios jp*/
 label {
   font-size: 1rem;
   font-family: 'Century Gothic', sans-serif;
@@ -75,6 +34,7 @@ label {
   margin-bottom: 8px;
   display: inline-block;
 }
+
 
 select,
 button {
@@ -87,11 +47,33 @@ button {
   border-radius: 5px;
 }
 
+button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
 
 
-/* Espaciado entre las preguntas */
-div {
-  margin-bottom: 15px;
+
+
+#paisSelection,
+#clienteSelection,
+#preguntas {
+  transition: transform 0.5s ease-in-out;
+}
+
+#clienteSelection {
+  transform: translateX(100%); /* Inicialmente fuera de vista */
+}
+
+
+#preguntas {
+  transform: translateX(100%); /* Inicialmente fuera de vista JP*/
 }
 
 /* Estilo de las preguntas */
@@ -99,5 +81,41 @@ div {
   display: flex;
   gap: 10px;
 }
+
+
+#preguntas {
+  margin-top: 20px;
+  display: none;
+}
+
+#paisSelection,
+#clienteSelection {
+  margin-bottom: 30px;
+}
+
+select option {
+  padding: 10px;
+}
+
+
+/*VALIDAR FUNCIONALIDAD */
+
+button#backBtn {
+  background-color: #f44336; /* Rojo para "Atrás" */
+  color: white;
+}
+
+button#continueBtn {
+  background-color: #4CAF50; /* Verde para "Continuar" */
+  color: white;
+}
+
+
+
+/* Espaciado entre las preguntas */
+div {
+  margin-bottom: 15px;
+}
+
 
 
