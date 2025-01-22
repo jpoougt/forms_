@@ -78,8 +78,10 @@ button:hover {
 
 /* Estilo de las preguntas */
 .radio-group {
-  display: flex;
-  gap: 10px;
+ text-align: center;
+  font-size: 2rem;
+  font-family: 'Century Gothic', sans-serif;
+  margin-bottom: 20px;
 }
 
 
