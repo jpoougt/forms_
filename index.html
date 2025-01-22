@@ -14,7 +14,7 @@
     <h1>Formulario de Encuesta</h1>
 
     <!-- Paso 1: Selección del País -->
-    <div id="paisSelection">
+    <div id="paisSelection" class="step">
       <label for="pais">Seleccione un país:</label>
       <select id="pais" name="pais">
         <option value="">Seleccionar...</option>
@@ -23,7 +23,7 @@
     </div>
 
     <!-- Paso 2: Selección de Cliente (ocultado por defecto) -->
-    <div id="clienteSelection" style="display: none;">
+    <div id="clienteSelection" class="step" style="display: none;">
       <label for="clientes">Seleccione un cliente:</label>
       <select id="clientes" name="clientes">
         <option value="">Seleccionar...</option>
@@ -31,7 +31,7 @@
     </div>
 
     <!-- Paso 3: Preguntas (ocultadas por defecto) -->
-    <div id="preguntas" style="display: none;">
+    <div id="preguntas" class="step" style="display: none;">
       <h3>Responde las preguntas</h3>
 
       <!-- Pregunta 1 -->
