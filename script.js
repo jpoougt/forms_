@@ -65,6 +65,23 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     return;
   }
 
+
+// Función para volver a la pantalla 1
+document.getElementById('backBtn').addEventListener('click', () => {
+  // Ocultar la sección de selección de clientes y preguntas
+  document.getElementById('clienteSection').classList.add('hidden');
+  
+  // Mostrar la sección de selección de país
+  document.getElementById('paisSelection').classList.remove('hidden');
+
+  // Opcional: Resetear el dropdown de clientes si es necesario
+  document.getElementById('clientes').innerHTML = '<option value="">Seleccione un cliente</option>';
+
+  // Agregar efecto de transición
+  document.getElementById('container').classList.add('transition-left');
+});
+
+
   // Llenar el dropdown de clientes
   const clientesDropdown = document.getElementById('clientes');
   clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
