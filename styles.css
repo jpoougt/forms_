@@ -1,123 +1,49 @@
-/* Resetear algunos márgenes y estilos por defecto JP*/
+/* Reinicio de estilos */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Contenedor principal---JP */
+/* Contenedor principal */
 .container {
-  width: 80%;
-  max-width: 900px;
+  width: 90%;
+  max-width: 600px;
   margin: 0 auto;
   padding: 20px;
   background-color: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-
-
-h1 {
-  text-align: center;
-  font-size: 2rem;
-  font-family: 'Century Gothic', sans-serif;
-  margin-bottom: 20px;
-}
-
-
-/* Estilo de los formularios jp*/
-label {
-  font-size: 1rem;
-  font-family: 'Century Gothic', sans-serif;
-  font-weight: bold;
-  margin-bottom: 8px;
-  display: inline-block;
-}
-
-
-select,
-button {
-  padding: 10px;
-  font-size: 1rem;
-  margin: 10px 0;
+/* Secciones */
+.seccion {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.5s ease-in-out;
+  position: absolute;
   width: 100%;
-  box-sizing: border-box;
-  border: 1px solid #ddd;
-  border-radius: 5px;
 }
 
+.seccion.activa {
+  opacity: 1;
+  transform: translateX(0);
+  position: relative;
+}
+
+/* Botones */
 button {
-  background-color: #4CAF50;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #007BFF;
   color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #45a049;
+  background-color: #0056b3;
 }
-
-
-
-
-#paisSelection,
-#clienteSelection,
-#preguntas {
-  transition: transform 0.5s ease-in-out;
-}
-
-#clienteSelection {
-  transform: translateX(100%); /* Inicialmente fuera de vista */
-}
-
-
-#preguntas {
-  transform: translateX(100%); /* Inicialmente fuera de vista JP*/
-}
-
-/* Estilo de las preguntas */
-.radio-group {
- text-align: center;
-  font-size: 2rem;
-  font-family: 'Century Gothic', sans-serif;
-  margin-bottom: 20px;
-}
-
-
-#preguntas {
-  margin-top: 20px;
-  display: none;
-}
-
-#paisSelection,
-#clienteSelection {
-  margin-bottom: 30px;
-}
-
-select option {
-  padding: 10px;
-}
-
-
-/*VALIDAR FUNCIONALIDAD */
-
-button#backBtn {
-  background-color: #f44336; /* Rojo para "Atrás" */
-  color: white;
-}
-
-button#continueBtn {
-  background-color: #4CAF50; /* Verde para "Continuar" */
-  color: white;
-}
-
-
-
-/* Espaciado entre las preguntas */
-div {
-  margin-bottom: 15px;
-}
-
-
-
