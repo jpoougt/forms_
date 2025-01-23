@@ -6,36 +6,38 @@
   <title>Formulario de Encuesta</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
-  <script defer src="script.js"></script>
 </head>
 <body>
+
+  <!-- Contenedor principal -->
   <div class="container">
     <h1>Formulario de Encuesta</h1>
 
-    <!-- Sección País -->
-    <div id="paisSelection">
+    <!-- Sección 1: Selección del País -->
+    <div id="section1" class="section active">
       <label for="pais">Seleccione un país:</label>
-      <select id="pais">
-        <option value="">Seleccione un país</option>
+      <select id="pais" name="pais">
+        <option value="">Seleccione una opción</option>
       </select>
-      <button id="btnSiguiente">Siguiente</button>
+      <button id="nextBtn">Siguiente</button>
     </div>
 
-    <!-- Sección Cliente -->
-    <div id="clienteSection" class="hidden">
-      <label for="cliente">Seleccione un cliente:</label>
-      <select id="cliente">
+    <!-- Sección 2: Selección del Cliente y Preguntas -->
+    <div id="section2" class="section">
+      <label for="clientes">Seleccione un cliente:</label>
+      <select id="clientes" name="clientes">
         <option value="">Seleccione un cliente</option>
       </select>
-    </div>
 
-    <!-- Sección Preguntas -->
-    <div id="preguntas" class="hidden">
-      <h2>Preguntas</h2>
-      <p>Pregunta 1: ¿...?</p>
-      <p>Pregunta 2: ¿...?</p>
+      <!-- Contenedor de preguntas -->
+      <div id="preguntas" style="display: none;">
+        <h2>Preguntas</h2>
+        <p>Pregunta 1: ¿Cómo calificaría nuestro servicio?</p>
+        <p>Pregunta 2: ¿Qué mejoras sugeriría?</p>
+      </div>
     </div>
   </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
-
