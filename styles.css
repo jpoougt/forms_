@@ -9,45 +9,53 @@
 
 /* Contenedor principal */
 .container {
-  width: 90%;
-  max-width: 800px;
+  width: 80%;
+  max-width: 600px;
   margin: 50px auto;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #f9f9f9;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: 'Century Gothic', sans-serif;
 }
 
 h1 {
   text-align: center;
-  font-size: 2rem;
   margin-bottom: 20px;
+  color: #333;
 }
 
 
-/* Dropdowns y botones */
-select,
-button {
+/* Dropdown */
+select {
   width: 100%;
   padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
+  margin: 20px 0;
+  border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
 }
 
 
 
-
 /* Secciones */
+/* Ocultar secciones por defecto */
 .section {
   display: none;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.5s ease;
 }
 
-
+/* Mostrar sección activa */
 .section.active {
   display: block;
+  opacity: 1;
+  transform: translateX(0);
 }
+
+
+
 
 .slide-in-right {
   animation: slideInRight 0.5s forwards;
@@ -78,12 +86,18 @@ button {
 
 
 
-/* Botones */
 button {
-  background-color: #007bff;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 20px 0;
+  background-color: #4CAF50;
   color: white;
+  border: none;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 1rem;
+  transition: background-color 0.3s;
 }
 
 
