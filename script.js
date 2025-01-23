@@ -1,95 +1,81 @@
-// Cargar países desde el archivo Excel
+// Variables globales
+let data = []; // Para almacenar los datos del archivo Excel
+
+// Cargar el archivo Excel y poblar el dropdown de países
 function loadCountries() {
   fetch('SondeoClientes.xlsx')
     .then(response => response.blob())
     .then(blob => {
       const reader = new FileReader();
       reader.onload = function (e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
+        const excelData = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(excelData, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
 
-        // Extraer Países (Columna "C") sin encabezado
-        const countries = new Set();
-        jsonData.slice(1).forEach(row => {
-          const country = row[2]; // Columna C
-          if (country) countries.add(country);
+        // Guardar datos globalmente y poblar el dropdown de países
+        data = jsonData.slice(1); // Ignorar encabezados
+        const countries = [...new Set(data.map(row => row[1]))]; // Columna B (País)
+
+        const paisDropdown = document.getElementById('pais');
+        countries.forEach(country => {
+          const option = document.createElement('option');
+          option.value = country;
+          option.textContent = country;
+          paisDropdown.appendChild(option);
         });
-
-        populateDropdown('#pais', Array.from(countries));
       };
       reader.readAsArrayBuffer(blob);
     })
-    .catch(err => console.error('Error al cargar el archivo:', err));
+    .catch(error => console.error('Error cargando el archivo Excel:', error));
 }
 
-// Cargar clientes con base en el país seleccionado
-function loadClientsForCountry(selectedCountry) {
-  fetch('SondeoClientes.xlsx')
-    .then(response => response.blob())
-    .then(blob => {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+// Filtrar clientes por país seleccionado
+function loadClients() {
+  const selectedCountry = document.getElementById('pais').value;
+  const clientsDropdown = document.getElementById('cliente');
 
-        // Filtrar clientes por país (Columnas B y C)
-        const clients = jsonData
-          .slice(1)
-          .filter(row => row[2] === selectedCountry) // Columna C es el país
-          .map(row => row[1]); // Columna B es el cliente
+  // Limpiar dropdown previo
+  clientsDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
 
-        populateDropdown('#cliente', clients);
-      };
-      reader.readAsArrayBuffer(blob);
-    })
-    .catch(err => console.error('Error al cargar los clientes:', err));
-}
-
-// Poblar dropdown genérico
-function populateDropdown(selector, items) {
-  const dropdown = document.querySelector(selector);
-  dropdown.innerHTML = '<option value="">Seleccione una opción</option>';
-  items.forEach(item => {
+  // Filtrar clientes del país seleccionado
+  const filteredClients = data.filter(row => row[1] === selectedCountry).map(row => row[0]); // Columna A (Cliente)
+  filteredClients.forEach(client => {
     const option = document.createElement('option');
-    option.value = item;
-    option.textContent = item;
-    dropdown.appendChild(option);
+    option.value = client;
+    option.textContent = client;
+    clientsDropdown.appendChild(option);
   });
+
+  // Mostrar el dropdown de clientes y la sección de preguntas
+  document.getElementById('clienteSection').classList.remove('hidden');
+  document.getElementById('preguntas').classList.add('hidden');
 }
 
-// Manejar transición a la siguiente sección
-function transitionToSection(currentSection, nextSection) {
-  const current = document.querySelector(currentSection);
-  const next = document.querySelector(nextSection);
-
-  current.classList.add('slide-out-left');
-  current.addEventListener('animationend', () => {
-    current.style.display = 'none';
-    next.style.display = 'block';
-    next.classList.add('slide-in-right');
-  }, { once: true });
+// Mostrar preguntas al seleccionar un cliente
+function showQuestions() {
+  const selectedClient = document.getElementById('cliente').value;
+  if (selectedClient) {
+    document.getElementById('preguntas').classList.remove('hidden');
+  }
 }
 
-// Eventos del DOM
+// Agregar el efecto de transición entre secciones
+function goToNextSection() {
+  const firstSection = document.getElementById('paisSelection');
+  const secondSection = document.getElementById('clienteSection');
+
+  firstSection.classList.add('slide-left');
+  secondSection.classList.remove('hidden');
+  secondSection.classList.add('slide-in');
+}
+
+// Evento inicial cuando el DOM se carga
 document.addEventListener('DOMContentLoaded', () => {
   loadCountries();
 
-  // Evento para cargar clientes cuando se selecciona un país
-  document.querySelector('#pais').addEventListener('change', event => {
-    const selectedCountry = event.target.value;
-    if (selectedCountry) {
-      loadClientsForCountry(selectedCountry);
-    }
-  });
-
-  // Evento para manejar el botón "Siguiente"
-  document.querySelector('#btnSiguiente').addEventListener('click', () => {
-    transitionToSection('#paisSelection', '#preguntasSection');
-  });
+  document.getElementById('pais').addEventListener('change', loadClients);
+  document.getElementById('cliente').addEventListener('change', showQuestions);
+  document.getElementById('btnSiguiente').addEventListener('click', goToNextSection);
 });
