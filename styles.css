@@ -58,7 +58,15 @@ select {
   display: none;
 }
 
+.pregunta {
+  margin-bottom: 20px; /* Espacio entre las preguntas */
+}
 
+.pregunta label {
+  margin-right: 15px; /* Espacio entre las opciones "Sí" y "No" */
+  font-family: 'Century Gothic', sans-serif;
+  font-size: 1rem;
+}
 
 .slide-in-right {
   animation: slideInRight 0.5s forwards;
