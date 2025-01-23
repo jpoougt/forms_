@@ -6,6 +6,7 @@
   <title>Formulario de Encuesta</title>
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+  <script defer src="script.js"></script>
 </head>
 <body>
 
@@ -13,60 +14,27 @@
   <div class="container">
     <h1>Formulario de Encuesta</h1>
 
-    <!-- Paso 1: Selección del País -->
-    <div id="paisSelection">
+    <!-- Sección 1: Selección de País -->
+    <div id="seccionPais" class="seccion activa">
       <label for="pais">Seleccione un país:</label>
-      <select id="pais" name="pais">
-        <option value="">Seleccionar...</option>
+      <select id="pais">
+        <option value="" disabled selected>Seleccione un país</option>
       </select>
-      <button id="continueBtn" onclick="goToClienteSelection()">Continuar</button>
+      <button id="btnSiguiente">Siguiente</button>
     </div>
 
-    <!-- Paso 2: Selección de Cliente (ocultado por defecto) -->
-    <div id="clienteSelection" style="display: none;">
-      <label for="clientes">Seleccione un cliente:</label>
-      <select id="clientes" name="clientes" onchange="showQuestions()">
-        <option value="">Seleccionar...</option>
+    <!-- Sección 2: Selección de Cliente -->
+    <div id="seccionCliente" class="seccion">
+      <label for="cliente">Seleccione un cliente:</label>
+      <select id="cliente">
+        <option value="" disabled selected>Seleccione un cliente</option>
       </select>
-
-      <!-- Preguntas que se muestran debajo del cliente seleccionado -->
-      <div id="preguntas" style="display: none;">
-        <h3>Responde las preguntas</h3>
-
-        <!-- Pregunta 1 -->
-        <div>
-          <label>¿El cliente utiliza el módulo de campos?</label>
-          <div>
-            <label><input type="radio" name="moduloCampos" value="Si"> Sí</label>
-            <label><input type="radio" name="moduloCampos" value="No"> No</label>
-          </div>
-        </div>
-
-        <!-- Pregunta 2 -->
-        <div>
-          <label>¿El cliente utiliza el módulo de equipo?</label>
-          <div>
-            <label><input type="radio" name="moduloEquipo" value="Si"> Sí</label>
-            <label><input type="radio" name="moduloEquipo" value="No"> No</label>
-          </div>
-        </div>
-
-        <!-- Pregunta 3 -->
-        <div>
-          <label>¿El cliente utiliza el módulo de insumos y materiales?</label>
-          <div>
-            <label><input type="radio" name="moduloInsumos" value="Si"> Sí</label>
-            <label><input type="radio" name="moduloInsumos" value="No"> No</label>
-          </div>
-        </div>
+      <div id="preguntas">
+        <!-- Aquí aparecerán las preguntas -->
       </div>
-
-      <!-- Botón para retroceder y corregir la selección de país -->
-      <button onclick="goBackToPaisSelection()">Volver</button>
+      <button id="btnVolver">Volver</button>
     </div>
   </div>
 
-  <!-- Vinculamos el archivo de JavaScript -->
-  <script src="script.js"></script>
 </body>
 </html>
