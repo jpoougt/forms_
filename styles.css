@@ -59,7 +59,7 @@ select {
 }
 
 .pregunta {
-  margin-bottom: 20px; /* Espacio entre las preguntas */
+  margin-bottom: 40px; /* Espacio entre las preguntas */
 }
 
 .pregunta label {
