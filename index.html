@@ -14,23 +14,20 @@
   <div class="container">
     <h1>Formulario de Encuesta</h1>
 
-    <!-- Sección 1: Selección de País -->
-    <div id="seccionPais" class="seccion activa">
-      <label for="pais">Seleccione un país:</label>
-      <select id="pais">
-        <option value="" disabled selected>Seleccione un país</option>
-      </select>
-      <button id="btnSiguiente">Siguiente</button>
-    </div>
+<!-- Selección de País -->
+<div id="paisSelection" class="section active">
+  <label for="pais">Seleccione un país:</label>
+  <select id="pais" name="pais"></select>
+  <button id="btnSiguiente">Siguiente</button>
+</div>
+
 
     <!-- Sección 2: Selección de Cliente -->
-    <div id="seccionCliente" class="seccion">
-      <label for="cliente">Seleccione un cliente:</label>
-      <select id="cliente">
-        <option value="" disabled selected>Seleccione un cliente</option>
-      </select>
-      <div id="preguntas">
-        <!-- Aquí aparecerán las preguntas -->
+<div id="preguntasSection" class="section">
+  <h2>Preguntas</h2>
+  <!-- Aquí irán las preguntas -->
+</div>
+    
       </div>
       <button id="btnVolver">Volver</button>
     </div>
