@@ -9,29 +9,33 @@
   <script defer src="script.js"></script>
 </head>
 <body>
-
-  <!-- Contenedor principal -->
   <div class="container">
     <h1>Formulario de Encuesta</h1>
 
-<!-- Selección de País -->
-<div id="paisSelection" class="section active">
-  <label for="pais">Seleccione un país:</label>
-  <select id="pais" name="pais"></select>
-  <button id="btnSiguiente">Siguiente</button>
-</div>
+    <!-- Sección País -->
+    <div id="paisSelection">
+      <label for="pais">Seleccione un país:</label>
+      <select id="pais">
+        <option value="">Seleccione un país</option>
+      </select>
+      <button id="btnSiguiente">Siguiente</button>
+    </div>
 
+    <!-- Sección Cliente -->
+    <div id="clienteSection" class="hidden">
+      <label for="cliente">Seleccione un cliente:</label>
+      <select id="cliente">
+        <option value="">Seleccione un cliente</option>
+      </select>
+    </div>
 
-    <!-- Sección 2: Selección de Cliente -->
-<div id="preguntasSection" class="section">
-  <h2>Preguntas</h2>
-  <!-- Aquí irán las preguntas -->
-</div>
-    
-      </div>
-      <button id="btnVolver">Volver</button>
+    <!-- Sección Preguntas -->
+    <div id="preguntas" class="hidden">
+      <h2>Preguntas</h2>
+      <p>Pregunta 1: ¿...?</p>
+      <p>Pregunta 2: ¿...?</p>
     </div>
   </div>
-
 </body>
 </html>
+
