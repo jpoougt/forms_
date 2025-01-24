@@ -38,7 +38,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.2s ease;
   cursor: pointer;
-  visibility: hidden; /* Se oculta por defecto */
+  visibility: hidden;
   z-index: 1000;
 }
 
@@ -65,7 +65,7 @@
   z-index: 1000;
 }
 
-/* Mostrar los botones SOLO en la sección de clientes */
+/* ✅ Mostrar los botones SOLO en la sección de clientes */
 .seccion-activa .btn-volver,
 .seccion-activa .btn-siguiente {
   visibility: visible;
