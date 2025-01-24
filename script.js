@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function switchSection(from, to, direction = 'left') {
         const fromSection = document.getElementById(from);
         const toSection = document.getElementById(to);
-        const backButton = document.getElementById('backBtn');
+        const backButton = document.getElementById('btnVolver');
 
         fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
         fromSection.style.opacity = '0';
@@ -79,9 +79,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Mostrar u ocultar el botón "Volver" solo en la selección de clientes
             if (to === 'seccionCliente') {
-                backButton.style.display = 'flex';
+                backButton.style.visibility = 'visible';
             } else {
-                backButton.style.display = 'none';
+                backButton.style.visibility = 'hidden';
             }
 
             setTimeout(() => {
@@ -95,6 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const nextBtn = document.getElementById('nextBtn');
     const backBtn = document.getElementById('btnVolver');
     const siguienteBtn = document.getElementById('btnSiguiente');
+    const clientesDropdown = document.getElementById('clientes');
+    const preguntasDiv = document.getElementById('preguntas');
 
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
@@ -108,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const clientesOrdenados = (clientesPorPais[paisSeleccionado] || []).sort();
 
             // Llenar el dropdown de clientes ordenados
-            const clientesDropdown = document.getElementById('clientes');
             clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
             clientesOrdenados.forEach(cliente => {
                 const option = document.createElement('option');
@@ -116,6 +117,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 option.textContent = cliente;
                 clientesDropdown.appendChild(option);
             });
+
+            // ✅ Aseguramos que la sección de clientes y dropdown sean visibles
+            clientesDropdown.style.display = 'block';
+            preguntasDiv.style.display = 'none'; // Ocultar preguntas hasta seleccionar cliente
 
             switchSection('seccionPais', 'seccionCliente', 'left');
         });
@@ -126,8 +131,8 @@ document.addEventListener("DOMContentLoaded", function () {
     if (backBtn) {
         backBtn.addEventListener('click', () => {
             // Ocultar todas las preguntas y reiniciar respuestas
-            document.getElementById('preguntas').style.display = 'none';
-            document.getElementById('clientes').value = "";
+            preguntasDiv.style.display = 'none';
+            clientesDropdown.value = "";
             document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
                 input.checked = false;
             });
@@ -150,6 +155,49 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("❌ btnSiguiente no encontrado");
     }
+
+    // 📌 Manejo del dropdown de clientes
+    clientesDropdown.addEventListener('change', () => {
+        const clienteSeleccionado = clientesDropdown.value;
+
+        // ✅ Si hay cliente seleccionado, mostrar preguntas
+        if (clienteSeleccionado) {
+            preguntasDiv.style.display = 'block';
+        } else {
+            preguntasDiv.style.display = 'none';
+        }
+    });
+
+    // 📌 Mostrar preguntas dependientes con efecto de despliegue
+    function setupDependentQuestions(parentName, dependentId) {
+        document.querySelectorAll(`input[name="${parentName}"]`).forEach(radio => {
+            radio.addEventListener('change', function () {
+                const preguntaDependiente = document.getElementById(dependentId);
+
+                if (this.value === 'si') {
+                    preguntaDependiente.style.display = 'block';
+                    preguntaDependiente.style.opacity = '0';
+                    setTimeout(() => {
+                        preguntaDependiente.style.opacity = '1';
+                        preguntaDependiente.style.transform = 'translateY(0)';
+                    }, 100);
+                } else {
+                    preguntaDependiente.style.opacity = '0';
+                    setTimeout(() => {
+                        preguntaDependiente.style.display = 'none';
+                        preguntaDependiente.style.transform = 'translateY(-10px)';
+                    }, 200);
+                }
+            });
+        });
+    }
+
+    // Configurar dependencias de preguntas
+    setupDependentQuestions('pregunta2', 'pregunta2_1');
+    setupDependentQuestions('pregunta3', 'pregunta3_1');
+    setupDependentQuestions('pregunta3', 'pregunta3_2');
+    setupDependentQuestions('pregunta4', 'pregunta4_1');
+    setupDependentQuestions('pregunta4', 'pregunta4_2');
 
     // Cargar países al iniciar
     loadCountries();
