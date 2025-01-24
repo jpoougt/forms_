@@ -22,50 +22,32 @@
       <button id="nextBtn">Siguiente</button>
     </div>
 
-    <!-- Sección 2: Selección del Cliente y Preguntas -->
+    <!-- Sección 2: Selección del Cliente -->
     <div id="seccionCliente" class="section">
       <label for="clientes">Seleccione un cliente:</label>
       <select id="clientes" name="clientes">
         <option value="">Seleccione un cliente</option>
       </select>
-    
+      <button id="backBtn">Volver</button>
     </div>
 
-      <!-- Contenedor de preguntas -->
-      <div id="preguntas" style="display: none;">
-        
-        <h2 style="margin-bottom: 30px;">Auditoría de funcionalidades</h2>
+    <!-- Contenedor de preguntas -->
+    <div id="preguntas" class="section">
+      <h2 style="margin-bottom: 30px;">Auditoría de funcionalidades</h2>
 
-
-        <div class="pregunta">
+      <div class="pregunta">
         <p>¿El cliente registra Campos?</p>
-        <label>
-      <input type="radio" name="pregunta1" value="si">
-      Sí
-    </label>
-    <label>
-      <input type="radio" name="pregunta1" value="no">
-      No
-    </label>
-    </div>
-
-     <div class="pregunta">
-        <p>¿El cliente registra Insumos y Materiales?</p>
-         <label>
-      <input type="radio" name="pregunta2" value="si">
-      Sí
-    </label>
-    <label>
-      <input type="radio" name="pregunta2" value="no">
-      No
-    </label>
+        <label><input type="radio" name="pregunta1" value="si"> Sí</label>
+        <label><input type="radio" name="pregunta1" value="no"> No</label>
       </div>
-    
-        <button id="backBtn">Volver</button>   
+
+      <div class="pregunta">
+        <p>¿El cliente registra Insumos y Materiales?</p>
+        <label><input type="radio" name="pregunta2" value="si"> Sí</label>
+        <label><input type="radio" name="pregunta2" value="no"> No</label>
       </div>
     </div>
   </div>
-
 
   <script src="script.js"></script>
 </body>
