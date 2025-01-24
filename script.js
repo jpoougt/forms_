@@ -1,7 +1,7 @@
 // Variables globales
 let clientesPorPais = {}; // Objeto para almacenar los clientes por país
 
-// Cargar países desde el archivo Excel
+// Cargar países desde el archivo Excel y ordenarlos alfabéticamente
 function loadCountries() {
   fetch('SondeoClientes.xlsx')
     .then(response => response.blob())
@@ -28,9 +28,12 @@ function loadCountries() {
           }
         });
 
-        // Llenar el dropdown de países
+        // Convertir a array y ordenar alfabéticamente
+        const sortedCountries = [...countries].sort();
+
+        // Llenar el dropdown de países ordenado
         const paisDropdown = document.getElementById('pais');
-        countries.forEach(country => {
+        sortedCountries.forEach(country => {
           const option = document.createElement('option');
           option.value = country;
           option.textContent = country;
@@ -47,12 +50,12 @@ function switchSection(from, to, direction = 'left') {
   const fromSection = document.getElementById(from);
   const toSection = document.getElementById(to);
 
-  // Ocultar la sección actual
+  // Ocultar la sección actual con animación
   fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
   fromSection.style.opacity = '0';
 
   setTimeout(() => {
-    fromSection.style.display = 'none'; // Asegurar que la sección anterior se oculta completamente
+    fromSection.style.display = 'none'; // Ocultar completamente
     toSection.style.display = 'block';
     setTimeout(() => {
       toSection.style.opacity = '1';
@@ -61,7 +64,7 @@ function switchSection(from, to, direction = 'left') {
   }, 500);
 }
 
-// Botón "Siguiente"
+// Botón "Siguiente" - Muestra los clientes del país seleccionado y avanza de sección
 document.getElementById('nextBtn').addEventListener('click', () => {
   const paisSeleccionado = document.getElementById('pais').value;
   if (!paisSeleccionado) {
@@ -69,10 +72,13 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     return;
   }
 
-  // Llenar el dropdown de clientes
+  // Obtener la lista de clientes y ordenarlos alfabéticamente
+  const clientesOrdenados = (clientesPorPais[paisSeleccionado] || []).sort();
+
+  // Llenar el dropdown de clientes ordenados
   const clientesDropdown = document.getElementById('clientes');
   clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
-  clientesPorPais[paisSeleccionado].forEach(cliente => {
+  clientesOrdenados.forEach(cliente => {
     const option = document.createElement('option');
     option.value = cliente;
     option.textContent = cliente;
@@ -85,7 +91,7 @@ document.getElementById('nextBtn').addEventListener('click', () => {
   switchSection('seccionPais', 'seccionCliente', 'left');
 });
 
-// Botón "Volver"
+// Botón "Volver" - Regresa a la selección de país
 document.getElementById('backBtn').addEventListener('click', () => {
   // Ocultar las preguntas y limpiar la selección de cliente
   document.getElementById('preguntas').style.display = 'none';
