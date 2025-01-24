@@ -93,15 +93,22 @@ button:hover {
 .pregunta {
   margin-bottom: 20px; /* Mayor espaciado entre preguntas */
   display: flex;
-  flex-direction: column; /* Organiza los elementos en columna */
+  flex-direction: column; /* Mantiene la pregunta y respuestas en columna */
   align-items: flex-start; /* Alinea la pregunta a la izquierda */
 }
 
-/* Opciones "Sí" y "No" en línea horizontal */
-/* Ajuste de etiquetas dentro de cada pregunta */
-.pregunta label {
-  display: block; /* Cada opción ocupará una línea completa */
+/* Ajuste para alinear las opciones en una fila horizontal */
+.pregunta div {
+  display: flex; /* Usa flexbox para que las opciones estén en la misma línea */
+  gap: 15px; /* Espacio entre las opciones Sí y No */
   margin-top: 8px; /* Espaciado entre la pregunta y las opciones */
+}
+
+/* Opciones "Sí" y "No" alineadas correctamente */
+.pregunta label {
+  display: flex; /* Mantiene alineada la etiqueta con el input */
+  align-items: center; /* Centra el contenido verticalmente */
+  gap: 5px; /* Espacio entre el radio button y el texto */
   font-size: 1rem;
 }
 
