@@ -78,24 +78,14 @@ document.addEventListener("DOMContentLoaded", function () {
             toSection.style.display = 'block';
 
             // Mostrar u ocultar el botón "Volver" solo en la selección de clientes
-            if (to === 'seccionCliente') {
+            if (to === 'seccionCliente' || to === 'seccionActividades') {
                 backButton.style.visibility = 'visible';
             } else {
                 backButton.style.visibility = 'hidden';
             }
-/// ESTE CODIGO MUESTRA EL BOTÓN SIGUIENTE EN LA SECCION CORRECTA.
-            function switchSection(from, to) {
-  document.getElementById(from).style.display = "none";
-  document.getElementById(to).style.display = "block";
 
-  // Mostrar botón siguiente solo en la sección de clientes
-  if (to === "seccionCliente") {
-    document.getElementById("btnSiguiente").style.visibility = "visible";
-  } else {
-    document.getElementById("btnSiguiente").style.visibility = "hidden";
-  }
-}
-
+            // ✅ Mostrar botón siguiente solo en la sección de clientes
+            document.getElementById("btnSiguiente").style.visibility = (to === "seccionCliente") ? "visible" : "hidden";
 
             setTimeout(() => {
                 toSection.style.opacity = '1';
@@ -163,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (siguienteBtn) {
         siguienteBtn.addEventListener('click', () => {
-            alert("🚧 Sección en construcción. Pronto podrás continuar.");
+            switchSection('seccionCliente', 'seccionActividades', 'left');
         });
     } else {
         console.error("❌ btnSiguiente no encontrado");
@@ -211,6 +201,12 @@ document.addEventListener("DOMContentLoaded", function () {
     setupDependentQuestions('pregunta3', 'pregunta3_2');
     setupDependentQuestions('pregunta4', 'pregunta4_1');
     setupDependentQuestions('pregunta4', 'pregunta4_2');
+    setupDependentQuestions('pregunta6', 'pregunta6_1');
+
+    // 📌 Manejo del botón "Finalizar"
+    document.getElementById('btnFinalizar').addEventListener('click', () => {
+        alert("🎉 Encuesta finalizada. ¡Gracias por su participación!");
+    });
 
     // Cargar países al iniciar
     loadCountries();
