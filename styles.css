@@ -19,6 +19,38 @@
   overflow: hidden; /* Evita que el contenido sobrepase al hacer la transición */
 }
 
+
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+
+select {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+select:focus {
+  border-color: #28a745;
+  outline: none;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+#clientes {
+  margin-bottom: 20px;
+}
+
+
 /* Secciones con transición de barrido */
 .section {
   display: none;
@@ -60,13 +92,15 @@
   font-size: 1.3rem;
   font-weight: bold;
   border-radius: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+
 
 /* Preguntas */
 .pregunta {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -87,30 +121,28 @@
   font-size: 1rem;
   cursor: pointer;
 }
-
-/* Botones de selección de productos */
-.opciones-productos {
+.pregunta .opciones-checkbox {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
+  flex-direction: column; /* Opciones apiladas */
+  gap: 10px;
   margin-top: 10px;
 }
-
-.btn-producto {
-  background-color: #E0E0E0;
-  border: 2px solid #bbb;
-  padding: 10px;
-  border-radius: 8px;
+.pregunta .opciones-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.btn-producto.selected {
-  background-color: #4CAF50;
-  color: white;
-  border-color: #388E3C;
+/* Ajuste de los radio buttons y checkboxes */
+.pregunta .opciones input[type="radio"],
+.pregunta .opciones-checkbox input[type="checkbox"] {
+  cursor: pointer;
+  transform: scale(1.2);
 }
+
+
 
 /* Botón "Volver" */
 .boton-volver {
@@ -126,10 +158,14 @@
   border-radius: 50%;
   font-size: 1.5rem;
   cursor: pointer;
-  display: flex;
+  display: none; /* Se oculta por defecto */
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.seccion-activa .boton-volver {
+  display: flex;
 }
 
 .boton-volver:hover {
@@ -144,6 +180,6 @@
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
-}
+  }
 }
 
