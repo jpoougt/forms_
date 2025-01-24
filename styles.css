@@ -41,9 +41,7 @@ select {
 }
 
 /* Quitar cualquier flecha personalizada previa */
-select::after {
-  content: none;
-}
+
 
 /* Mejorar el efecto cuando el usuario hace clic */
 select:focus {
@@ -153,58 +151,44 @@ select:focus {
   cursor: pointer;
 }
 
-/* 📌 Contenedor de botones de navegación */
-.contenedor-botones {
-  display: flex;
-  justify-content: space-between; /* Separa los botones a los extremos */
-  margin-top: 20px; /* Espacio entre las preguntas y los botones */
-}
-
-/* 📌 Estilo base de los botones */
-.btn-navegacion {
-  width: 45%;
-  padding: 12px;
-  font-size: 1rem;
-  font-weight: bold;
+/* Botón "Volver" fuera del contenedor principal */
+.boton-volver {
+  position: absolute;
+  left: -100px; /* Separación de 100px desde el contenedor */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background-color: #f44336;
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 50%;
+  font-size: 1.5rem;
   cursor: pointer;
+  display: none; /* Se oculta por defecto */
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* 📌 Botón Volver (izquierda) */
-.btn-volver {
-  background-color: #2D3748; /* azul */
-  color: white;
+/* Mostrar el botón SOLO en la sección de selección de clientes */
+.seccion-activa .boton-volver {
+  display: flex;
 }
 
-.btn-volver:hover {
+/* Efecto hover */
+.boton-volver:hover {
   background-color: #d32f2f;
-  transform: scale(1.05);
+  transform: translateY(-50%) scale(1.1);
 }
 
-/* 📌 Botón Siguiente (derecha) */
-.btn-siguiente {
-  background-color: #28a745; /* Verde */
-  color: white;
-}
-
-.btn-siguiente:hover {
-  background-color: #218838;
-  transform: scale(1.05);
-}
-
-
-/* 📌 Preguntas dependientes (Ocultas por defecto con transición de barrido) */
-.dependiente {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out;
-}
-
-/* 📌 Mostrar preguntas dependientes con efecto de deslizamiento */
-.dependiente.activa {
-  max-height: 300px; /* Ajusta el tamaño según el contenido */
-  opacity: 1;
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+  .boton-volver {
+    left: 10px; /* Se mueve dentro de la pantalla en móviles */
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
 }
