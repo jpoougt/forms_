@@ -140,6 +140,50 @@
 
       </div> <!-- Fin de preguntas -->
    </div> <!-- Fin de Sección Cliente -->
+<!-- 📌 Inserta aquí la nueva sección -->
+<div id="seccionActividades" class="section">
+  <h2 class="categoria-preguntas">Registro de actividades</h2>
+
+  <!-- Pregunta 6 -->
+  <div class="pregunta">
+    <p>¿El cliente registra labores agrícolas?</p>
+    <div class="opciones">
+      <label><input type="radio" name="pregunta6" value="si"> Sí</label>
+      <label><input type="radio" name="pregunta6" value="no"> No</label>
+    </div>
+  </div>
+
+  <!-- Pregunta 6.1 (Depende de pregunta6) -->
+  <div class="pregunta dependiente" id="pregunta6_1" style="display: none;">
+    <p>¿Qué tipo de labores registra?</p>
+    <div class="opciones-checkbox">
+      <label><input type="checkbox" name="labores" value="siembra"> Siembra</label>
+      <label><input type="checkbox" name="labores" value="cosecha"> Cosecha</label>
+      <label><input type="checkbox" name="labores" value="fertilizacion"> Fertilización</label>
+      <label><input type="checkbox" name="labores" value="fumigacion"> Fumigación</label>
+      <label><input type="checkbox" name="labores" value="riego"> Riego</label>
+    </div>
+  </div>
+
+  <!-- Pregunta 7 -->
+  <div class="pregunta">
+    <p>¿El cliente asigna responsables a las actividades?</p>
+    <div class="opciones">
+      <label><input type="radio" name="pregunta7" value="si"> Sí</label>
+      <label><input type="radio" name="pregunta7" value="no"> No</label>
+    </div>
+  </div>
+
+  <!-- Botón para regresar a la selección de clientes -->
+  <button id="btnVolverClientes" class="btn-navegacion btn-volver">&#8592;</button>
+
+  <!-- Botón para continuar a la siguiente sección o finalizar -->
+  <button id="btnFinalizar" class="btn-navegacion btn-siguiente">Finalizar &#8594;</button>
+
+</div> <!-- Fin de Sección Actividades -->
+
+
+    
   </div> <!-- Fin de Contenedor -->
 
   <script src="script.js"></script>
