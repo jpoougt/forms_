@@ -56,18 +56,44 @@ button:hover {
   background-color: #45a049;
 }
 
-/* Efecto de transición entre secciones */
+/* Estilos del select para que se vea bien en todos los navegadores */
+select {
+  width: 100%; /* Ocupará el ancho del contenedor */
+  padding: 8px; /* Espaciado interno adecuado */
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* Mejorar el estilo cuando está enfocado */
+select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+}
+
+/* Secciones - Efecto de transición */
 .section {
   display: none;
   opacity: 0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
   transform: translateX(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
+/* Mostrar sección activa con efecto */
 .section.active {
   display: block;
   opacity: 1;
   transform: translateX(0);
+}
+
+/* Asegurar que la sección de clientes también sea visible */
+#seccionCliente {
+  display: none; /* Se oculta hasta que sea activada */
+  opacity: 0;
+  transform: translateX(100%);
 }
 
 /* Botón de retorno */
@@ -85,19 +111,9 @@ button:hover {
   margin: 15px 0;
 }
 
-
-
-select {
-  appearance: auto; /* Esto mantiene el estilo predeterminado */
-  width: auto; /* Se ajusta al contenido */
-  padding: 5px; /* Espaciado estándar */
-  font-size: inherit; /* Mantiene el tamaño de la fuente del navegador */
-  border: 1px solid #ccc; /* Mantiene un borde mínimo */
-  border-radius: 5px; /* Borde sutilmente redondeado */
-}
-
-select:focus {
-  outline: none;
-  border-color: #4CAF50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+/* Asegurar que el dropdown de clientes sea visible al activar su sección */
+#clientes {
+  display: block;
+  opacity: 1;
+  visibility: visible;
 }
