@@ -47,11 +47,12 @@ function switchSection(from, to, direction = 'left') {
   const fromSection = document.getElementById(from);
   const toSection = document.getElementById(to);
 
+  // Ocultar la sección actual
   fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
   fromSection.style.opacity = '0';
 
   setTimeout(() => {
-    fromSection.style.display = 'none';
+    fromSection.style.display = 'none'; // Asegurar que la sección anterior se oculta completamente
     toSection.style.display = 'block';
     setTimeout(() => {
       toSection.style.opacity = '1';
@@ -78,14 +79,26 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     clientesDropdown.appendChild(option);
   });
 
+  // Ocultar preguntas al cambiar de país
+  document.getElementById('preguntas').style.display = 'none';
+
   switchSection('seccionPais', 'seccionCliente', 'left');
 });
 
 // Botón "Volver"
 document.getElementById('backBtn').addEventListener('click', () => {
-  // Ocultar las preguntas y limpiar las respuestas
+  // Ocultar las preguntas y limpiar la selección de cliente
   document.getElementById('preguntas').style.display = 'none';
-  
+  document.getElementById('clientes').value = "";
+
+  // Resetear las respuestas seleccionadas
+  document.querySelectorAll('input[type="radio"]').forEach(input => {
+    input.checked = false;
+  });
+
+  switchSection('seccionCliente', 'seccionPais', 'right');
+});
+
 // Manejo de la selección de cliente para mostrar preguntas
 document.getElementById('clientes').addEventListener('change', () => {
   const clienteSeleccionado = document.getElementById('clientes').value;
@@ -98,30 +111,5 @@ document.getElementById('clientes').addEventListener('change', () => {
   }
 });
 
-// Asegurar que las preguntas SIEMPRE se oculten cuando volvemos a la pantalla de selección de país
-document.getElementById('backBtn').addEventListener('click', () => {
-  document.getElementById('preguntas').style.display = 'none';
-  document.getElementById('clientes').value = ""; // Resetear selección de cliente
- 
-  // Resetear las respuestas marcadas
-  document.querySelectorAll('input[type="radio"]').forEach(input => {
-    input.checked = false;
-  });
-
-  // Regresar a la sección de selección de país
-  switchSection('seccionCliente', 'seccionPais', 'right');
-});
-
-// Mostrar preguntas
-document.getElementById('clientes').addEventListener('change', () => {
-  const clienteSeleccionado = document.getElementById('clientes').value;
-  const preguntasDiv = document.getElementById('preguntas');
-
-  if (clienteSeleccionado) {
-    preguntasDiv.style.display = 'block'; // Muestra las preguntas SOLO si hay un cliente seleccionado
-  } else {
-    preguntasDiv.style.display = 'none'; // Oculta las preguntas si se deselecciona
-  }
-});
 // Inicializar
 loadCountries();
