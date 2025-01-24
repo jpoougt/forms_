@@ -83,15 +83,29 @@ document.getElementById('nextBtn').addEventListener('click', () => {
 
 // Botón "Volver"
 document.getElementById('backBtn').addEventListener('click', () => {
+  // Ocultar las preguntas y limpiar las respuestas
   document.getElementById('preguntas').style.display = 'none';
-  document.getElementById('clientes').value = "";
+  document.getElementById('clientes').value = ""; // Reinicia la selección de cliente
+
+  // Resetear las respuestas marcadas
+  document.querySelectorAll('input[type="radio"]').forEach(input => {
+    input.checked = false;
+  });
+
+  // Regresar a la sección de selección de país
   switchSection('seccionCliente', 'seccionPais', 'right');
 });
 
 // Mostrar preguntas
 document.getElementById('clientes').addEventListener('change', () => {
-  document.getElementById('preguntas').style.display = 'block';
-});
+  const clienteSeleccionado = document.getElementById('clientes').value;
+  const preguntasDiv = document.getElementById('preguntas');
 
+  if (clienteSeleccionado) {
+    preguntasDiv.style.display = 'block'; // Muestra las preguntas SOLO si hay un cliente seleccionado
+  } else {
+    preguntasDiv.style.display = 'none'; // Oculta las preguntas si se deselecciona
+  }
+});
 // Inicializar
 loadCountries();
