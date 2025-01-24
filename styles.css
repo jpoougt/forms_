@@ -174,7 +174,7 @@ select:focus {
 
 /* 📌 Botón Volver (izquierda) */
 .btn-volver {
-  background-color: #f44336; /* Rojo */
+  background-color: #2D3748; /* azul */
   color: white;
 }
 
