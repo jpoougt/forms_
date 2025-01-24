@@ -85,12 +85,15 @@ button:hover {
   margin: 15px 0;
 }
 
-/* Estilo para el dropdown y espaciado */
+
+
 select {
-  appearance: none;
-  background-color: #f9f9f9;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  appearance: auto; /* Esto mantiene el estilo predeterminado */
+  width: auto; /* Se ajusta al contenido */
+  padding: 5px; /* Espaciado estándar */
+  font-size: inherit; /* Mantiene el tamaño de la fuente del navegador */
+  border: 1px solid #ccc; /* Mantiene un borde mínimo */
+  border-radius: 5px; /* Borde sutilmente redondeado */
 }
 
 select:focus {
