@@ -73,7 +73,6 @@ function switchSection(from, to, direction = 'left') {
   }, 500);
 }
 
-
 // Botón "Siguiente" - Muestra los clientes del país seleccionado y avanza de sección
 document.getElementById('nextBtn').addEventListener('click', () => {
   const paisSeleccionado = document.getElementById('pais').value;
@@ -108,7 +107,7 @@ document.getElementById('backBtn').addEventListener('click', () => {
   document.getElementById('clientes').value = "";
 
   // Resetear las respuestas seleccionadas
-  document.querySelectorAll('input[type="radio"]').forEach(input => {
+  document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
     input.checked = false;
   });
 
@@ -125,6 +124,32 @@ document.getElementById('clientes').addEventListener('change', () => {
   } else {
     preguntasDiv.style.display = 'none'; // Ocultar si no hay cliente
   }
+});
+
+// Manejo de preguntas dependientes
+document.querySelectorAll('input[name="pregunta2"]').forEach(radio => {
+  radio.addEventListener('change', function () {
+    const subPregunta = document.getElementById('pregunta2_1');
+    subPregunta.style.display = this.value === 'si' ? 'block' : 'none';
+  });
+});
+
+document.querySelectorAll('input[name="pregunta3"]').forEach(radio => {
+  radio.addEventListener('change', function () {
+    const subPreguntas = document.querySelectorAll('.pregunta3_dependientes');
+    subPreguntas.forEach(pregunta => {
+      pregunta.style.display = this.value === 'si' ? 'block' : 'none';
+    });
+  });
+});
+
+document.querySelectorAll('input[name="pregunta4"]').forEach(radio => {
+  radio.addEventListener('change', function () {
+    const subPreguntas = document.querySelectorAll('.pregunta4_dependientes');
+    subPreguntas.forEach(pregunta => {
+      pregunta.style.display = this.value === 'si' ? 'block' : 'none';
+    });
+  });
 });
 
 // Inicializar
