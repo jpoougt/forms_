@@ -159,5 +159,28 @@ document.querySelectorAll('.btn-producto').forEach(button => {
   });
 });
 
+// 📌 Manejo del botón "Volver"
+document.getElementById('btnVolver').addEventListener('click', () => {
+  // Resetear todo al regresar a la selección de país
+  document.getElementById('preguntas').style.display = 'none';
+  document.getElementById('clientes').value = "";
+  document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+    input.checked = false;
+  });
+
+  // Ocultar preguntas dependientes
+  document.querySelectorAll('.dependiente').forEach(pregunta => {
+    pregunta.style.display = 'none';
+  });
+
+  switchSection('seccionCliente', 'seccionPais', 'right');
+});
+
+// 📌 Manejo del botón "Siguiente" (Por ahora solo alerta)
+document.getElementById('btnSiguiente').addEventListener('click', () => {
+  alert("🚧 Sección en construcción. Pronto podrás continuar.");
+});
+
+
 // Inicializar
 loadCountries();
