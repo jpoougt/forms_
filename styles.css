@@ -6,7 +6,6 @@
   font-family: 'Century Gothic', sans-serif;
 }
 
-/* Contenedor principal */
 .container {
   width: 80%;
   max-width: 600px;
@@ -16,6 +15,17 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
+}
+
+/* Dropdowns */
+select {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  cursor: pointer;
 }
 
 /* Títulos */
@@ -52,8 +62,6 @@ h1 {
 .pregunta .opciones {
   display: flex;
   gap: 20px;
-  align-items: center;
-  margin-top: 10px;
 }
 
 .pregunta .opciones label {
@@ -97,15 +105,12 @@ h1 {
   height: 50px;
   background-color: #f44336;
   color: white;
-  border: none;
   border-radius: 50%;
   font-size: 1.5rem;
   cursor: pointer;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 /* Efecto hover del botón */
