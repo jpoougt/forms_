@@ -91,18 +91,18 @@ button:hover {
 
 /* Espaciado entre preguntas */
 .pregunta {
-  margin: 15px 0;
+  margin-bottom: 20px; /* Mayor espaciado entre preguntas */
   display: flex;
-  align-items: center;
-  gap: 20px;
+  flex-direction: column; /* Organiza los elementos en columna */
+  align-items: flex-start; /* Alinea la pregunta a la izquierda */
 }
 
 /* Opciones "Sí" y "No" en línea horizontal */
+/* Ajuste de etiquetas dentro de cada pregunta */
 .pregunta label {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-right: 15px;
+  display: block; /* Cada opción ocupará una línea completa */
+  margin-top: 8px; /* Espaciado entre la pregunta y las opciones */
+  font-size: 1rem;
 }
 
 /* Asegurar que el dropdown de clientes sea visible */
