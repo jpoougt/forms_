@@ -97,7 +97,7 @@ document.getElementById('backBtn').addEventListener('click', () => {
   });
 
   // Ir a la segunda sección
-  switchSection('section1', 'section2');
+  switchSection('seccionPais', 'seccionCliente');
 });
 
 // Mostrar preguntas al seleccionar un cliente
