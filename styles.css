@@ -222,3 +222,24 @@ select:focus {
   cursor: pointer;
 }
 
+
+#btnVolverActividades {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#btnVolverActividades:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+
