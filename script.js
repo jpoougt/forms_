@@ -173,6 +173,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 📌 Mostrar preguntas dependientes con efecto de despliegue
     function setupDependentQuestions(parentName, dependentId) {
+     
+        
+        
         document.querySelectorAll(`input[name="${parentName}"]`).forEach(radio => {
             radio.addEventListener('change', function () {
                 const preguntaDependiente = document.getElementById(dependentId);
@@ -194,6 +197,22 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+
+    const btnVolverActividades = document.getElementById('btnVolverActividades');
+if (btnVolverActividades) {
+    btnVolverActividades.addEventListener('click', () => {
+        console.log("↩️ Volviendo a la Sección de Cliente");
+
+        // Ocultar la Sección 3 (Registro de Actividades)
+        document.getElementById('seccionActividades').style.display = "none";
+
+        // Mostrar la Sección 2 (Selección de Cliente)
+        document.getElementById('seccionCliente').style.display = "block";
+    });
+} else {
+    console.error("❌ btnVolverActividades no encontrado");
+}
+    
 
     // Configurar dependencias de preguntas
     setupDependentQuestions('pregunta2', 'pregunta2_1');
