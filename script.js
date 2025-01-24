@@ -43,21 +43,23 @@ function loadCountries() {
 }
 
 // Función para manejar la transición entre secciones
-function switchSection(from, to) {
+function switchSection(from, to, direction = 'left') {
   const fromSection = document.getElementById(from);
   const toSection = document.getElementById(to);
 
-  fromSection.classList.remove('active'); // Ocultar la sección actual
-  fromSection.style.transform = 'translateX(-100%)'; // Deslizar hacia la izquierda
+  if (direction === 'left') {
+    fromSection.style.transform = 'translateX(-100%)'; // Mover hacia la izquierda
+    toSection.style.transform = 'translateX(100%)'; // Asegurar que la siguiente sección esté fuera de vista
+  } else {
+    fromSection.style.transform = 'translateX(100%)'; // Mover hacia la derecha
+    toSection.style.transform = 'translateX(-100%)'; // Asegurar que la anterior sección esté fuera de vista
+  }
 
   setTimeout(() => {
     fromSection.style.display = 'none';
     toSection.style.display = 'block';
-    toSection.style.transform = 'translateX(100%)'; // Posición inicial fuera de la vista
-
     setTimeout(() => {
-      toSection.classList.add('active');
-      toSection.style.transform = 'translateX(0)'; // Animación de entrada
+      toSection.style.transform = 'translateX(0)'; // Volver a su posición inicial
     }, 50);
   }, 500);
 }
@@ -81,27 +83,16 @@ document.getElementById('nextBtn').addEventListener('click', () => {
   });
 
   // Ir a la segunda sección
-  switchSection('seccionPais', 'seccionCliente');
+  switchSection('seccionPais', 'seccionCliente', 'left');
 });
 
 // Manejo del botón "Volver"
 document.getElementById('backBtn').addEventListener('click', () => {
-  const seccionPais = document.getElementById('seccionPais');
-  const seccionCliente = document.getElementById('seccionCliente');
+  // Ocultar la sección de preguntas al regresar
+  document.getElementById('preguntas').style.display = 'none';
+  document.getElementById('clientes').value = ""; // Reiniciar selección de cliente
 
-  seccionCliente.classList.remove('active');
-  seccionCliente.style.transform = 'translateX(100%)';
-
-  setTimeout(() => {
-    seccionCliente.style.display = 'none';
-    seccionPais.style.display = 'block';
-    seccionPais.style.transform = 'translateX(-100%)';
-
-    setTimeout(() => {
-      seccionPais.classList.add('active');
-      seccionPais.style.transform = 'translateX(0)';
-    }, 50);
-  }, 500);
+  switchSection('seccionCliente', 'seccionPais', 'right');
 });
 
 // Mostrar preguntas al seleccionar un cliente
