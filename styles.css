@@ -89,6 +89,22 @@ button:hover {
   background-color: #d32f2f;
 }
 
+/* Estilo solo para el h2 de la categoría de preguntas */
+.categoria-preguntas {
+  background-color: #4CAF50; /* Color verde llamativo */
+  color: white; /* Texto en blanco */
+  padding: 10px 20px; /* Espaciado interno */
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-radius: 8px; /* Bordes ligeramente redondeados */
+  margin-bottom: 30px; /* Espacio debajo del título antes de las preguntas */
+  width: fit-content; /* Ajusta el tamaño del fondo al contenido */
+  margin-left: auto; /* Centra horizontalmente */
+  margin-right: auto;
+}
+
+
 .pregunta {
   margin-bottom: 20px; /* Espaciado entre preguntas */
   display: flex;
