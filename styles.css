@@ -33,7 +33,7 @@ label {
   display: block;
 }
 
-/* Estilos de select y botones */
+/* Select y botones */
 select,
 button {
   width: 100%;
@@ -44,32 +44,27 @@ button {
   font-size: 1rem;
 }
 
-/* Estilo del select para que sea visible correctamente */
-select {
-  width: 100%;
-  padding: 8px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
+/* Botón */
+button {
+  background-color: #4CAF50;
+  color: white;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Estilo cuando está enfocado */
-select:focus {
-  outline: none;
-  border-color: #4CAF50;
-  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+button:hover {
+  background-color: #45a049;
 }
 
-/* Secciones - Ocultas por defecto */
+/* Secciones - Efecto de transición */
 .section {
   display: none;
   opacity: 0;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateX(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-/* Sección activa */
+/* Sección activa con efecto */
 .section.active {
   display: block;
   opacity: 1;
@@ -89,4 +84,21 @@ select:focus {
 /* Espaciado entre preguntas */
 .pregunta {
   margin: 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Estilo para las opciones en línea */
+.pregunta label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Asegurar que el dropdown de clientes sea visible */
+#clientes {
+  display: block;
+  opacity: 1;
+  visibility: visible;
 }
