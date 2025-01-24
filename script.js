@@ -56,10 +56,10 @@ function switchSection(from, to, direction = 'left') {
   fromSection.style.opacity = '0';
 
   setTimeout(() => {
-    fromSection.style.display = 'none'; // Ocultar completamente
+    fromSection.style.display = 'none';
     toSection.style.display = 'block';
 
-    // Mostrar u ocultar el botón "Volver" según la sección
+    // Mostrar u ocultar el botón "Volver" solo en la selección de clientes
     backButton.style.display = to === 'seccionCliente' ? 'flex' : 'none';
 
     setTimeout(() => {
@@ -90,53 +90,62 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     clientesDropdown.appendChild(option);
   });
 
-  // Ocultar preguntas al cambiar de país
-  document.getElementById('preguntas').style.display = 'none';
-
   switchSection('seccionPais', 'seccionCliente', 'left');
 });
 
-// Botón "Volver" - Regresa a la selección de país
+// Botón "Volver" - Regresa a la selección de país y resetea todo
 document.getElementById('backBtn').addEventListener('click', () => {
-  // Ocultar las preguntas y limpiar la selección de cliente
+  // Ocultar todas las preguntas y reiniciar respuestas
   document.getElementById('preguntas').style.display = 'none';
-  document.getElementById('clientes').value = "";
-
-  // Resetear las respuestas seleccionadas
   document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
-    input.checked = false;
+    input.checked = false; // Desmarcar todas las respuestas
   });
+
+  // Ocultar preguntas dependientes
+  document.querySelectorAll('.dependiente').forEach(pregunta => {
+    pregunta.style.display = 'none';
+  });
+
+  // Reiniciar selección de cliente
+  document.getElementById('clientes').value = "";
 
   switchSection('seccionCliente', 'seccionPais', 'right');
 });
 
-// 📌 **Mostrar preguntas solo si se selecciona un cliente**
+//  **Mostrar preguntas solo si se selecciona un cliente**
 document.getElementById('clientes').addEventListener('change', () => {
   const clienteSeleccionado = document.getElementById('clientes').value;
   const preguntasDiv = document.getElementById('preguntas');
 
   if (clienteSeleccionado) {
-    preguntasDiv.style.display = 'block'; // Mostrar solo si hay cliente seleccionado
+    preguntasDiv.style.display = 'block';
   } else {
-    preguntasDiv.style.display = 'none'; // Ocultar si no hay cliente
+    preguntasDiv.style.display = 'none';
   }
 });
 
-// 📌 **Mostrar preguntas dependientes basadas en respuestas**
-function setupDependentQuestions(parentName, dependentClass) {
+//  **Mostrar preguntas dependientes basadas en respuestas**
+function setupDependentQuestions(parentName, dependentId) {
   document.querySelectorAll(`input[name="${parentName}"]`).forEach(radio => {
     radio.addEventListener('change', function () {
-      document.querySelectorAll(`.${dependentClass}`).forEach(pregunta => {
-        pregunta.style.display = this.value === 'si' ? 'block' : 'none';
-      });
+      const preguntaDependiente = document.getElementById(dependentId);
+      if (this.value === 'si') {
+        preguntaDependiente.style.display = 'block';
+      } else {
+        preguntaDependiente.style.display = 'none';
+        // Resetear valores si se oculta
+        preguntaDependiente.querySelectorAll('input').forEach(input => input.checked = false);
+      }
     });
   });
 }
 
 // Configurar dependencias de preguntas
-setupDependentQuestions('pregunta2', 'pregunta2_dependientes');
-setupDependentQuestions('pregunta3', 'pregunta3_dependientes');
-setupDependentQuestions('pregunta4', 'pregunta4_dependientes');
+setupDependentQuestions('pregunta2', 'pregunta2_1');
+setupDependentQuestions('pregunta3', 'pregunta3_1');
+setupDependentQuestions('pregunta3', 'pregunta3_2');
+setupDependentQuestions('pregunta4', 'pregunta4_1');
+setupDependentQuestions('pregunta4', 'pregunta4_2');
 
 // Inicializar
 loadCountries();
