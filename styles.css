@@ -16,11 +16,36 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
-  overflow: hidden; /* Evita que el contenido sobrepase al hacer la transición */
+  overflow: hidden;
 }
 
-.btn-navegacion {
-  position: absolute;
+/* 🔄 Botón Volver (Izquierda, fijo en pantalla) */
+.btn-volver {
+  position: fixed;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  visibility: hidden; /* Se oculta por defecto */
+  z-index: 1000;
+}
+
+/* ⏩ Botón Siguiente (Derecha, fijo en pantalla) */
+.btn-siguiente {
+  position: fixed;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
   width: 50px;
@@ -36,18 +61,14 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease, transform 0.2s ease;
   cursor: pointer;
-  visibility: hidden; /* Se ocultan por defecto */
+  visibility: hidden;
+  z-index: 1000;
 }
 
-/* 🔄 Botón Volver (Izquierda del contenedor) */
-.btn-volver {
-  left: calc(10% - 70px); /* Se alinea a la izquierda fuera del contenedor */
-}
-
-/* ⏩ Botón Siguiente (Derecha del contenedor) */
-.btn-siguiente {
-  right: calc(10% - 70px); /* Se alinea a la derecha fuera del contenedor */
-  visibility: visible; /* Asegurar que es visible */
+/* Mostrar los botones SOLO en la sección de clientes */
+.seccion-activa .btn-volver,
+.seccion-activa .btn-siguiente {
+  visibility: visible;
 }
 
 /* 🟢 Efecto hover */
@@ -58,21 +79,14 @@
 
 /* 📱 Ajuste en móviles */
 @media (max-width: 768px) {
-  .btn-navegacion {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-  }
-
   .btn-volver {
-    left: -50px;
+    left: 10px;
   }
 
   .btn-siguiente {
-    right: -50px;
+    right: 10px;
   }
 }
-
 
 /* Títulos */
 h1 {
@@ -88,13 +102,12 @@ select {
   padding: 10px;
   font-size: 1rem;
   border: 2px solid #ccc;
-  border-radius: 8px; /* Bordes curvados */
+  border-radius: 8px;
   background-color: white;
   cursor: pointer;
   transition: border-color 0.3s ease;
-  appearance: auto; /* Se mantiene el estilo estándar del sistema */
+  appearance: auto;
 }
-
 
 /* Mejorar el efecto cuando el usuario hace clic */
 select:focus {
@@ -102,6 +115,7 @@ select:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
+
 #seccionPais select {
   margin-bottom: 25px;
 }
@@ -141,7 +155,6 @@ select:focus {
 
 .btn-continuar:hover {
   background-color: #218838;
-  
 }
 
 /* Categoría de preguntas */
@@ -160,7 +173,7 @@ select:focus {
 
 /* 🟩 Preguntas con mejor espaciado */
 .pregunta {
-  margin-bottom: 25px; /* Aumentamos la separación */
+  margin-bottom: 25px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -181,6 +194,7 @@ select:focus {
   font-size: 1rem;
   cursor: pointer;
 }
+
 .opciones-checkbox {
   display: flex;
   flex-direction: column;
@@ -201,4 +215,3 @@ select:focus {
   transform: scale(1.2);
   cursor: pointer;
 }
-
