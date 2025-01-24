@@ -47,6 +47,27 @@
           </div>
         </div>
 
+        <!-- Pregunta 2 -->
+<div class="pregunta">
+  <p>¿El usuario registra equipos?</p>
+  <div class="opciones">
+    <label><input type="radio" name="pregunta2" value="si"> Sí</label>
+    <label><input type="radio" name="pregunta2" value="no"> No</label>
+  </div>
+</div>
+
+<!-- Pregunta 2.1 (Se muestra solo si pregunta2 = "si") -->
+<div class="pregunta dependiente" id="pregunta2_1" style="display: none;">
+  <p>Seleccione qué equipos registra:</p>
+  <div class="opciones">
+    <label><input type="radio" name="pregunta2_1" value="vehiculos"> Vehículos</label>
+    <label><input type="radio" name="pregunta2_1" value="implementos"> Implementos</label>
+    <label><input type="radio" name="pregunta2_1" value="ambas"> Ambas</label>
+  </div>
+</div>
+
+        
+
         <!-- Pregunta 3 -->
         <div class="pregunta">
           <p>¿El cliente registra Insumos y Materiales?</p>
