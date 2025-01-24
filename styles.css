@@ -135,40 +135,27 @@ select:focus {
   font-size: 1rem;
   cursor: pointer;
 }
-
-/* 🟢 Opciones de selección múltiple (checkboxes ahora apilados) */
-.pregunta .opciones-checkbox {
-/* 🔹 Estilo mejorado para checkboxes de "¿Qué productos registra?" */
-.pregunta .opciones-checkbox {
+.opciones-checkbox {
   display: flex;
-  flex-direction: column; /* Apilados */
-  gap: 12px;
+  flex-direction: column;
+  gap: 10px;
   margin-top: 10px;
 }
 
-.pregunta .opciones-checkbox label {
+.opciones-checkbox label {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-size: 1rem;
   cursor: pointer;
-  padding: 8px;
-  border: 2px solid #ccc;
-  border-radius: 6px;
-  background-color: white;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Cambia el color de fondo al seleccionar */
-.pregunta .opciones-checkbox label:hover {
-  background-color: #f1f1f1;
-  border-color: #28a745;
-}
-
-.pregunta .opciones-checkbox input[type="checkbox"] {
-  cursor: pointer;
+/* Estiliza los checkboxes */
+.opciones-checkbox input[type="checkbox"] {
   transform: scale(1.2);
+  cursor: pointer;
 }
+
 
 /* 🔄 Botón "Volver" alineado correctamente */
 .boton-volver {
