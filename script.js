@@ -134,12 +134,11 @@ function setupDependentQuestions(parentName, dependentId) {
   document.querySelectorAll(`input[name="${parentName}"]`).forEach(radio => {
     radio.addEventListener('change', function () {
       const preguntaDependiente = document.getElementById(dependentId);
+
       if (this.value === 'si') {
-        preguntaDependiente.style.display = 'block';
+        preguntaDependiente.classList.add('activa'); // Agrega la clase para desplegar la pregunta
       } else {
-        preguntaDependiente.style.display = 'none';
-        // Resetear valores si se oculta
-        preguntaDependiente.querySelectorAll('input').forEach(input => input.checked = false);
+        preguntaDependiente.classList.remove('activa'); // Quita la clase para ocultar la pregunta con efecto
       }
     });
   });
