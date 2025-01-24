@@ -31,7 +31,7 @@ h1 {
 
 select {
   width: 100%;
-  padding: 12px;
+  padding: 7px;
   font-size: 1rem;
   border: 2px solid #ccc;
   border-radius: 8px;
@@ -136,7 +136,7 @@ select:focus {
 }
 
 /* Ajuste de los radio buttons y checkboxes */
-.pregunta .opciones input[type="radio"],
+
 .pregunta .opciones-checkbox input[type="checkbox"] {
   cursor: pointer;
   transform: scale(1.2);
