@@ -156,11 +156,10 @@ select:focus {
   cursor: pointer;
 }
 
-
-/* 🔄 Botón "Volver" alineado correctamente */
+/* Botón "Volver" fuera del contenedor principal */
 .boton-volver {
   position: absolute;
-  left: -60px;
+  left: -100px; /* Separación de 100px desde el contenedor */
   top: 50%;
   transform: translateY(-50%);
   width: 50px;
@@ -178,24 +177,24 @@ select:focus {
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Se muestra solo en la sección de clientes */
+/* Mostrar el botón SOLO en la sección de selección de clientes */
 .seccion-activa .boton-volver {
   display: flex;
 }
-  
-/* Efecto hover del botón "Volver" */
+
+/* Efecto hover */
 .boton-volver:hover {
   background-color: #d32f2f;
   transform: translateY(-50%) scale(1.1);
 }
-/* 📱 Ajustes para móviles */
+
+/* Ajuste para móviles */
 @media (max-width: 768px) {
   .boton-volver {
-    left: 10px;
+    left: 10px; /* Se mueve dentro de la pantalla en móviles */
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
   }
 }
-
 
