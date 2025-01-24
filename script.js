@@ -49,6 +49,7 @@ function loadCountries() {
 function switchSection(from, to, direction = 'left') {
   const fromSection = document.getElementById(from);
   const toSection = document.getElementById(to);
+  const backButton = document.getElementById('backBtn'); // Botón volver
 
   // Ocultar la sección actual con animación
   fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
@@ -57,12 +58,21 @@ function switchSection(from, to, direction = 'left') {
   setTimeout(() => {
     fromSection.style.display = 'none'; // Ocultar completamente
     toSection.style.display = 'block';
+
+    // Mostrar u ocultar el botón "Volver" según la sección
+    if (to === 'seccionCliente') {
+      backButton.style.display = 'flex'; // Mostrar el botón cuando se pasa a clientes
+    } else {
+      backButton.style.display = 'none'; // Ocultar el botón en la selección de país
+    }
+
     setTimeout(() => {
       toSection.style.opacity = '1';
       toSection.style.transform = 'translateX(0)';
     }, 50);
   }, 500);
 }
+
 
 // Botón "Siguiente" - Muestra los clientes del país seleccionado y avanza de sección
 document.getElementById('nextBtn').addEventListener('click', () => {
