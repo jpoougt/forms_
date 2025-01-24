@@ -42,17 +42,22 @@ function loadCountries() {
     .catch(error => console.error('Error cargando el archivo:', error));
 }
 
-// Mover entre secciones con efecto
+// Función para manejar la transición entre secciones
 function switchSection(from, to) {
   const fromSection = document.getElementById(from);
   const toSection = document.getElementById(to);
 
-  fromSection.classList.remove('active');
+  fromSection.classList.remove('active'); // Ocultar la sección actual
+  fromSection.style.transform = 'translateX(-100%)'; // Deslizar hacia la izquierda
+
   setTimeout(() => {
     fromSection.style.display = 'none';
     toSection.style.display = 'block';
+    toSection.style.transform = 'translateX(100%)'; // Posición inicial fuera de la vista
+
     setTimeout(() => {
       toSection.classList.add('active');
+      toSection.style.transform = 'translateX(0)'; // Animación de entrada
     }, 50);
   }, 500);
 }
@@ -64,27 +69,6 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     alert('Por favor, seleccione un país.');
     return;
   }
-
-
-document.getElementById('backBtn').addEventListener('click', () => {
-  // Mostrar la primera sección (Selección del país)
-  const seccionPais = document.getElementById('seccionPais');
-  const seccionCliente = document.getElementById('seccionCliente');
-
-  // Restablecer la posición con una animación (si aplica)
-  seccionPais.style.transform = 'translateX(0)';
-  seccionPais.style.transition = 'transform 0.5s ease-in-out';
-  seccionCliente.style.transform = 'translateX(100%)';
-
-  // Opcional: Asegúrate de que el cliente seleccionado se borre
-  document.getElementById('cliente').value = '';
-
-  // Mostrar/Ocultar secciones (compatibilidad sin transformaciones)
-  seccionPais.style.display = 'block';
-  seccionCliente.style.display = 'none';
-});
-
-
 
   // Llenar el dropdown de clientes
   const clientesDropdown = document.getElementById('clientes');
@@ -100,6 +84,26 @@ document.getElementById('backBtn').addEventListener('click', () => {
   switchSection('seccionPais', 'seccionCliente');
 });
 
+// Manejo del botón "Volver"
+document.getElementById('backBtn').addEventListener('click', () => {
+  const seccionPais = document.getElementById('seccionPais');
+  const seccionCliente = document.getElementById('seccionCliente');
+
+  seccionCliente.classList.remove('active');
+  seccionCliente.style.transform = 'translateX(100%)';
+
+  setTimeout(() => {
+    seccionCliente.style.display = 'none';
+    seccionPais.style.display = 'block';
+    seccionPais.style.transform = 'translateX(-100%)';
+
+    setTimeout(() => {
+      seccionPais.classList.add('active');
+      seccionPais.style.transform = 'translateX(0)';
+    }, 50);
+  }, 500);
+});
+
 // Mostrar preguntas al seleccionar un cliente
 document.getElementById('clientes').addEventListener('change', () => {
   const clienteSeleccionado = document.getElementById('clientes').value;
@@ -113,4 +117,3 @@ document.getElementById('clientes').addEventListener('change', () => {
 
 // Inicializar
 loadCountries();
-
