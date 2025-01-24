@@ -1,5 +1,5 @@
 // Variables globales
-let clientesPorPais = {}; // Objeto para almacenar los clientes por país
+let clientesPorPais = {};
 
 // Cargar países desde el archivo Excel y ordenarlos alfabéticamente
 function loadCountries() {
@@ -17,8 +17,8 @@ function loadCountries() {
         // Obtener países y clientes
         const countries = new Set();
         jsonData.slice(1).forEach(row => {
-          const country = row[2]; // Columna C: País
-          const client = row[1]; // Columna B: Cliente
+          const country = row[2]; 
+          const client = row[1]; 
           if (country && client) {
             countries.add(country);
             if (!clientesPorPais[country]) {
@@ -46,30 +46,23 @@ function loadCountries() {
 }
 
 // Función para cambiar de sección con efecto de barrido
-function switchSection(from, to, direction = 'left') {
+function switchSection(from, to) {
   const fromSection = document.getElementById(from);
   const toSection = document.getElementById(to);
-  const backButton = document.getElementById('backBtn'); // Botón volver
+  const backButton = document.getElementById('backBtn'); 
 
-  // Ocultar la sección actual con animación
-  fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
-  fromSection.style.opacity = '0';
-
+  fromSection.classList.remove('active');
   setTimeout(() => {
     fromSection.style.display = 'none';
     toSection.style.display = 'block';
 
-    // Mostrar u ocultar el botón "Volver" solo en la selección de clientes
     backButton.style.display = to === 'seccionCliente' ? 'flex' : 'none';
 
-    setTimeout(() => {
-      toSection.style.opacity = '1';
-      toSection.style.transform = 'translateX(0)';
-    }, 50);
+    setTimeout(() => toSection.classList.add('active'), 50);
   }, 500);
 }
 
-// Botón "Siguiente" - Muestra los clientes del país seleccionado y avanza de sección
+// Botón "Siguiente"
 document.getElementById('nextBtn').addEventListener('click', () => {
   const paisSeleccionado = document.getElementById('pais').value;
   if (!paisSeleccionado) {
@@ -77,10 +70,8 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     return;
   }
 
-  // Obtener la lista de clientes y ordenarlos alfabéticamente
   const clientesOrdenados = (clientesPorPais[paisSeleccionado] || []).sort();
 
-  // Llenar el dropdown de clientes ordenados
   const clientesDropdown = document.getElementById('clientes');
   clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
   clientesOrdenados.forEach(cliente => {
@@ -90,41 +81,42 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     clientesDropdown.appendChild(option);
   });
 
-  switchSection('seccionPais', 'seccionCliente', 'left');
+  // Ocultar preguntas y resetear respuestas al cambiar de país
+  document.getElementById('preguntas').style.display = 'none';
+  resetForm();
+
+  switchSection('seccionPais', 'seccionCliente');
 });
 
-// Botón "Volver" - Regresa a la selección de país y resetea todo
+// Botón "Volver"
 document.getElementById('backBtn').addEventListener('click', () => {
-  // Ocultar todas las preguntas y reiniciar respuestas
   document.getElementById('preguntas').style.display = 'none';
+  document.getElementById('clientes').value = "";
+
+  resetForm(); // Resetear todas las respuestas
+
+  switchSection('seccionCliente', 'seccionPais');
+});
+
+// Función para resetear todas las respuestas
+function resetForm() {
   document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
-    input.checked = false; // Desmarcar todas las respuestas
+    input.checked = false;
   });
 
-  // Ocultar preguntas dependientes
+  // Ocultar preguntas dependientes al resetear
   document.querySelectorAll('.dependiente').forEach(pregunta => {
     pregunta.style.display = 'none';
   });
+}
 
-  // Reiniciar selección de cliente
-  document.getElementById('clientes').value = "";
-
-  switchSection('seccionCliente', 'seccionPais', 'right');
-});
-
-//  **Mostrar preguntas solo si se selecciona un cliente**
+// Mostrar preguntas solo si se selecciona un cliente
 document.getElementById('clientes').addEventListener('change', () => {
   const clienteSeleccionado = document.getElementById('clientes').value;
-  const preguntasDiv = document.getElementById('preguntas');
-
-  if (clienteSeleccionado) {
-    preguntasDiv.style.display = 'block';
-  } else {
-    preguntasDiv.style.display = 'none';
-  }
+  document.getElementById('preguntas').style.display = clienteSeleccionado ? 'block' : 'none';
 });
 
-//  **Mostrar preguntas dependientes basadas en respuestas**
+// Mostrar preguntas dependientes según respuestas
 function setupDependentQuestions(parentName, dependentId) {
   document.querySelectorAll(`input[name="${parentName}"]`).forEach(radio => {
     radio.addEventListener('change', function () {
@@ -133,11 +125,15 @@ function setupDependentQuestions(parentName, dependentId) {
         preguntaDependiente.style.display = 'block';
       } else {
         preguntaDependiente.style.display = 'none';
-        // Resetear valores si se oculta
-        preguntaDependiente.querySelectorAll('input').forEach(input => input.checked = false);
+        resetSubInputs(preguntaDependiente);
       }
     });
   });
+}
+
+// Función para resetear los inputs dentro de una pregunta dependiente
+function resetSubInputs(container) {
+  container.querySelectorAll('input').forEach(input => input.checked = false);
 }
 
 // Configurar dependencias de preguntas
