@@ -85,8 +85,24 @@ document.getElementById('nextBtn').addEventListener('click', () => {
 document.getElementById('backBtn').addEventListener('click', () => {
   // Ocultar las preguntas y limpiar las respuestas
   document.getElementById('preguntas').style.display = 'none';
-  document.getElementById('clientes').value = ""; // Reinicia la selección de cliente
+  
+// Manejo de la selección de cliente para mostrar preguntas
+document.getElementById('clientes').addEventListener('change', () => {
+  const clienteSeleccionado = document.getElementById('clientes').value;
+  const preguntasDiv = document.getElementById('preguntas');
 
+  if (clienteSeleccionado) {
+    preguntasDiv.style.display = 'block'; // Mostrar solo si hay cliente seleccionado
+  } else {
+    preguntasDiv.style.display = 'none'; // Ocultar si no hay cliente
+  }
+});
+
+// Asegurar que las preguntas SIEMPRE se oculten cuando volvemos a la pantalla de selección de país
+document.getElementById('backBtn').addEventListener('click', () => {
+  document.getElementById('preguntas').style.display = 'none';
+  document.getElementById('clientes').value = ""; // Resetear selección de cliente
+ 
   // Resetear las respuestas marcadas
   document.querySelectorAll('input[type="radio"]').forEach(input => {
     input.checked = false;
