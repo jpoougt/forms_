@@ -49,13 +49,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     // Llenar el dropdown de países ordenado
                     const paisDropdown = document.getElementById('pais');
-                    paisDropdown.innerHTML = '<option value="">Seleccione su país...</option>'; // Resetear opciones
-                    sortedCountries.forEach(country => {
-                        const option = document.createElement('option');
-                        option.value = country;
-                        option.textContent = country;
-                        paisDropdown.appendChild(option);
-                    });
+                    if (paisDropdown) {
+                        paisDropdown.innerHTML = '<option value="">Seleccione su país...</option>'; // Resetear opciones
+                        sortedCountries.forEach(country => {
+                            const option = document.createElement('option');
+                            option.value = country;
+                            option.textContent = country;
+                            paisDropdown.appendChild(option);
+                        });
+                    } else {
+                        console.error("❌ No se encontró el dropdown de países.");
+                    }
 
                     console.log("Países agregados al dropdown:", sortedCountries);
                 };
@@ -69,6 +73,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const fromSection = document.getElementById(from);
         const toSection = document.getElementById(to);
         const backButton = document.getElementById('btnVolver');
+
+        if (!fromSection || !toSection) {
+            console.error(`❌ No se encontró la sección: ${from} o ${to}`);
+            return;
+        }
 
         fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
         fromSection.style.opacity = '0';
@@ -85,7 +94,10 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             // ✅ Mostrar botón siguiente solo en la sección de clientes
-            document.getElementById("btnSiguiente").style.visibility = (to === "seccionCliente") ? "visible" : "hidden";
+            const siguienteBtn = document.getElementById("btnSiguiente");
+            if (siguienteBtn) {
+                siguienteBtn.style.visibility = (to === "seccionCliente") ? "visible" : "hidden";
+            }
 
             setTimeout(() => {
                 toSection.style.opacity = '1';
@@ -113,17 +125,20 @@ document.addEventListener("DOMContentLoaded", function () {
             const clientesOrdenados = (clientesPorPais[paisSeleccionado] || []).sort();
 
             // Llenar el dropdown de clientes ordenados
-            clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
-            clientesOrdenados.forEach(cliente => {
-                const option = document.createElement('option');
-                option.value = cliente;
-                option.textContent = cliente;
-                clientesDropdown.appendChild(option);
-            });
+            if (clientesDropdown) {
+                clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
+                clientesOrdenados.forEach(cliente => {
+                    const option = document.createElement('option');
+                    option.value = cliente;
+                    option.textContent = cliente;
+                    clientesDropdown.appendChild(option);
+                });
 
-            // ✅ Aseguramos que la sección de clientes y dropdown sean visibles
-            clientesDropdown.style.display = 'block';
-            preguntasDiv.style.display = 'none'; // Ocultar preguntas hasta seleccionar cliente
+                clientesDropdown.style.display = 'block';
+                preguntasDiv.style.display = 'none'; // Ocultar preguntas hasta seleccionar cliente
+            } else {
+                console.error("❌ No se encontró el dropdown de clientes.");
+            }
 
             switchSection('seccionPais', 'seccionCliente', 'left');
         });
@@ -133,14 +148,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (backBtn) {
         backBtn.addEventListener('click', () => {
-            // Ocultar todas las preguntas y reiniciar respuestas
             preguntasDiv.style.display = 'none';
             clientesDropdown.value = "";
             document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
                 input.checked = false;
             });
 
-            // Ocultar preguntas dependientes
             document.querySelectorAll('.dependiente').forEach(pregunta => {
                 pregunta.style.display = 'none';
             });
@@ -159,74 +172,20 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("❌ btnSiguiente no encontrado");
     }
 
-    // 📌 Manejo del dropdown de clientes
-    clientesDropdown.addEventListener('change', () => {
-        const clienteSeleccionado = clientesDropdown.value;
-
-        // ✅ Si hay cliente seleccionado, mostrar preguntas
-        if (clienteSeleccionado) {
-            preguntasDiv.style.display = 'block';
-        } else {
-            preguntasDiv.style.display = 'none';
-        }
-    });
-
-    // 📌 Mostrar preguntas dependientes con efecto de despliegue
-    function setupDependentQuestions(parentName, dependentId) {
-     
-        
-        
-        document.querySelectorAll(`input[name="${parentName}"]`).forEach(radio => {
-            radio.addEventListener('change', function () {
-                const preguntaDependiente = document.getElementById(dependentId);
-
-                if (this.value === 'si') {
-                    preguntaDependiente.style.display = 'block';
-                    preguntaDependiente.style.opacity = '0';
-                    setTimeout(() => {
-                        preguntaDependiente.style.opacity = '1';
-                        preguntaDependiente.style.transform = 'translateY(0)';
-                    }, 100);
-                } else {
-                    preguntaDependiente.style.opacity = '0';
-                    setTimeout(() => {
-                        preguntaDependiente.style.display = 'none';
-                        preguntaDependiente.style.transform = 'translateY(-10px)';
-                    }, 200);
-                }
-            });
-        });
-    }
-
+    // Manejo del botón "Volver" en la Sección de Actividades
     const btnVolverActividades = document.getElementById('btnVolverActividades');
-if (btnVolverActividades) {
-    btnVolverActividades.addEventListener('click', () => {
-        console.log("↩️ Volviendo a la Sección de Cliente");
+    if (btnVolverActividades) {
+        btnVolverActividades.addEventListener('click', () => {
+            console.log("↩️ Volviendo a la Sección de Cliente");
 
-        // Ocultar la Sección 3 (Registro de Actividades)
-        document.getElementById('seccionActividades').style.display = "none";
-
-        // Mostrar la Sección 2 (Selección de Cliente)
-        document.getElementById('seccionCliente').style.display = "block";
-    });
-} else {
-    console.error("❌ btnVolverActividades no encontrado");
-}
-    
-
-    // Configurar dependencias de preguntas
-    setupDependentQuestions('pregunta2', 'pregunta2_1');
-    setupDependentQuestions('pregunta3', 'pregunta3_1');
-    setupDependentQuestions('pregunta3', 'pregunta3_2');
-    setupDependentQuestions('pregunta4', 'pregunta4_1');
-    setupDependentQuestions('pregunta4', 'pregunta4_2');
-    setupDependentQuestions('pregunta6', 'pregunta6_1');
-
-    // 📌 Manejo del botón "Finalizar"
-    document.getElementById('btnFinalizar').addEventListener('click', () => {
-        alert("🎉 Encuesta finalizada. ¡Gracias por su participación!");
-    });
+            document.getElementById('seccionActividades').style.display = "none";
+            document.getElementById('seccionCliente').style.display = "block";
+        });
+    } else {
+        console.error("❌ btnVolverActividades no encontrado");
+    }
 
     // Cargar países al iniciar
     loadCountries();
 });
+
