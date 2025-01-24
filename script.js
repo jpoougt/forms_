@@ -42,14 +42,20 @@ function loadCountries() {
     .catch(error => console.error('Error cargando el archivo:', error));
 }
 
-// Función para cambiar de sección con efecto
-function switchSection(from, to) {
-  document.getElementById(from).classList.remove('active');
+// Función para cambiar de sección con efecto de barrido
+function switchSection(from, to, direction = 'left') {
+  const fromSection = document.getElementById(from);
+  const toSection = document.getElementById(to);
+
+  fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
+  fromSection.style.opacity = '0';
+
   setTimeout(() => {
-    document.getElementById(from).style.display = 'none';
-    document.getElementById(to).style.display = 'block';
+    fromSection.style.display = 'none';
+    toSection.style.display = 'block';
     setTimeout(() => {
-      document.getElementById(to).classList.add('active');
+      toSection.style.opacity = '1';
+      toSection.style.transform = 'translateX(0)';
     }, 50);
   }, 500);
 }
@@ -72,12 +78,14 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     clientesDropdown.appendChild(option);
   });
 
-  switchSection('seccionPais', 'seccionCliente');
+  switchSection('seccionPais', 'seccionCliente', 'left');
 });
 
 // Botón "Volver"
 document.getElementById('backBtn').addEventListener('click', () => {
-  switchSection('seccionCliente', 'seccionPais');
+  document.getElementById('preguntas').style.display = 'none';
+  document.getElementById('clientes').value = "";
+  switchSection('seccionCliente', 'seccionPais', 'right');
 });
 
 // Mostrar preguntas
@@ -87,4 +95,3 @@ document.getElementById('clientes').addEventListener('change', () => {
 
 // Inicializar
 loadCountries();
-
