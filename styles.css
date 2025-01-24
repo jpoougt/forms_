@@ -47,6 +47,7 @@
 /* ⏩ Botón Siguiente (Derecha del contenedor) */
 .btn-siguiente {
   right: calc(10% - 70px); /* Se alinea a la derecha fuera del contenedor */
+  visibility: visible; /* Asegurar que es visible */
 }
 
 /* 🟢 Efecto hover */
