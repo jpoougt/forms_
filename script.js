@@ -49,7 +49,8 @@ function loadCountries() {
 function switchSection(from, to, direction = 'left') {
   const fromSection = document.getElementById(from);
   const toSection = document.getElementById(to);
-  const backButton = document.getElementById('backBtn'); // Botón volver
+const backButton = document.getElementById('backBtn');
+  
 
   fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
   fromSection.style.opacity = '0';
@@ -59,9 +60,14 @@ function switchSection(from, to, direction = 'left') {
     toSection.style.display = 'block';
 
     // Mostrar u ocultar el botón "Volver" solo en la selección de clientes
-    backButton.style.display = to === 'seccionCliente' ? 'flex' : 'none';
+      if (to === 'seccionCliente') {
+      backButton.style.display = 'flex';
+    } else {
+      backButton.style.display = 'none';
+    }
+    
 
-    setTimeout(() => {
+  setTimeout(() => {
       toSection.style.opacity = '1';
       toSection.style.transform = 'translateX(0)';
     }, 50);
