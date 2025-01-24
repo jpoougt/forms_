@@ -19,6 +19,60 @@
   overflow: hidden; /* Evita que el contenido sobrepase al hacer la transición */
 }
 
+.btn-navegacion {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  visibility: hidden; /* Se ocultan por defecto */
+}
+
+/* 🔄 Botón Volver (Izquierda del contenedor) */
+.btn-volver {
+  left: calc(10% - 70px); /* Se alinea a la izquierda fuera del contenedor */
+}
+
+/* ⏩ Botón Siguiente (Derecha del contenedor) */
+.btn-siguiente {
+  right: calc(10% - 70px); /* Se alinea a la derecha fuera del contenedor */
+}
+
+/* 🟢 Efecto hover */
+.btn-navegacion:hover {
+  background-color: #218838;
+  transform: scale(1.1);
+}
+
+/* 📱 Ajuste en móviles */
+@media (max-width: 768px) {
+  .btn-navegacion {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .btn-volver {
+    left: -50px;
+  }
+
+  .btn-siguiente {
+    right: -50px;
+  }
+}
+
+
 /* Títulos */
 h1 {
   text-align: center;
@@ -151,44 +205,3 @@ select:focus {
   cursor: pointer;
 }
 
-/* Botón "Volver" fuera del contenedor principal */
-.boton-volver {
-  position: absolute;
-  left: -100px; /* Separación de 100px desde el contenedor */
-  top: 50%;
-  transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: none; /* Se oculta por defecto */
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-/* Mostrar el botón SOLO en la sección de selección de clientes */
-.seccion-activa .boton-volver {
-  display: flex;
-}
-
-/* Efecto hover */
-.boton-volver:hover {
-  background-color: #d32f2f;
-  transform: translateY(-50%) scale(1.1);
-}
-
-/* Ajuste para móviles */
-@media (max-width: 768px) {
-  .boton-volver {
-    left: 10px; /* Se mueve dentro de la pantalla en móviles */
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-  }
-}
