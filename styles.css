@@ -94,8 +94,6 @@ select {
   appearance: auto; /* Se mantiene el estilo estándar del sistema */
 }
 
-/* Quitar cualquier flecha personalizada previa */
-
 
 /* Mejorar el efecto cuando el usuario hace clic */
 select:focus {
@@ -103,8 +101,6 @@ select:focus {
   outline: none;
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
-
-
 #seccionPais select {
   margin-bottom: 25px;
 }
