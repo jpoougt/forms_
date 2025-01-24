@@ -42,7 +42,19 @@ function loadCountries() {
     .catch(error => console.error('Error cargando el archivo:', error));
 }
 
-// Manejo del botón "Siguiente"
+// Función para cambiar de sección con efecto
+function switchSection(from, to) {
+  document.getElementById(from).classList.remove('active');
+  setTimeout(() => {
+    document.getElementById(from).style.display = 'none';
+    document.getElementById(to).style.display = 'block';
+    setTimeout(() => {
+      document.getElementById(to).classList.add('active');
+    }, 50);
+  }, 500);
+}
+
+// Botón "Siguiente"
 document.getElementById('nextBtn').addEventListener('click', () => {
   const paisSeleccionado = document.getElementById('pais').value;
   if (!paisSeleccionado) {
@@ -50,6 +62,7 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     return;
   }
 
+  // Llenar el dropdown de clientes
   const clientesDropdown = document.getElementById('clientes');
   clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
   clientesPorPais[paisSeleccionado].forEach(cliente => {
@@ -59,15 +72,19 @@ document.getElementById('nextBtn').addEventListener('click', () => {
     clientesDropdown.appendChild(option);
   });
 
-  document.getElementById('seccionPais').classList.remove('active');
-  document.getElementById('seccionCliente').classList.add('active');
+  switchSection('seccionPais', 'seccionCliente');
 });
 
-// Manejo del botón "Volver"
+// Botón "Volver"
 document.getElementById('backBtn').addEventListener('click', () => {
-  document.getElementById('seccionCliente').classList.remove('active');
-  document.getElementById('seccionPais').classList.add('active');
+  switchSection('seccionCliente', 'seccionPais');
+});
+
+// Mostrar preguntas
+document.getElementById('clientes').addEventListener('change', () => {
+  document.getElementById('preguntas').style.display = 'block';
 });
 
 // Inicializar
 loadCountries();
+
