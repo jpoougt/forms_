@@ -83,6 +83,19 @@ document.addEventListener("DOMContentLoaded", function () {
             } else {
                 backButton.style.visibility = 'hidden';
             }
+/// ESTE CODIGO MUESTRA EL BOTÓN SIGUIENTE EN LA SECCION CORRECTA.
+            function switchSection(from, to) {
+  document.getElementById(from).style.display = "none";
+  document.getElementById(to).style.display = "block";
+
+  // Mostrar botón siguiente solo en la sección de clientes
+  if (to === "seccionCliente") {
+    document.getElementById("btnSiguiente").style.visibility = "visible";
+  } else {
+    document.getElementById("btnSiguiente").style.visibility = "hidden";
+  }
+}
+
 
             setTimeout(() => {
                 toSection.style.opacity = '1';
