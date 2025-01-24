@@ -27,34 +27,31 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* 🎨 Estilo moderno para dropdowns */
+/* 🎨 Estilo tradicional para dropdowns */
 select {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   font-size: 1rem;
   border: 2px solid #ccc;
-  border-radius: 8px;
-  background-color: #ffffff;
-  appearance: none; /* Oculta la flecha predeterminada en algunos navegadores */
+  border-radius: 8px; /* Bordes curvados */
+  background-color: white;
   cursor: pointer;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s ease;
+  appearance: auto; /* Se mantiene el estilo estándar del sistema */
 }
 
-/* Flecha personalizada para dropdowns */
+/* Quitar cualquier flecha personalizada previa */
 select::after {
-  content: "▼";
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
+  content: none;
 }
 
+/* Mejorar el efecto cuando el usuario hace clic */
 select:focus {
   border-color: #28a745;
   outline: none;
   box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
 }
+
 
 #seccionPais select {
   margin-bottom: 25px;
