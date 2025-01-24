@@ -6,7 +6,6 @@
   font-family: 'Century Gothic', sans-serif;
 }
 
-
 /* Contenedor principal */
 .container {
   width: 80%;
@@ -16,104 +15,86 @@
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  font-family: 'Century Gothic', sans-serif;
 }
 
+/* Títulos */
 h1 {
   text-align: center;
-  margin-bottom: 20px;
+  font-size: 2rem;
   color: #333;
+  margin-bottom: 20px;
 }
 
+/* Etiquetas */
+label {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 10px;
+  display: block;
+}
 
-/* Dropdown */
-select {
+/* Select y botones */
+select,
+button {
   width: 100%;
   padding: 10px;
-  margin: 20px 0;
+  margin: 10px 0;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1rem;
 }
 
+/* Botón específico */
+button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
+button:hover {
+  background-color: #45a049;
+}
 
-/* Secciones */
-/* Ocultar secciones por defecto */
+/* Efecto de transición entre secciones */
 .section {
   display: none;
   opacity: 0;
+  transition: opacity 0.5s ease, transform 0.5s ease;
   transform: translateX(100%);
-  transition: all 0.5s ease;
 }
 
-/* Mostrar sección activa */
 .section.active {
   display: block;
   opacity: 1;
   transform: translateX(0);
 }
 
-.hidden {
-  display: none;
-}
-
-.pregunta {
-  margin-bottom: 15px; /* Espacio entre las preguntas */
-}
-
-.pregunta label {
-  margin-right: 15px; /* Espacio entre las opciones "Sí" y "No" */
-  font-family: 'Century Gothic', sans-serif;
-  font-size: 1rem;
-}
-
-.slide-in-right {
-  animation: slideInRight 0.1s forwards;
-}
-
-.transition-left {
-  transform: translateX(0);
-  transition: transform 0.5s ease;
-}
-
-
-
-@keyframes slideOutLeft {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-
-
-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin: 20px 0;
-  background-color: #4CAF50;
+/* Botón de retorno */
+#backBtn {
+  background-color: #f44336;
   color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s;
 }
 
+#backBtn:hover {
+  background-color: #d32f2f;
+}
 
-button:hover {
-  background-color: #0056b3;
+/* Espaciado entre preguntas */
+.pregunta {
+  margin: 15px 0;
+}
+
+/* Estilo para el dropdown y espaciado */
+select {
+  appearance: none;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
 }
