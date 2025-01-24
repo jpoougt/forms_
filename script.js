@@ -60,11 +60,7 @@ function switchSection(from, to, direction = 'left') {
     toSection.style.display = 'block';
 
     // Mostrar u ocultar el botón "Volver" según la sección
-    if (to === 'seccionCliente') {
-      backButton.style.display = 'flex'; // Mostrar el botón cuando se pasa a clientes
-    } else {
-      backButton.style.display = 'none'; // Ocultar el botón en la selección de país
-    }
+    backButton.style.display = to === 'seccionCliente' ? 'flex' : 'none';
 
     setTimeout(() => {
       toSection.style.opacity = '1';
@@ -114,7 +110,7 @@ document.getElementById('backBtn').addEventListener('click', () => {
   switchSection('seccionCliente', 'seccionPais', 'right');
 });
 
-// Manejo de la selección de cliente para mostrar preguntas
+// 📌 **Mostrar preguntas solo si se selecciona un cliente**
 document.getElementById('clientes').addEventListener('change', () => {
   const clienteSeleccionado = document.getElementById('clientes').value;
   const preguntasDiv = document.getElementById('preguntas');
@@ -126,31 +122,21 @@ document.getElementById('clientes').addEventListener('change', () => {
   }
 });
 
-// Manejo de preguntas dependientes
-document.querySelectorAll('input[name="pregunta2"]').forEach(radio => {
-  radio.addEventListener('change', function () {
-    const subPregunta = document.getElementById('pregunta2_1');
-    subPregunta.style.display = this.value === 'si' ? 'block' : 'none';
-  });
-});
-
-document.querySelectorAll('input[name="pregunta3"]').forEach(radio => {
-  radio.addEventListener('change', function () {
-    const subPreguntas = document.querySelectorAll('.pregunta3_dependientes');
-    subPreguntas.forEach(pregunta => {
-      pregunta.style.display = this.value === 'si' ? 'block' : 'none';
+// 📌 **Mostrar preguntas dependientes basadas en respuestas**
+function setupDependentQuestions(parentName, dependentClass) {
+  document.querySelectorAll(`input[name="${parentName}"]`).forEach(radio => {
+    radio.addEventListener('change', function () {
+      document.querySelectorAll(`.${dependentClass}`).forEach(pregunta => {
+        pregunta.style.display = this.value === 'si' ? 'block' : 'none';
+      });
     });
   });
-});
+}
 
-document.querySelectorAll('input[name="pregunta4"]').forEach(radio => {
-  radio.addEventListener('change', function () {
-    const subPreguntas = document.querySelectorAll('.pregunta4_dependientes');
-    subPreguntas.forEach(pregunta => {
-      pregunta.style.display = this.value === 'si' ? 'block' : 'none';
-    });
-  });
-});
+// Configurar dependencias de preguntas
+setupDependentQuestions('pregunta2', 'pregunta2_dependientes');
+setupDependentQuestions('pregunta3', 'pregunta3_dependientes');
+setupDependentQuestions('pregunta4', 'pregunta4_dependientes');
 
 // Inicializar
 loadCountries();
