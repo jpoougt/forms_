@@ -6,6 +6,7 @@
   font-family: 'Century Gothic', sans-serif;
 }
 
+/* Contenedor principal */
 .container {
   width: 80%;
   max-width: 600px;
@@ -15,31 +16,45 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
+  overflow: hidden; /* Evita que el contenido sobrepase al hacer la transición */
 }
 
-/* Dropdowns */
-select {
-  width: 100%;
-  padding: 8px;
+/* Secciones con transición de barrido */
+.section {
+  display: none;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.section.active {
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Botón "Continuar" */
+.btn-continuar {
+  background-color: #28a745;
+  color: white;
   font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: white;
+  font-weight: bold;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* Títulos */
-h1 {
-  text-align: center;
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 20px;
+.btn-continuar:hover {
+  background-color: #218838;
 }
 
-/* Categoría de preguntas (h2 con cinta de fondo) */
+/* Categoría de preguntas */
 .categoria-preguntas {
-  background-color: #2D3748; /* Color oscuro elegante */
-  color: #ffffff; /* Texto blanco */
+  background-color: #2D3748;
+  color: #ffffff;
   padding: 12px;
   text-align: left;
   font-size: 1.3rem;
@@ -47,12 +62,11 @@ h1 {
   border-radius: 8px;
   margin-bottom: 20px;
   width: 100%;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 /* Preguntas */
 .pregunta {
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -62,6 +76,8 @@ h1 {
 .pregunta .opciones {
   display: flex;
   gap: 20px;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .pregunta .opciones label {
@@ -72,30 +88,31 @@ h1 {
   cursor: pointer;
 }
 
-/* Opciones de selección múltiple (checkboxes) */
-.pregunta .opciones-checkbox {
+/* Botones de selección de productos */
+.opciones-productos {
   display: flex;
   flex-wrap: wrap;
   gap: 15px;
   margin-top: 10px;
 }
 
-.pregunta .opciones-checkbox label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.btn-producto {
+  background-color: #E0E0E0;
+  border: 2px solid #bbb;
+  padding: 10px;
+  border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-/* Ajuste de los radio buttons y checkboxes */
-.pregunta .opciones input[type="radio"],
-.pregunta .opciones-checkbox input[type="checkbox"] {
-  cursor: pointer;
-  transform: scale(1.2);
+.btn-producto.selected {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #388E3C;
 }
 
-/* Botón "Volver" (fuera del contenedor, alineado a la izquierda) */
+/* Botón "Volver" */
 .boton-volver {
   position: absolute;
   left: -60px;
@@ -105,15 +122,16 @@ h1 {
   height: 50px;
   background-color: #f44336;
   color: white;
+  border: none;
   border-radius: 50%;
   font-size: 1.5rem;
   cursor: pointer;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Efecto hover del botón */
 .boton-volver:hover {
   background-color: #d32f2f;
   transform: translateY(-50%) scale(1.1);
@@ -126,5 +144,6 @@ h1 {
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
-  }
 }
+}
+
