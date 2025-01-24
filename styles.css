@@ -15,6 +15,7 @@
   background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
 }
 
 /* Títulos */
@@ -25,67 +26,73 @@ h1 {
   margin-bottom: 20px;
 }
 
-/* Etiquetas */
-label {
-  font-size: 1rem;
-  color: #333;
-  margin-bottom: 10px;
-  display: block;
-}
-
-/* Select y botones */
-select,
-button {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-/* Botón en color verde llamativo */
-button {
-  background-color: #28a745;  /* Verde llamativo */
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+/* Categoría de preguntas (h2 con cinta de fondo) */
+.categoria-preguntas {
+  background-color: #2D3748; /* Color oscuro elegante */
+  color: #ffffff; /* Texto blanco */
+  padding: 12px;
+  text-align: left;
+  font-size: 1.3rem;
   font-weight: bold;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-button:hover {
-  background-color: #218838;
+/* Preguntas */
+.pregunta {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-/* Secciones - Transiciones con barrido */
-.section {
-  display: none;
-  opacity: 0;
-  transform: translateX(100%);
-  transition: opacity 0.5s ease, transform 0.5s ease;
+/* Opciones "Sí" y "No" en línea horizontal */
+.pregunta .opciones {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 10px;
 }
 
-/* Sección activa con efecto de desplazamiento */
-.section.active {
-  display: block;
-  opacity: 1;
-  transform: translateX(0);
+.pregunta .opciones label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
-/* Asegurar que la sección de clientes sea visible */
-#seccionCliente {
-  display: none;
-  opacity: 0;
-  transform: translateX(100%);
+/* Opciones de selección múltiple (checkboxes) */
+.pregunta .opciones-checkbox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-top: 10px;
 }
 
-/* Botón "Volver" fuera del contenedor */
-#backBtn.boton-volver {
-  position: absolute; /* Se coloca fuera del flujo normal */
-  left: 10px; /* Alineado a la izquierda */
-  top: 50%; /* Centrado verticalmente */
+.pregunta .opciones-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Ajuste de los radio buttons y checkboxes */
+.pregunta .opciones input[type="radio"],
+.pregunta .opciones-checkbox input[type="checkbox"] {
+  cursor: pointer;
+  transform: scale(1.2);
+}
+
+/* Botón "Volver" (fuera del contenedor, alineado a la izquierda) */
+.boton-volver {
+  position: absolute;
+  left: -60px;
+  top: 50%;
   transform: translateY(-50%);
-  
   width: 50px;
   height: 50px;
   background-color: #f44336;
@@ -102,7 +109,7 @@ button:hover {
 }
 
 /* Efecto hover del botón */
-#backBtn..boton-volver:hover {
+.boton-volver:hover {
   background-color: #d32f2f;
   transform: translateY(-50%) scale(1.1);
 }
@@ -110,69 +117,9 @@ button:hover {
 /* Ajuste para móviles */
 @media (max-width: 768px) {
   .boton-volver {
+    left: 10px;
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
   }
-}
-
-#backBtn:hover {
-  background-color: #d32f2f;
-}
-
-/* Estilo solo para el h2 de la categoría de preguntas */
-.categoria-preguntas {
-  background-color: #2D3748; /* Color oscuro elegante */
-  color: #ffffff; /* Texto blanco */
-  padding: 12px; /* Espaciado interno */
-  text-align: left; /* Alinear a la izquierda */
-  font-size: 1.3rem;
-  font-weight: bold;
-  border-radius: 8px; /* Bordes redondeados */
-  margin-bottom: 30px; /* Espacio debajo del título antes de las preguntas */
-  width: 100%; /* Ocupará todo el ancho del contenedor */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Pequeña sombra para realce */
-}
-
-.pregunta {
-  margin-bottom: 20px; /* Espaciado entre preguntas */
-  display: flex;
-  flex-direction: column; /* Pregunta arriba, opciones abajo */
-  align-items: flex-start; /* Alinea la pregunta a la izquierda */
-}
-
-/* Contenedor de opciones en una sola fila */
-.pregunta .opciones {
-  display: flex; /* Flexbox para alinear en fila */
-  justify-content: flex-start; /* Alinea los elementos a la izquierda */
-  align-items: center; /* Asegura que los radio buttons y los textos estén centrados verticalmente */
-  gap: 25px; /* Espacio entre las opciones Sí y No */
-  margin-top: 10px; /* Espaciado entre la pregunta y las opciones */
-}
-
-/* Opciones "Sí" y "No" alineadas correctamente */
-.pregunta .opciones label {
-  display: flex;
-  align-items: center; /* Alinea verticalmente el texto con el radio button */
-  gap: 8px; /* Espaciado entre el radio button y el texto */
-  font-size: 1rem;
-  cursor: pointer; /* Hace que las etiquetas sean clickeables */
-}
-
-/* Mejora visual al pasar el mouse */
-.pregunta .opciones label:hover {
-  color: #4CAF50; /* Cambia el color del texto al pasar el mouse */
-}
-
-/* Ajuste de los radio buttons */
-.pregunta .opciones input[type="radio"] {
-  cursor: pointer; /* Hace que los radio buttons sean clickeables */
-  transform: scale(1.2); /* Aumenta ligeramente el tamaño para mejor visibilidad */
-}
-
-/* Asegurar que el dropdown de clientes sea visible */
-#clientes {
-  display: block;
-  opacity: 1;
-  visibility: visible;
 }
