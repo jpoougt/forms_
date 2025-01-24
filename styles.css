@@ -79,10 +79,35 @@ button:hover {
   transform: translateX(100%);
 }
 
-/* Botón de retorno */
-#backBtn {
-  background-color: #f44336;
+/* Botón "Volver" fuera del contenedor */
+#backBtn.boton-volver {
+  position: absolute; /* Se posiciona fuera del contenedor */
+  left: 10px; /* Se mantiene a la izquierda */
+  top: 50%; /* Centrado verticalmente */
+  transform: translateY(-50%); /* Ajuste fino para centrarlo exactamente */
+  background-color: #f44336; /* Color rojo llamativo */
   color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Efecto hover del botón */
+#backBtn.boton-volver:hover {
+  background-color: #d32f2f;
+}
+
+/* Ajuste para móviles */
+@media (max-width: 768px) {
+  #backBtn.boton-volver {
+    position: static;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
 }
 
 #backBtn:hover {
@@ -91,19 +116,17 @@ button:hover {
 
 /* Estilo solo para el h2 de la categoría de preguntas */
 .categoria-preguntas {
-  background-color: #4CAF50; /* Color verde llamativo */
-  color: white; /* Texto en blanco */
-  padding: 10px 20px; /* Espaciado interno */
-  text-align: center;
+  background-color: #2D3748; /* Color oscuro elegante */
+  color: #ffffff; /* Texto blanco */
+  padding: 12px; /* Espaciado interno */
+  text-align: left; /* Alinear a la izquierda */
   font-size: 1.3rem;
   font-weight: bold;
-  border-radius: 8px; /* Bordes ligeramente redondeados */
+  border-radius: 8px; /* Bordes redondeados */
   margin-bottom: 30px; /* Espacio debajo del título antes de las preguntas */
-  width: fit-content; /* Ajusta el tamaño del fondo al contenido */
-  margin-left: auto; /* Centra horizontalmente */
-  margin-right: auto;
+  width: 100%; /* Ocupará todo el ancho del contenedor */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Pequeña sombra para realce */
 }
-
 
 .pregunta {
   margin-bottom: 20px; /* Espaciado entre preguntas */
