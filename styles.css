@@ -193,3 +193,18 @@ select:focus {
   background-color: #218838;
   transform: scale(1.05);
 }
+
+
+/* 📌 Preguntas dependientes (Ocultas por defecto con transición de barrido) */
+.dependiente {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+/* 📌 Mostrar preguntas dependientes con efecto de deslizamiento */
+.dependiente.activa {
+  max-height: 300px; /* Ajusta el tamaño según el contenido */
+  opacity: 1;
+}
