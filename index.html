@@ -9,10 +9,10 @@
 </head>
 <body>
 
- <!-- Botón oculto  -->
-<button id="backBtn" class="boton-volver" style="display: none;">
-  &#8592;
-</button>
+  <!-- Botón oculto de "Volver" -->
+  <button id="backBtn" class="boton-volver" style="display: none;">
+    &#8592;
+  </button>
 
   <!-- Contenedor principal -->
   <div class="container">
@@ -24,17 +24,17 @@
       <select id="pais" name="pais">
         <option value="">Seleccione su país...</option>
       </select>
-      <button id="nextBtn">Siguiente</button>
+      <button id="nextBtn" class="btn-continuar">Continuar</button>
     </div>
 
-    <!-- Sección 2: Selección del Cliente (Se oculta por defecto) -->
+    <!-- Sección 2: Selección del Cliente (Oculta por defecto) -->
     <div id="seccionCliente" class="section">
       <label for="clientes">Seleccione un cliente:</label>
       <select id="clientes" name="clientes">
         <option value="">Seleccione un cliente</option>
       </select>
 
-      <!-- Contenedor de preguntas (Oculto por defecto) -->
+      <!-- Contenedor de preguntas -->
       <div id="preguntas" style="display: none;">
         <h2 class="categoria-preguntas">Configuración inicial SAF.</h2>
 
@@ -44,25 +44,6 @@
           <div class="opciones">
             <label><input type="radio" name="pregunta1" value="si"> Sí</label>
             <label><input type="radio" name="pregunta1" value="no"> No</label>
-          </div>
-        </div>
-
-        <!-- Pregunta 2 -->
-        <div class="pregunta">
-          <p>¿El usuario registra equipos?</p>
-          <div class="opciones">
-            <label><input type="radio" name="pregunta2" value="si"> Sí</label>
-            <label><input type="radio" name="pregunta2" value="no"> No</label>
-          </div>
-        </div>
-
-        <!-- Pregunta 2.1 (Se muestra si pregunta2 = "si") -->
-        <div class="pregunta dependiente" id="pregunta2_1" style="display: none;">
-          <p>Seleccione qué equipos registra:</p>
-          <div class="opciones">
-            <label><input type="radio" name="pregunta2_1" value="vehiculos"> Vehículos</label>
-            <label><input type="radio" name="pregunta2_1" value="implementos"> Implementos</label>
-            <label><input type="radio" name="pregunta2_1" value="ambas"> Ambas</label>
           </div>
         </div>
 
@@ -78,49 +59,13 @@
         <!-- Pregunta 3.1 (Depende de pregunta3) -->
         <div class="pregunta dependiente" id="pregunta3_1" style="display: none;">
           <p>¿Qué productos registra?</p>
-          <div class="opciones-multiples">
-            <label><input type="checkbox" name="pregunta3_1" value="proteccion"> Productos de Protección de cultivos</label>
-            <label><input type="checkbox" name="pregunta3_1" value="fertilizantes"> Fertilizantes</label>
-            <label><input type="checkbox" name="pregunta3_1" value="cal"> Cal</label>
-            <label><input type="checkbox" name="pregunta3_1" value="semillas"> Semillas</label>
-            <label><input type="checkbox" name="pregunta3_1" value="agua"> Agua</label>
-            <label><input type="checkbox" name="pregunta3_1" value="mezclas"> Mezclas de tanque</label>
-          </div>
-        </div>
-
-        <!-- Pregunta 3.2 (Depende de pregunta3) -->
-        <div class="pregunta dependiente" id="pregunta3_2" style="display: none;">
-          <p>¿Maneja inventarios?</p>
-          <div class="opciones">
-            <label><input type="radio" name="pregunta3_2" value="si"> Sí</label>
-            <label><input type="radio" name="pregunta3_2" value="no"> No</label>
-          </div>
-        </div>
-
-        <!-- Pregunta 4 -->
-        <div class="pregunta">
-          <p>¿El cliente utiliza el módulo de Materias Primas?</p>
-          <div class="opciones">
-            <label><input type="radio" name="pregunta4" value="si"> Sí</label>
-            <label><input type="radio" name="pregunta4" value="no"> No</label>
-          </div>
-        </div>
-
-        <!-- Pregunta 4.1 (Depende de pregunta4) -->
-        <div class="pregunta dependiente" id="pregunta4_1" style="display: none;">
-          <p>¿El usuario tiene unidades de medida de rendimiento personalizada?</p>
-          <div class="opciones">
-            <label><input type="radio" name="pregunta4_1" value="si"> Sí</label>
-            <label><input type="radio" name="pregunta4_1" value="no"> No</label>
-          </div>
-        </div>
-
-        <!-- Pregunta 4.2 (Depende de pregunta4) -->
-        <div class="pregunta dependiente" id="pregunta4_2" style="display: none;">
-          <p>¿El usuario tiene creadas campañas de cultivos?</p>
-          <div class="opciones">
-            <label><input type="radio" name="pregunta4_2" value="si"> Sí</label>
-            <label><input type="radio" name="pregunta4_2" value="no"> No</label>
+          <div class="opciones-productos">
+            <button class="btn-producto" data-value="proteccion">Productos de Protección de cultivos</button>
+            <button class="btn-producto" data-value="fertilizantes">Fertilizantes</button>
+            <button class="btn-producto" data-value="cal">Cal</button>
+            <button class="btn-producto" data-value="semillas">Semillas</button>
+            <button class="btn-producto" data-value="agua">Agua</button>
+            <button class="btn-producto" data-value="mezclas">Mezclas de tanque</button>
           </div>
         </div>
 
@@ -131,3 +76,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
