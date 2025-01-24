@@ -67,14 +67,21 @@ document.getElementById('nextBtn').addEventListener('click', () => {
 
 
 document.getElementById('backBtn').addEventListener('click', () => {
-  // Mostrar la primera sección
-  document.getElementById('seccionPais').style.display = 'block';
-  
-  // Ocultar la segunda sección
-  document.getElementById('seccionCliente').style.display = 'none';
+  // Mostrar la primera sección (Selección del país)
+  const seccionPais = document.getElementById('seccionPais');
+  const seccionCliente = document.getElementById('seccionCliente');
 
-  // Opcional: Reiniciar el dropdown de clientes si se requiere
+  // Restablecer la posición con una animación (si aplica)
+  seccionPais.style.transform = 'translateX(0)';
+  seccionPais.style.transition = 'transform 0.5s ease-in-out';
+  seccionCliente.style.transform = 'translateX(100%)';
+
+  // Opcional: Asegúrate de que el cliente seleccionado se borre
   document.getElementById('cliente').value = '';
+
+  // Mostrar/Ocultar secciones (compatibilidad sin transformaciones)
+  seccionPais.style.display = 'block';
+  seccionCliente.style.display = 'none';
 });
 
 
