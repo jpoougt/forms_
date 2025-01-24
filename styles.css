@@ -69,7 +69,7 @@ select {
 }
 
 .slide-in-right {
-  animation: slideInRight 0.5s forwards;
+  animation: slideInRight 0.1s forwards;
 }
 
 .transition-left {
