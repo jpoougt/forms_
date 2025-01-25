@@ -120,6 +120,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    document.getElementById('nextBtn')?.addEventListener('click', () => {
+        const paisSeleccionado = document.getElementById('pais').value;
+        if (paisSeleccionado) {
+            resetClientes();
+            resetPreguntas();
+            const clientesOrdenados = (clientesPorPais[paisSeleccionado] || []).sort();
+            const clientesDropdown = document.getElementById('clientes');
+            if (clientesDropdown) {
+                clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
+                clientesOrdenados.forEach(cliente => {
+                    const option = document.createElement('option');
+                    option.value = cliente;
+                    option.textContent = cliente;
+                    clientesDropdown.appendChild(option);
+                });
+            }
+            switchSection('seccionPais', 'seccionCliente', 'left');
+            toggleNavigationButtons('seccionCliente');
+            handleDependencias();
+        }
+    });
+
     document.getElementById('clientes')?.addEventListener('change', () => {
         document.getElementById('preguntas').style.display = 'block';
         handleDependencias();
