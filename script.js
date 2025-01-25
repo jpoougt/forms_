@@ -128,40 +128,23 @@ document.addEventListener("DOMContentLoaded", function () {
                 const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
                 if (inputs.length === 0) {
                     allAnswered = false;
-                    pregunta.style.border = '2px solid red';
-                } else {
-                    pregunta.style.border = 'none';
                 }
             }
         });
-        document.getElementById('btnSiguiente').disabled = !allAnswered;
+        
+        if (!allAnswered) {
+            alert("Debe responder todas las preguntas obligatorias antes de continuar.");
+        } else {
+            switchSection('seccionCliente', 'seccionActividades', 'left');
+            toggleNavigationButtons('seccionActividades');
+        }
     }
 
-    document.getElementById('nextBtn')?.addEventListener('click', () => {
-        const paisSeleccionado = document.getElementById('pais').value;
-        if (paisSeleccionado) {
-            resetClientes();
-            resetPreguntas();
-            const clientesOrdenados = (clientesPorPais[paisSeleccionado] || []).sort();
-            const clientesDropdown = document.getElementById('clientes');
-            if (clientesDropdown) {
-                clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
-                clientesOrdenados.forEach(cliente => {
-                    const option = document.createElement('option');
-                    option.value = cliente;
-                    option.textContent = cliente;
-                    clientesDropdown.appendChild(option);
-                });
-            }
-            switchSection('seccionPais', 'seccionCliente', 'left');
-            toggleNavigationButtons('seccionCliente');
-        }
-    });
+    document.getElementById('btnSiguiente')?.addEventListener('click', checkFormCompletion);
     
     document.getElementById('clientes')?.addEventListener('change', () => {
         document.getElementById('preguntas').style.display = 'block';
         handleDependencias();
-        checkFormCompletion();
     });
     
     document.getElementById('btnVolver')?.addEventListener('click', () => {
@@ -169,11 +152,6 @@ document.addEventListener("DOMContentLoaded", function () {
         resetClientes();
         switchSection('seccionCliente', 'seccionPais', 'right');
         toggleNavigationButtons('seccionPais');
-    });
-    
-    document.getElementById('btnSiguiente')?.addEventListener('click', () => {
-        switchSection('seccionCliente', 'seccionActividades', 'left');
-        toggleNavigationButtons('seccionActividades');
     });
     
     document.getElementById('btnVolverActividades')?.addEventListener('click', () => {
