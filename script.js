@@ -79,6 +79,19 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 500);
     }
 
+    function toggleNavigationButtons(section) {
+        const btnVolver = document.getElementById('btnVolver');
+        const btnSiguiente = document.getElementById('btnSiguiente');
+        
+        if (section === 'seccionCliente') {
+            btnVolver.style.visibility = 'visible';
+            btnSiguiente.style.visibility = 'visible';
+        } else {
+            btnVolver.style.visibility = 'hidden';
+            btnSiguiente.style.visibility = 'hidden';
+        }
+    }
+
     function handleDependencias() {
         document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
             input.addEventListener('change', () => {
@@ -123,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             }
             switchSection('seccionPais', 'seccionCliente', 'left');
+            toggleNavigationButtons('seccionCliente');
         }
     });
     
@@ -140,14 +154,17 @@ document.addEventListener("DOMContentLoaded", function () {
         resetPreguntas();
         resetClientes();
         switchSection('seccionCliente', 'seccionPais', 'right');
+        toggleNavigationButtons('seccionPais');
     });
     
     document.getElementById('btnSiguiente')?.addEventListener('click', () => {
         switchSection('seccionCliente', 'seccionActividades', 'left');
+        toggleNavigationButtons('seccionActividades');
     });
     
     document.getElementById('btnVolverActividades')?.addEventListener('click', () => {
         switchSection('seccionActividades', 'seccionCliente', 'right');
+        toggleNavigationButtons('seccionCliente');
     });
     
     loadCountries();
