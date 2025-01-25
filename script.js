@@ -1,16 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ DOM completamente cargado");
 
-    let clientesPorPais = {}; // Objeto para almacenar los clientes por país
+    let clientesPorPais = {}; 
 
     function loadCountries() {
         fetch('SondeoClientes.xlsx')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.blob();
-            })
+            .then(response => response.blob())
             .then(blob => {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -50,15 +45,21 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error('Error cargando el archivo:', error));
     }
 
+    function resetPreguntas() {
+        document.querySelectorAll('input[type="radio"], input[type="checkbox"]').forEach(input => {
+            input.checked = false;
+        });
+        document.querySelectorAll('.dependiente').forEach(pregunta => {
+            pregunta.style.display = 'none';
+        });
+    }
+
     function switchSection(from, to, direction = 'left') {
         const fromSection = document.getElementById(from);
         const toSection = document.getElementById(to);
         const backButton = document.getElementById('btnVolver');
 
-        if (!fromSection || !toSection) {
-            console.error(`❌ No se encontró la sección: ${from} o ${to}`);
-            return;
-        }
+        if (!fromSection || !toSection) return;
 
         fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
         fromSection.style.opacity = '0';
@@ -68,12 +69,8 @@ document.addEventListener("DOMContentLoaded", function () {
             toSection.style.display = 'block';
 
             backButton.style.visibility = (to === 'seccionCliente' || to === 'seccionActividades') ? 'visible' : 'hidden';
-
-            const siguienteBtn = document.getElementById("btnSiguiente");
-            if (siguienteBtn) {
-                siguienteBtn.style.visibility = (to === "seccionCliente") ? "visible" : "hidden";
-            }
-
+            document.getElementById("btnSiguiente").style.visibility = (to === "seccionCliente") ? "visible" : "hidden";
+            
             setTimeout(() => {
                 toSection.style.opacity = '1';
                 toSection.style.transform = 'translateX(0)';
@@ -81,78 +78,50 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 500);
     }
 
-    const nextBtn = document.getElementById('nextBtn');
-    const backBtn = document.getElementById('btnVolver');
-    const siguienteBtn = document.getElementById('btnSiguiente');
-    const clientesDropdown = document.getElementById('clientes');
-    const preguntasDiv = document.getElementById('preguntas');
-
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            const paisSeleccionado = document.getElementById('pais').value;
-            if (!paisSeleccionado) {
-                alert('Por favor, seleccione un país.');
-                return;
-            }
-
-            const clientesOrdenados = (clientesPorPais[paisSeleccionado] || []).sort();
-
-            if (clientesDropdown) {
-                clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
-                clientesOrdenados.forEach(cliente => {
-                    const option = document.createElement('option');
-                    option.value = cliente;
-                    option.textContent = cliente;
-                    clientesDropdown.appendChild(option);
+    function handleDependencias() {
+        document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
+            input.addEventListener('change', () => {
+                const dependencias = {
+                    "pregunta2": "pregunta2_1",
+                    "pregunta3": ["pregunta3_1", "pregunta3_2"],
+                    "pregunta4": ["pregunta4_1", "pregunta4_2"],
+                    "pregunta6": "pregunta6_1"
+                };
+                
+                Object.keys(dependencias).forEach(pregunta => {
+                    const seleccion = document.querySelector(`input[name="${pregunta}"]:checked`);
+                    const dependientes = Array.isArray(dependencias[pregunta]) ? dependencias[pregunta] : [dependencias[pregunta]];
+                    
+                    if (seleccion && seleccion.value === "si") {
+                        dependientes.forEach(id => document.getElementById(id).style.display = 'block');
+                    } else {
+                        dependientes.forEach(id => {
+                            document.getElementById(id).style.display = 'none';
+                            document.querySelectorAll(`#${id} input`).forEach(input => input.checked = false);
+                        });
+                    }
                 });
-                clientesDropdown.style.display = 'block';
-                preguntasDiv.style.display = 'none';
-            }
-
-            switchSection('seccionPais', 'seccionCliente', 'left');
-        });
-    }
-
-    if (clientesDropdown) {
-        clientesDropdown.addEventListener('change', () => {
-            if (clientesDropdown.value) {
-                preguntasDiv.style.display = 'block';
-            } else {
-                preguntasDiv.style.display = 'none';
-            }
-        });
-    }
-
-    if (backBtn) {
-        backBtn.addEventListener('click', () => {
-            switchSection('seccionCliente', 'seccionPais', 'right');
-        });
-    }
-
-    if (siguienteBtn) {
-        siguienteBtn.addEventListener('click', () => {
-            switchSection('seccionCliente', 'seccionActividades', 'left');
-        });
-    }
-
-    const btnVolverActividades = document.getElementById('btnVolverActividades');
-    if (btnVolverActividades) {
-        btnVolverActividades.addEventListener('click', () => {
-            switchSection('seccionActividades', 'seccionCliente', 'right');
-        });
-    }
-
-    document.querySelectorAll('.pregunta input').forEach(input => {
-        input.addEventListener('change', () => {
-            let todasRespondidas = true;
-            document.querySelectorAll('.pregunta').forEach(pregunta => {
-                if (!pregunta.querySelector('input:checked') && pregunta.style.display !== 'none') {
-                    todasRespondidas = false;
-                }
             });
-            siguienteBtn.disabled = !todasRespondidas;
         });
-    });
+    }
 
+    document.getElementById('nextBtn')?.addEventListener('click', () => {
+        switchSection('seccionPais', 'seccionCliente', 'left');
+    });
+    
+    document.getElementById('btnVolver')?.addEventListener('click', () => {
+        resetPreguntas();
+        switchSection('seccionCliente', 'seccionPais', 'right');
+    });
+    
+    document.getElementById('btnSiguiente')?.addEventListener('click', () => {
+        switchSection('seccionCliente', 'seccionActividades', 'left');
+    });
+    
+    document.getElementById('btnVolverActividades')?.addEventListener('click', () => {
+        switchSection('seccionActividades', 'seccionCliente', 'right');
+    });
+    
     loadCountries();
+    handleDependencias();
 });
