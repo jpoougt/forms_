@@ -61,31 +61,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function handleDependencias() {
-        document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
-            input.addEventListener('change', () => {
-                const dependencias = {
-                    "pregunta2": "pregunta2_1",
-                    "pregunta3": ["pregunta3_1", "pregunta3_2"],
-                    "pregunta4": ["pregunta4_1", "pregunta4_2"],
-                    "pregunta6": "pregunta6_1"
-                };
-                
-                Object.keys(dependencias).forEach(pregunta => {
-                    const seleccion = document.querySelector(`input[name="${pregunta}"]:checked`);
-                    const dependientes = Array.isArray(dependencias[pregunta]) ? dependencias[pregunta] : [dependencias[pregunta]];
-                    
-                    if (seleccion && seleccion.value === "si") {
-                        dependientes.forEach(id => document.getElementById(id).style.display = 'block');
-                    } else {
-                        dependientes.forEach(id => {
-                            document.getElementById(id).style.display = 'none';
-                            document.querySelectorAll(`#${id} input`).forEach(input => input.checked = false);
-                        });
-                    }
-                });
-            });
-        });
+    function switchSection(from, to, direction = 'left') {
+        const fromSection = document.getElementById(from);
+        const toSection = document.getElementById(to);
+        if (!fromSection || !toSection) return;
+
+        fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
+        fromSection.style.opacity = '0';
+
+        setTimeout(() => {
+            fromSection.style.display = 'none';
+            toSection.style.display = 'block';
+            setTimeout(() => {
+                toSection.style.opacity = '1';
+                toSection.style.transform = 'translateX(0)';
+            }, 50);
+        }, 500);
     }
 
     document.getElementById('nextBtn')?.addEventListener('click', () => {
@@ -104,15 +95,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     clientesDropdown.appendChild(option);
                 });
             }
+            switchSection('seccionPais', 'seccionCliente', 'left');
         }
-        switchSection('seccionPais', 'seccionCliente', 'left');
     });
     
     document.getElementById('clientes')?.addEventListener('change', () => {
         const preguntasDiv = document.getElementById('preguntas');
         if (document.getElementById('clientes').value) {
             preguntasDiv.style.display = 'block';
-            handleDependencias();
         } else {
             preguntasDiv.style.display = 'none';
         }
@@ -134,4 +124,3 @@ document.addEventListener("DOMContentLoaded", function () {
     
     loadCountries();
 });
-
