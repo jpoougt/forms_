@@ -15,6 +15,50 @@
     background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+/* Botones de navegación */
+.btn-navegacion {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    visibility: hidden;
+    z-index: 1000;
+}
+
+.btn-volver {
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #f44336;
+    color: white;
+}
+
+.btn-siguiente {
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-navegacion:hover {
+    transform: scale(1.1);
+}
+
+/* Mostrar botones en la sección activa */
+.section.active + .btn-navegacion {
+    visibility: visible;
 }
 
 /* Secciones ocultas por defecto */
@@ -29,42 +73,6 @@
     display: block;
     opacity: 1;
     transform: translateX(0);
-}
-
-/* Botones de navegación */
-.btn-navegacion {
-    position: fixed;
-    width: 50px;
-    height: 50px;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    visibility: hidden;
-    z-index: 1000;
-}
-
-.btn-volver {
-    left: 20px;
-    top: 50%;
-    background-color: #f44336;
-    color: white;
-}
-
-.btn-siguiente {
-    right: 20px;
-    top: 50%;
-    background-color: #28a745;
-    color: white;
-}
-
-/* Mostrar botones en la sección activa */
-.section.active + .btn-navegacion {
-    visibility: visible;
 }
 
 /* Dropdowns */
@@ -107,3 +115,4 @@ select:focus {
 .dependiente {
     display: none;
 }
+
