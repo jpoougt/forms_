@@ -81,39 +81,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function switchSection(from, to, direction = 'left') {
-        const fromSection = document.getElementById(from);
-        const toSection = document.getElementById(to);
-        if (!fromSection || !toSection) return;
-
-        fromSection.style.display = 'none';
-        toSection.style.display = 'block';
-    }
-
-    function validarRespuestas() {
-        let allAnswered = true;
-        let mensaje = "Faltan respuestas en las siguientes preguntas:\n";
-        
-        document.querySelectorAll('.pregunta').forEach(pregunta => {
-            if (pregunta.style.display !== 'none' && pregunta.offsetParent !== null) {
-                const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-                if (inputs.length === 0) {
-                    allAnswered = false;
-                    mensaje += `- ${pregunta.querySelector('p').textContent}\n`;
-                }
-            }
-        });
-        
-        if (!allAnswered) {
-            alert(mensaje);
-            return false;
-        }
-        return true;
+    function switchSection(from, to) {
+        document.getElementById(from).style.display = 'none';
+        document.getElementById(to).style.display = 'block';
     }
 
     document.getElementById('btnSiguiente')?.addEventListener('click', () => {
         if (validarRespuestas()) {
-            switchSection('seccionCliente', 'seccionActividades', 'left');
+            switchSection('seccionCliente', 'seccionActividades');
         }
     });
 
@@ -121,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const paisSeleccionado = document.getElementById('pais').value;
         if (paisSeleccionado) {
             resetPreguntas();
-            switchSection('seccionPais', 'seccionCliente', 'left');
+            switchSection('seccionPais', 'seccionCliente');
             setTimeout(() => {
                 handleDependencias();
             }, 100);
@@ -137,13 +112,14 @@ document.addEventListener("DOMContentLoaded", function () {
     
     document.getElementById('btnVolver')?.addEventListener('click', () => {
         resetPreguntas();
-        switchSection('seccionCliente', 'seccionPais', 'right');
+        switchSection('seccionCliente', 'seccionPais');
     });
     
     document.getElementById('btnVolverActividades')?.addEventListener('click', () => {
-        switchSection('seccionActividades', 'seccionCliente', 'right');
+        switchSection('seccionActividades', 'seccionCliente');
     });
     
     loadCountries();
     handleDependencias();
 });
+
