@@ -93,6 +93,33 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function handleDependencias() {
+        document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
+            input.addEventListener('change', () => {
+                const dependencias = {
+                    "pregunta2": "pregunta2_1",
+                    "pregunta3": ["pregunta3_1", "pregunta3_2"],
+                    "pregunta4": ["pregunta4_1", "pregunta4_2"],
+                    "pregunta6": "pregunta6_1"
+                };
+                
+                Object.keys(dependencias).forEach(pregunta => {
+                    const seleccion = document.querySelector(`input[name="${pregunta}"]:checked`);
+                    const dependientes = Array.isArray(dependencias[pregunta]) ? dependencias[pregunta] : [dependencias[pregunta]];
+                    
+                    if (seleccion && seleccion.value === "si") {
+                        dependientes.forEach(id => document.getElementById(id).style.display = 'block');
+                    } else {
+                        dependientes.forEach(id => {
+                            document.getElementById(id).style.display = 'none';
+                            document.querySelectorAll(`#${id} input`).forEach(input => input.checked = false);
+                        });
+                    }
+                });
+            });
+        });
+    }
+
     function validarRespuestas() {
         let allAnswered = true;
         let mensaje = "Faltan respuestas en las siguientes preguntas:\n";
@@ -118,6 +145,17 @@ document.addEventListener("DOMContentLoaded", function () {
         if (validarRespuestas()) {
             switchSection('seccionCliente', 'seccionActividades', 'left');
             toggleNavigationButtons('seccionActividades');
+        }
+    });
+
+    document.getElementById('nextBtn')?.addEventListener('click', () => {
+        const paisSeleccionado = document.getElementById('pais').value;
+        if (paisSeleccionado) {
+            resetClientes();
+            resetPreguntas();
+            switchSection('seccionPais', 'seccionCliente', 'left');
+            toggleNavigationButtons('seccionCliente');
+            handleDependencias();
         }
     });
 
