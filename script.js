@@ -54,78 +54,12 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function resetClientes() {
-        const clientesDropdown = document.getElementById('clientes');
-        if (clientesDropdown) {
-            clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
-        }
-        document.getElementById('preguntas').style.display = 'none';
-    }
-
-    function switchSection(from, to, direction = 'left') {
-        const fromSection = document.getElementById(from);
-        const toSection = document.getElementById(to);
-        if (!fromSection || !toSection) return;
-
-        fromSection.style.transform = direction === 'left' ? 'translateX(-100%)' : 'translateX(100%)';
-        fromSection.style.opacity = '0';
-
-        setTimeout(() => {
-            fromSection.style.display = 'none';
-            toSection.style.display = 'block';
-            setTimeout(() => {
-                toSection.style.opacity = '1';
-                toSection.style.transform = 'translateX(0)';
-            }, 50);
-        }, 500);
-    }
-
-    function toggleNavigationButtons(section) {
-        const btnVolver = document.getElementById('btnVolver');
-        const btnSiguiente = document.getElementById('btnSiguiente');
-        
-        if (section === 'seccionCliente') {
-            btnVolver.style.visibility = 'visible';
-            btnSiguiente.style.visibility = 'visible';
-        } else {
-            btnVolver.style.visibility = 'hidden';
-            btnSiguiente.style.visibility = 'hidden';
-        }
-    }
-
-    function handleDependencias() {
-        document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
-            input.addEventListener('change', () => {
-                const dependencias = {
-                    "pregunta2": "pregunta2_1",
-                    "pregunta3": ["pregunta3_1", "pregunta3_2"],
-                    "pregunta4": ["pregunta4_1", "pregunta4_2"],
-                    "pregunta6": "pregunta6_1"
-                };
-                
-                Object.keys(dependencias).forEach(pregunta => {
-                    const seleccion = document.querySelector(`input[name="${pregunta}"]:checked`);
-                    const dependientes = Array.isArray(dependencias[pregunta]) ? dependencias[pregunta] : [dependencias[pregunta]];
-                    
-                    if (seleccion && seleccion.value === "si") {
-                        dependientes.forEach(id => document.getElementById(id).style.display = 'block');
-                    } else {
-                        dependientes.forEach(id => {
-                            document.getElementById(id).style.display = 'none';
-                            document.querySelectorAll(`#${id} input`).forEach(input => input.checked = false);
-                        });
-                    }
-                });
-            });
-        });
-    }
-
     function validarRespuestas() {
         let allAnswered = true;
         let mensaje = "Faltan respuestas en las siguientes preguntas:\n";
         
         document.querySelectorAll('.pregunta').forEach(pregunta => {
-            if (pregunta.style.display !== 'none') {
+            if (pregunta.style.display !== 'none' && pregunta.offsetParent !== null) {
                 const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
                 if (inputs.length === 0) {
                     allAnswered = false;
@@ -151,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('nextBtn')?.addEventListener('click', () => {
         const paisSeleccionado = document.getElementById('pais').value;
         if (paisSeleccionado) {
-            resetClientes();
             resetPreguntas();
             switchSection('seccionPais', 'seccionCliente', 'left');
             toggleNavigationButtons('seccionCliente');
@@ -166,7 +99,6 @@ document.addEventListener("DOMContentLoaded", function () {
     
     document.getElementById('btnVolver')?.addEventListener('click', () => {
         resetPreguntas();
-        resetClientes();
         switchSection('seccionCliente', 'seccionPais', 'right');
         toggleNavigationButtons('seccionPais');
     });
