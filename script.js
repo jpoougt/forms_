@@ -5,7 +5,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function loadCountries() {
         fetch('SondeoClientes.xlsx')
-            .then(response => response.blob())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.blob();
+            })
             .then(blob => {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -38,11 +43,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             option.textContent = country;
                             paisDropdown.appendChild(option);
                         });
+                        console.log("🌍 Países cargados correctamente", sortedCountries);
                     }
                 };
                 reader.readAsArrayBuffer(blob);
             })
-            .catch(error => console.error('Error cargando el archivo:', error));
+            .catch(error => console.error('❌ Error cargando el archivo:', error));
     }
 
     function resetPreguntas() {
@@ -86,6 +92,27 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById(to).style.display = 'block';
     }
 
+    function validarRespuestas() {
+        let allAnswered = true;
+        let mensaje = "Faltan respuestas en las siguientes preguntas:\n";
+        
+        document.querySelectorAll('.pregunta').forEach(pregunta => {
+            if (pregunta.style.display !== 'none' && pregunta.offsetParent !== null) {
+                const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+                if (inputs.length === 0) {
+                    allAnswered = false;
+                    mensaje += `- ${pregunta.querySelector('p').textContent}\n`;
+                }
+            }
+        });
+        
+        if (!allAnswered) {
+            alert(mensaje);
+            return false;
+        }
+        return true;
+    }
+
     document.getElementById('btnSiguiente')?.addEventListener('click', () => {
         if (validarRespuestas()) {
             switchSection('seccionCliente', 'seccionActividades');
@@ -122,4 +149,3 @@ document.addEventListener("DOMContentLoaded", function () {
     loadCountries();
     handleDependencias();
 });
-
