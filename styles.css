@@ -270,10 +270,14 @@ select:focus {
 .actividad-inputs input[type="number"] {
   width: 90px;
   padding: 8px;
+  display:none;
+  flex-direction: row;
+  gap: 10 px;
+  align-items: center;
   font-size: 1rem;
   text-align: center;
   border: 2px solid #ccc;
-  border-radius: 15px; /* Más redondeado */
+  border-radius: 5px; /* Más redondeado */
   background: white;
   transition: all 0.3s ease;
 }
