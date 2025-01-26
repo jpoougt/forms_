@@ -22,8 +22,8 @@
 /* 🔄 Botón Volver (Izquierda, fijo en pantalla) */
 .btn-volver {
   position: fixed;
-  left: 20px; /* Distancia desde el borde izquierdo */
-  top: 50%; /* Centrado verticalmente */
+  left: 20px;
+  top: 50%;
   transform: translateY(-50%);
   width: 50px;
   height: 50px;
@@ -39,14 +39,14 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
   cursor: pointer;
   visibility: hidden;
-  z-index: 1000; /* Se mantiene por encima de otros elementos */
+  z-index: 1000;
 }
 
 /* ⏩ Botón Siguiente (Derecha, fijo en pantalla) */
 .btn-siguiente {
   position: fixed;
-  right: 20px; /* Distancia desde el borde derecho */
-  top: 50%; /* Centrado verticalmente */
+  right: 20px;
+  top: 50%;
   transform: translateY(-50%);
   width: 50px;
   height: 50px;
@@ -62,7 +62,7 @@
   transition: background-color 0.3s ease, transform 0.2s ease;
   cursor: pointer;
   visibility: hidden;
-  z-index: 1000; /* Se mantiene por encima de otros elementos */
+  z-index: 1000;
 }
 
 /* ✅ Mostrar los botones SOLO en la sección de selección de clientes */
@@ -108,14 +108,13 @@ select {
   padding: 10px;
   font-size: 1rem;
   border: 2px solid #ccc;
-  border-radius: 8px; /* Bordes curvados */
+  border-radius: 8px;
   background-color: white;
   cursor: pointer;
   transition: border-color 0.3s ease;
-  appearance: auto; /* Se mantiene el estilo estándar del sistema */
+  appearance: auto;
 }
 
-/* Mejorar el efecto cuando el usuario hace clic */
 select:focus {
   border-color: #28a745;
   outline: none;
@@ -216,7 +215,6 @@ select:focus {
   cursor: pointer;
 }
 
-/* Estiliza los checkboxes */
 .opciones-checkbox input[type="checkbox"] {
   transform: scale(1.2);
   cursor: pointer;
@@ -232,12 +230,12 @@ select:focus {
   border-radius: 5px;
   font-size: 1rem;
   font-weight: bold;
-  display: inline-block; /* Asegura que se mantengan dentro del flujo */
+  display: inline-block;
   text-align: center;
-  margin: 20px 10px; /* Espaciado entre los botones */
+  margin: 20px 10px;
   transition: background-color 0.3s ease, transform 0.2s ease;
   cursor: pointer;
-  visibility: hidden; /* ⛔ Ocultos por defecto */
+  visibility: hidden;
 }
 
 /* 🟥 Botón Volver en la Sección 3 */
@@ -253,8 +251,8 @@ select:focus {
 /* ✅ Cuando la Sección 3 esté activa, los botones se mostrarán */
 #seccionActividades.active #btnVolverActividades,
 #seccionActividades.active #btnSiguienteActividades {
-  visibility: visible;
-  display: inline-block; /* Asegura que se vean */
+  visibility: visible !important;
+  display: inline-block;
 }
 
 /* 🟢 Efecto hover */
