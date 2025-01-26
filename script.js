@@ -142,6 +142,26 @@ function loadClientsByCountry(paisSeleccionado) {
         });
     }
 
+//Activadores de checkbox de cantidad de actividades y ultimo registro de actividades.
+    function handleActividadInputs() {
+    document.querySelectorAll('.opciones-checkbox input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', function () {
+            let labor = this.value;
+            let cantidadInput = document.querySelector(`.cantidad-input[data-labor="${labor}"]`);
+            let fechaInput = document.querySelector(`.fecha-input[data-labor="${labor}"]`);
+
+            if (this.checked) {
+                cantidadInput.style.display = "inline-block";
+                fechaInput.style.display = "inline-block";
+            } else {
+                cantidadInput.style.display = "none";
+                fechaInput.style.display = "none";
+            }
+        });
+    });
+}
+
+    
     document.getElementById('nextBtn')?.addEventListener('click', () => {
         const paisSeleccionado = document.getElementById('pais').value;
         if (paisSeleccionado) {
@@ -181,6 +201,7 @@ function loadClientsByCountry(paisSeleccionado) {
         if (allAnswered) {
             toggleSeccion('seccionCliente', 'seccionActividades');
             toggleNavigationButtons('seccionActividades');
+            handleActividadInputs();
         }
     });
 
@@ -195,5 +216,7 @@ function loadClientsByCountry(paisSeleccionado) {
 
     loadCountries();
     handleDependencias();
+
+    
 });
 
