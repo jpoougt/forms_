@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ DOM completamente cargado");
 
     let clientesPorPais = {}; 
+    let seccionActual = "seccionPais"; // Variable para rastrear la sección actual
 
     function loadCountries() {
         fetch('SondeoClientes.xlsx')
@@ -77,57 +78,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function switchSection(from, to) {
-        const fromSection = document.getElementById(from);
-        const toSection = document.getElementById(to);
-        
-        fromSection.style.opacity = '0';
-        fromSection.style.transform = 'translateX(-100%)';
-        
-        setTimeout(() => {
-            fromSection.style.display = 'none';
-            toSection.style.display = 'block';
-            setTimeout(() => {
-                toSection.style.opacity = '1';
-                toSection.style.transform = 'translateX(0)';
-            }, 50);
-        }, 500);
+        document.getElementById(from).style.display = 'none';
+        document.getElementById(to).style.display = 'block';
+        seccionActual = to;
     }
 
-    function toggleNavigationButtons(currentSection) {
-        document.querySelectorAll('.btn-navegacion').forEach(btn => {
-            btn.style.visibility = 'hidden';
-        });
-        if (currentSection === 'seccionCliente' || currentSection === 'seccionActividades') {
-            document.getElementById('btnVolver').style.visibility = 'visible';
-            document.getElementById('btnSiguiente').style.visibility = 'visible';
-        }
+    function volverASeccion1() {
+        resetPreguntas();
+        switchSection('seccionCliente', 'seccionPais');
     }
 
-    function handleDependencias() {
-        document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
-            input.addEventListener('change', () => {
-                const dependencias = {
-                    "pregunta2": "pregunta2_1",
-                    "pregunta3": ["pregunta3_1", "pregunta3_2"],
-                    "pregunta4": ["pregunta4_1", "pregunta4_2"],
-                    "pregunta6": "pregunta6_1"
-                };
-                
-                Object.keys(dependencias).forEach(pregunta => {
-                    const seleccion = document.querySelector(`input[name="${pregunta}"]:checked`);
-                    const dependientes = Array.isArray(dependencias[pregunta]) ? dependencias[pregunta] : [dependencias[pregunta]];
-                    
-                    if (seleccion && seleccion.value === "si") {
-                        dependientes.forEach(id => document.getElementById(id).style.display = 'block');
-                    } else {
-                        dependientes.forEach(id => {
-                            document.getElementById(id).style.display = 'none';
-                            document.querySelectorAll(`#${id} input`).forEach(input => input.checked = false);
-                        });
-                    }
-                });
-            });
+    function volverASeccion2() {
+        document.querySelectorAll('#seccionActividades .pregunta').forEach(pregunta => {
+            pregunta.style.display = 'none';
         });
+        switchSection('seccionActividades', 'seccionCliente');
     }
 
     document.getElementById('nextBtn')?.addEventListener('click', () => {
@@ -136,8 +101,6 @@ document.addEventListener("DOMContentLoaded", function () {
             resetPreguntas();
             loadClientsByCountry(paisSeleccionado);
             switchSection('seccionPais', 'seccionCliente');
-            toggleNavigationButtons('seccionCliente');
-            handleDependencias();
         } else {
             alert("Debe seleccionar un país antes de continuar.");
         }
@@ -145,32 +108,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('clientes')?.addEventListener('change', () => {
         document.getElementById('preguntas').style.display = 'block';
-        handleDependencias();
     });
-
+    
     document.getElementById('btnVolver')?.addEventListener('click', () => {
-        resetPreguntas();
-        switchSection('seccionCliente', 'seccionPais');
-        toggleNavigationButtons('seccionPais');
-    });
-
-    document.getElementById('btnSiguiente')?.addEventListener('click', () => {
-        let allAnswered = true;
-        document.querySelectorAll('#seccionCliente .pregunta').forEach(pregunta => {
-            if (pregunta.style.display !== 'none') {
-                const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-                if (inputs.length === 0) {
-                    alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
-                    allAnswered = false;
-                }
-            }
-        });
-        if (allAnswered) {
-            switchSection('seccionCliente', 'seccionActividades');
-            toggleNavigationButtons('seccionActividades');
+        if (seccionActual === 'seccionCliente') {
+            volverASeccion1();
+        } else if (seccionActual === 'seccionActividades') {
+            volverASeccion2();
         }
     });
-
+    
     loadCountries();
-    handleDependencias();
 });
