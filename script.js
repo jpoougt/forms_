@@ -60,21 +60,26 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function loadClientsByCountry(paisSeleccionado) {
-        const clientesDropdown = document.getElementById('clientes');
-        if (clientesDropdown) {
-            clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
-            if (clientesPorPais[paisSeleccionado]) {
-                clientesPorPais[paisSeleccionado].forEach(cliente => {
-                    const option = document.createElement('option');
-                    option.value = cliente;
-                    option.textContent = cliente;
-                    clientesDropdown.appendChild(option);
-                });
-                console.log("👥 Clientes cargados para:", paisSeleccionado, clientesPorPais[paisSeleccionado]);
-            }
+function loadClientsByCountry(paisSeleccionado) {
+    const clientesDropdown = document.getElementById('clientes');
+    if (clientesDropdown) {
+        clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
+        if (clientesPorPais[paisSeleccionado]) {
+            // 📌 Ordenar los clientes alfabéticamente antes de agregarlos
+            const clientesOrdenados = [...clientesPorPais[paisSeleccionado]].sort();
+
+            clientesOrdenados.forEach(cliente => {
+                const option = document.createElement('option');
+                option.value = cliente;
+                option.textContent = cliente;
+                clientesDropdown.appendChild(option);
+            });
+
+            console.log("🔠 Clientes ordenados alfabéticamente para:", paisSeleccionado, clientesOrdenados);
         }
     }
+}
+
 
     function toggleSeccion(from, to) {
         const fromSection = document.getElementById(from);
