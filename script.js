@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.log("✅ DOM completamente cargado");
 
     let clientesPorPais = {}; 
-    let seccionActual = "seccionPais"; // Variable para rastrear la sección actual
 
     function loadCountries() {
         fetch('SondeoClientes.xlsx')
@@ -61,6 +60,49 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function loadClientsByCountry(paisSeleccionado) {
+        const clientesDropdown = document.getElementById('clientes');
+        if (clientesDropdown) {
+            clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
+            if (clientesPorPais[paisSeleccionado]) {
+                clientesPorPais[paisSeleccionado].forEach(cliente => {
+                    const option = document.createElement('option');
+                    option.value = cliente;
+                    option.textContent = cliente;
+                    clientesDropdown.appendChild(option);
+                });
+                console.log("👥 Clientes cargados para:", paisSeleccionado, clientesPorPais[paisSeleccionado]);
+            }
+        }
+    }
+
+    function switchSection(from, to) {
+        const fromSection = document.getElementById(from);
+        const toSection = document.getElementById(to);
+        
+        fromSection.style.opacity = '0';
+        fromSection.style.transform = 'translateX(-100%)';
+        
+        setTimeout(() => {
+            fromSection.style.display = 'none';
+            toSection.style.display = 'block';
+            setTimeout(() => {
+                toSection.style.opacity = '1';
+                toSection.style.transform = 'translateX(0)';
+            }, 50);
+        }, 500);
+    }
+
+    function toggleNavigationButtons(currentSection) {
+        document.querySelectorAll('.btn-navegacion').forEach(btn => {
+            btn.style.visibility = 'hidden';
+        });
+        if (currentSection === 'seccionCliente' || currentSection === 'seccionActividades') {
+            document.getElementById('btnVolver').style.visibility = 'visible';
+            document.getElementById('btnSiguiente').style.visibility = 'visible';
+        }
+    }
+
     function handleDependencias() {
         document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
             input.addEventListener('change', () => {
@@ -88,35 +130,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function loadClientsByCountry(paisSeleccionado) {
-        const clientesDropdown = document.getElementById('clientes');
-        if (clientesDropdown) {
-            clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
-            if (clientesPorPais[paisSeleccionado]) {
-                clientesPorPais[paisSeleccionado].forEach(cliente => {
-                    const option = document.createElement('option');
-                    option.value = cliente;
-                    option.textContent = cliente;
-                    clientesDropdown.appendChild(option);
-                });
-                console.log("👥 Clientes cargados para:", paisSeleccionado, clientesPorPais[paisSeleccionado]);
-            }
-        }
-    }
-
-    function switchSection(from, to) {
-        document.getElementById(from).style.display = 'none';
-        document.getElementById(to).style.display = 'block';
-        seccionActual = to;
-    }
-
     document.getElementById('nextBtn')?.addEventListener('click', () => {
         const paisSeleccionado = document.getElementById('pais').value;
         if (paisSeleccionado) {
             resetPreguntas();
             loadClientsByCountry(paisSeleccionado);
             switchSection('seccionPais', 'seccionCliente');
-            seccionActual = "seccionCliente";
+            toggleNavigationButtons('seccionCliente');
             handleDependencias();
         } else {
             alert("Debe seleccionar un país antes de continuar.");
@@ -127,39 +147,30 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('preguntas').style.display = 'block';
         handleDependencias();
     });
-    
+
     document.getElementById('btnVolver')?.addEventListener('click', () => {
-        if (seccionActual === 'seccionCliente') {
-            resetPreguntas();
-            switchSection('seccionCliente', 'seccionPais');
-            seccionActual = "seccionPais";
-        } else if (seccionActual === 'seccionActividades') {
-            resetPreguntas();
-            document.getElementById('preguntas').style.display = 'none';
-            switchSection('seccionActividades', 'seccionCliente');
-            seccionActual = "seccionCliente";
-        }
+        resetPreguntas();
+        switchSection('seccionCliente', 'seccionPais');
+        toggleNavigationButtons('seccionPais');
     });
-    
+
     document.getElementById('btnSiguiente')?.addEventListener('click', () => {
-        if (seccionActual === 'seccionCliente') {
-            let allAnswered = true;
-            document.querySelectorAll('#seccionCliente .pregunta').forEach(pregunta => {
-                if (pregunta.style.display !== 'none') {
-                    const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-                    if (inputs.length === 0) {
-                        alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
-                        allAnswered = false;
-                    }
+        let allAnswered = true;
+        document.querySelectorAll('#seccionCliente .pregunta').forEach(pregunta => {
+            if (pregunta.style.display !== 'none') {
+                const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+                if (inputs.length === 0) {
+                    alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
+                    allAnswered = false;
                 }
-            });
-            if (allAnswered) {
-                switchSection('seccionCliente', 'seccionActividades');
-                seccionActual = "seccionActividades";
             }
+        });
+        if (allAnswered) {
+            switchSection('seccionCliente', 'seccionActividades');
+            toggleNavigationButtons('seccionActividades');
         }
     });
-    
+
     loadCountries();
     handleDependencias();
 });
