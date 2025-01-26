@@ -76,6 +76,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    function switchSection(from, to) {
+        document.getElementById(from).classList.remove("active");
+        document.getElementById(to).classList.add("active");
+    }
+
     function toggleNavigationButtons(section) {
         const btnVolver = document.getElementById('btnVolver');
         const btnSiguiente = document.getElementById('btnSiguiente');
@@ -94,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (paisSeleccionado) {
             resetPreguntas();
             loadClientsByCountry(paisSeleccionado);
-            switchSection('seccionPais', 'seccionCliente', 'left');
+            switchSection('seccionPais', 'seccionCliente');
             toggleNavigationButtons('seccionCliente');
             handleDependencias();
         } else {
@@ -109,12 +114,12 @@ document.addEventListener("DOMContentLoaded", function () {
     
     document.getElementById('btnVolver')?.addEventListener('click', () => {
         resetPreguntas();
-        switchSection('seccionCliente', 'seccionPais', 'right');
+        switchSection('seccionCliente', 'seccionPais');
         toggleNavigationButtons('seccionPais');
     });
     
     document.getElementById('btnVolverActividades')?.addEventListener('click', () => {
-        switchSection('seccionActividades', 'seccionCliente', 'right');
+        switchSection('seccionActividades', 'seccionCliente');
         toggleNavigationButtons('seccionCliente');
     });
     
