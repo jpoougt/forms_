@@ -130,36 +130,23 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    document.getElementById('nextBtn')?.addEventListener('click', () => {
-        const paisSeleccionado = document.getElementById('pais').value;
-        if (paisSeleccionado) {
-            resetPreguntas();
-            loadClientsByCountry(paisSeleccionado);
-            switchSection('seccionPais', 'seccionCliente');
-            toggleNavigationButtons('seccionCliente');
-            handleDependencias();
-        } else {
-            alert("Debe seleccionar un país antes de continuar.");
+    document.getElementById('btnSiguiente')?.addEventListener('click', () => {
+        let allAnswered = true;
+        document.querySelectorAll('#seccionCliente .pregunta').forEach(pregunta => {
+            if (pregunta.style.display !== 'none') {
+                const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+                if (inputs.length === 0) {
+                    alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
+                    allAnswered = false;
+                }
+            }
+        });
+        if (allAnswered) {
+            switchSection('seccionCliente', 'seccionActividades');
+            toggleNavigationButtons('seccionActividades');
         }
     });
 
-    document.getElementById('clientes')?.addEventListener('change', () => {
-        document.getElementById('preguntas').style.display = 'block';
-        handleDependencias();
-        toggleNavigationButtons('seccionCliente');
-    });
-    
-    document.getElementById('btnVolver')?.addEventListener('click', () => {
-        resetPreguntas();
-        switchSection('seccionCliente', 'seccionPais');
-        toggleNavigationButtons('seccionPais');
-    });
-    
-    document.getElementById('btnVolverActividades')?.addEventListener('click', () => {
-        switchSection('seccionActividades', 'seccionCliente');
-        toggleNavigationButtons('seccionCliente');
-    });
-    
     loadCountries();
     handleDependencias();
 });
