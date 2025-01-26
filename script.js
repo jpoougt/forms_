@@ -136,6 +136,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('clientes')?.addEventListener('change', () => {
         document.getElementById('preguntas').style.display = 'block';
         handleDependencias();
+        toggleNavigationButtons('seccionCliente');
     });
     
     document.getElementById('btnVolver')?.addEventListener('click', () => {
