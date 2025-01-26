@@ -174,16 +174,16 @@ document.addEventListener("DOMContentLoaded", function () {
 // Función para activar la Sección 3 y mostrar los botones correctos
 function activarSeccion3() {
     document.getElementById('seccionCliente').classList.remove('active');
-    document.getElementById('seccionActividades').classList.add('active', 'seccion-actividades-activa');
+    document.getElementById('seccionActividades').classList.add('active');
 }
 
 // Función para volver de la Sección 3 a la Sección 2
 function volverASeccion2() {
-    document.getElementById('seccionActividades').classList.remove('active', 'seccion-actividades-activa');
+    document.getElementById('seccionActividades').classList.remove('active');
     document.getElementById('seccionCliente').classList.add('active');
 }
 
-// Función para avanzar de la Sección 3 a la siguiente
+// Función para avanzar desde la Sección 3
 function avanzarDesdeSeccion3() {
     let allAnswered = true;
     document.querySelectorAll('#seccionActividades .pregunta').forEach(pregunta => {
