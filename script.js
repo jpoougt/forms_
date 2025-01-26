@@ -61,6 +61,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    function handleDependencias() {
+        document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
+            input.addEventListener('change', () => {
+                const dependencias = {
+                    "pregunta2": "pregunta2_1",
+                    "pregunta3": ["pregunta3_1", "pregunta3_2"],
+                    "pregunta4": ["pregunta4_1", "pregunta4_2"],
+                    "pregunta6": "pregunta6_1"
+                };
+                
+                Object.keys(dependencias).forEach(pregunta => {
+                    const seleccion = document.querySelector(`input[name="${pregunta}"]:checked`);
+                    const dependientes = Array.isArray(dependencias[pregunta]) ? dependencias[pregunta] : [dependencias[pregunta]];
+                    
+                    if (seleccion && seleccion.value === "si") {
+                        dependientes.forEach(id => document.getElementById(id).style.display = 'block');
+                    } else {
+                        dependientes.forEach(id => {
+                            document.getElementById(id).style.display = 'none';
+                            document.querySelectorAll(`#${id} input`).forEach(input => input.checked = false);
+                        });
+                    }
+                });
+            });
+        });
+    }
+
     function loadClientsByCountry(paisSeleccionado) {
         const clientesDropdown = document.getElementById('clientes');
         if (clientesDropdown) {
@@ -83,24 +110,14 @@ document.addEventListener("DOMContentLoaded", function () {
         seccionActual = to;
     }
 
-    function volverASeccion1() {
-        resetPreguntas();
-        switchSection('seccionCliente', 'seccionPais');
-    }
-
-    function volverASeccion2() {
-        document.querySelectorAll('#seccionActividades .pregunta').forEach(pregunta => {
-            pregunta.style.display = 'none';
-        });
-        switchSection('seccionActividades', 'seccionCliente');
-    }
-
     document.getElementById('nextBtn')?.addEventListener('click', () => {
         const paisSeleccionado = document.getElementById('pais').value;
         if (paisSeleccionado) {
             resetPreguntas();
             loadClientsByCountry(paisSeleccionado);
             switchSection('seccionPais', 'seccionCliente');
+            seccionActual = "seccionCliente";
+            handleDependencias();
         } else {
             alert("Debe seleccionar un país antes de continuar.");
         }
@@ -108,15 +125,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('clientes')?.addEventListener('change', () => {
         document.getElementById('preguntas').style.display = 'block';
+        handleDependencias();
     });
     
     document.getElementById('btnVolver')?.addEventListener('click', () => {
         if (seccionActual === 'seccionCliente') {
-            volverASeccion1();
+            resetPreguntas();
+            switchSection('seccionCliente', 'seccionPais');
+            seccionActual = "seccionPais";
         } else if (seccionActual === 'seccionActividades') {
-            volverASeccion2();
+            resetPreguntas();
+            document.getElementById('preguntas').style.display = 'none';
+            switchSection('seccionActividades', 'seccionCliente');
+            seccionActual = "seccionCliente";
+        }
+    });
+    
+    document.getElementById('btnSiguiente')?.addEventListener('click', () => {
+        if (seccionActual === 'seccionCliente') {
+            let allAnswered = true;
+            document.querySelectorAll('#seccionCliente .pregunta').forEach(pregunta => {
+                if (pregunta.style.display !== 'none') {
+                    const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+                    if (inputs.length === 0) {
+                        alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
+                        allAnswered = false;
+                    }
+                }
+            });
+            if (allAnswered) {
+                switchSection('seccionCliente', 'seccionActividades');
+                seccionActual = "seccionActividades";
+            }
         }
     });
     
     loadCountries();
+    handleDependencias();
 });
