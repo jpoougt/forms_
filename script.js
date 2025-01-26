@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function switchSection(from, to) {
+    function toggleSeccion(from, to) {
         const fromSection = document.getElementById(from);
         const toSection = document.getElementById(to);
         
@@ -84,9 +84,12 @@ document.addEventListener("DOMContentLoaded", function () {
         fromSection.style.transform = 'translateX(-100%)';
         
         setTimeout(() => {
+            fromSection.classList.remove('active');
             fromSection.style.display = 'none';
+
             toSection.style.display = 'block';
             setTimeout(() => {
+                toSection.classList.add('active');
                 toSection.style.opacity = '1';
                 toSection.style.transform = 'translateX(0)';
             }, 50);
@@ -97,9 +100,13 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.btn-navegacion').forEach(btn => {
             btn.style.visibility = 'hidden';
         });
-        if (currentSection === 'seccionCliente' || currentSection === 'seccionActividades') {
+        
+        if (currentSection === 'seccionCliente') {
             document.getElementById('btnVolver').style.visibility = 'visible';
             document.getElementById('btnSiguiente').style.visibility = 'visible';
+        } else if (currentSection === 'seccionActividades') {
+            document.getElementById('btnVolverActividades').style.visibility = 'visible';
+            document.getElementById('btnSiguienteActividades').style.visibility = 'visible';
         }
     }
 
@@ -135,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (paisSeleccionado) {
             resetPreguntas();
             loadClientsByCountry(paisSeleccionado);
-            switchSection('seccionPais', 'seccionCliente');
+            toggleSeccion('seccionPais', 'seccionCliente');
             toggleNavigationButtons('seccionCliente');
             handleDependencias();
         } else {
@@ -150,68 +157,38 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.getElementById('btnVolver')?.addEventListener('click', () => {
         resetPreguntas();
-        switchSection('seccionCliente', 'seccionPais');
+        toggleSeccion('seccionCliente', 'seccionPais');
         toggleNavigationButtons('seccionPais');
     });
 
-document.getElementById('btnSiguiente').addEventListener('click', () => {
-    let allAnswered = true;
-    document.querySelectorAll('#seccionCliente .pregunta').forEach(pregunta => {
-        if (pregunta.style.display !== 'none') {
-            const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-            if (inputs.length === 0) {
-                alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
-                allAnswered = false;
+    document.getElementById('btnSiguiente').addEventListener('click', () => {
+        let allAnswered = true;
+        document.querySelectorAll('#seccionCliente .pregunta').forEach(pregunta => {
+            if (pregunta.style.display !== 'none') {
+                const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+                if (inputs.length === 0) {
+                    alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
+                    allAnswered = false;
+                }
             }
+        });
+        
+        if (allAnswered) {
+            toggleSeccion('seccionCliente', 'seccionActividades');
+            toggleNavigationButtons('seccionActividades');
         }
     });
-    
-    if (allAnswered) {
-        // 🔹 Aseguramos que se agregue la clase .active correctamente
-        document.getElementById('seccionCliente').classList.remove('active');
-        document.getElementById('seccionActividades').classList.add('active');
 
-        // 🔹 Mostramos los botones de navegación en Sección 3
-        document.getElementById('btnVolverActividades').style.visibility = "visible";
-        document.getElementById('btnSiguienteActividades').style.visibility = "visible";
-    }
-});
-
-
-// Función para activar la Sección 3 y mostrar los botones correctos
-function activarSeccion3() {
-    document.getElementById('seccionCliente').classList.remove('active');
-    document.getElementById('seccionActividades').classList.add('active');
-}
-
-// Función para volver de la Sección 3 a la Sección 2
-function volverASeccion2() {
-    document.getElementById('seccionActividades').classList.remove('active');
-    document.getElementById('seccionCliente').classList.add('active');
-}
-
-// Función para avanzar desde la Sección 3
-function avanzarDesdeSeccion3() {
-    let allAnswered = true;
-    document.querySelectorAll('#seccionActividades .pregunta').forEach(pregunta => {
-        if (pregunta.style.display !== 'none') {
-            const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-            if (inputs.length === 0) {
-                alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
-                allAnswered = false;
-            }
-        }
+    document.getElementById('btnVolverActividades')?.addEventListener('click', () => {
+        toggleSeccion('seccionActividades', 'seccionCliente');
+        toggleNavigationButtons('seccionCliente');
     });
-    if (allAnswered) {
+
+    document.getElementById('btnSiguienteActividades')?.addEventListener('click', () => {
         alert("✔️ Sección completada. Aquí iría la siguiente sección o acción.");
-    }
-}
-
-// Event listeners para los botones de la Sección 3
-document.getElementById('btnVolverActividades')?.addEventListener('click', volverASeccion2);
-document.getElementById('btnSiguienteActividades')?.addEventListener('click', avanzarDesdeSeccion3);
-
+    });
 
     loadCountries();
     handleDependencias();
 });
+
