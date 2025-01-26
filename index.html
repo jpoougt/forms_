@@ -140,7 +140,6 @@
 
       </div> <!-- Fin de preguntas -->
    </div> <!-- Fin de Sección Cliente -->
-
 <!-- 📌 Sección 3 -->
 <div id="seccionActividades" class="section">
   <h2 class="categoria-preguntas">Registro de actividades</h2>
@@ -156,15 +155,43 @@
 
   <!-- Pregunta 6.1 (Depende de pregunta6) -->
   <div class="pregunta dependiente" id="pregunta6_1" style="display: none;">
-    <p>¿Que tipo de actividades frecuenta registrar?</p>
+    <p>¿Qué tipo de actividades frecuenta registrar?</p>
     <div class="opciones-checkbox">
-      <label><input type="checkbox" name="labores" value="Siembra"> Siembra</label>
-      <label><input type="checkbox" name="labores" value="Fertilización"> Fertilización</label>
-      <label><input type="checkbox" name="labores" value="Protección de cultivos"> Protección de cultivos</label>
-      <label><input type="checkbox" name="labores" value="Cosecha"> Cosecha</label>
-      <label><input type="checkbox" name="labores" value="Irrigación"> Irrigación</label>
-      <label><input type="checkbox" name="labores" value="Reconocimiento / Scouting"> Scouting</label>
-      <label><input type="checkbox" name="labores" value="Otros"> Otros</label>
+      <label>
+        <input type="checkbox" name="labores" value="Siembra"> Siembra
+        <input type="number" class="cantidad-input" data-labor="Siembra" placeholder="Cantidad" min="0" style="display:none;">
+        <input type="date" class="fecha-input" data-labor="Siembra" style="display:none;">
+      </label>
+      <label>
+        <input type="checkbox" name="labores" value="Fertilización"> Fertilización
+        <input type="number" class="cantidad-input" data-labor="Fertilización" placeholder="Cantidad" min="0" style="display:none;">
+        <input type="date" class="fecha-input" data-labor="Fertilización" style="display:none;">
+      </label>
+      <label>
+        <input type="checkbox" name="labores" value="Protección de cultivos"> Protección de cultivos
+        <input type="number" class="cantidad-input" data-labor="Protección de cultivos" placeholder="Cantidad" min="0" style="display:none;">
+        <input type="date" class="fecha-input" data-labor="Protección de cultivos" style="display:none;">
+      </label>
+      <label>
+        <input type="checkbox" name="labores" value="Cosecha"> Cosecha
+        <input type="number" class="cantidad-input" data-labor="Cosecha" placeholder="Cantidad" min="0" style="display:none;">
+        <input type="date" class="fecha-input" data-labor="Cosecha" style="display:none;">
+      </label>
+      <label>
+        <input type="checkbox" name="labores" value="Irrigación"> Irrigación
+        <input type="number" class="cantidad-input" data-labor="Irrigación" placeholder="Cantidad" min="0" style="display:none;">
+        <input type="date" class="fecha-input" data-labor="Irrigación" style="display:none;">
+      </label>
+      <label>
+        <input type="checkbox" name="labores" value="Reconocimiento / Scouting"> Scouting
+        <input type="number" class="cantidad-input" data-labor="Reconocimiento / Scouting" placeholder="Cantidad" min="0" style="display:none;">
+        <input type="date" class="fecha-input" data-labor="Reconocimiento / Scouting" style="display:none;">
+      </label>
+      <label>
+        <input type="checkbox" name="labores" value="Otros"> Otros
+        <input type="number" class="cantidad-input" data-labor="Otros" placeholder="Cantidad" min="0" style="display:none;">
+        <input type="date" class="fecha-input" data-labor="Otros" style="display:none;">
+      </label>
     </div>
   </div>
 
@@ -177,13 +204,13 @@
     </div>
   </div>
 
-
-</div> <!-- Fin de Sección Actividades -->
   <!-- 🔹 BOTONES DE NAVEGACIÓN PARA SECCIÓN 3 -->
   <div class="contenedor-botones">
     <button id="btnVolverActividades" class="btn-navegacion btn-volver">Volver</button>
     <button id="btnSiguienteActividades" class="btn-navegacion btn-siguiente">Siguiente</button>
   </div>
+</div> <!-- Fin de Sección Actividades -->
+
 
 
 
