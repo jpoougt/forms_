@@ -171,6 +171,34 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // Manejar botón "Volver" en la Sección 3 (Regresa a Sección 2)
+document.getElementById('btnVolverActividades')?.addEventListener('click', () => {
+    resetPreguntas(); // Opcional: Resetea preguntas si es necesario
+    document.getElementById('preguntas').style.display = 'block'; // Asegura que las preguntas de la Sección 2 sigan visibles
+    switchSection('seccionActividades', 'seccionCliente');
+});
+
+// Manejar botón "Siguiente" en la Sección 3 (Validar respuestas antes de avanzar)
+document.getElementById('btnSiguienteActividades')?.addEventListener('click', () => {
+    let allAnswered = true;
+
+    document.querySelectorAll('#seccionActividades .pregunta').forEach(pregunta => {
+        if (pregunta.style.display !== 'none') { // Solo valida preguntas visibles
+            const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+            if (inputs.length === 0) {
+                alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
+                allAnswered = false;
+            }
+        }
+    });
+
+    if (allAnswered) {
+        alert("✅ Todas las preguntas han sido respondidas. ¡Puedes avanzar!");
+     
+    }
+});
+
+
     loadCountries();
     handleDependencias();
 });
