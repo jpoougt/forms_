@@ -154,22 +154,29 @@ document.addEventListener("DOMContentLoaded", function () {
         toggleNavigationButtons('seccionPais');
     });
 
-    document.getElementById('btnSiguiente')?.addEventListener('click', () => {
-        let allAnswered = true;
-        document.querySelectorAll('#seccionCliente .pregunta').forEach(pregunta => {
-            if (pregunta.style.display !== 'none') {
-                const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
-                if (inputs.length === 0) {
-                    alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
-                    allAnswered = false;
-                }
+document.getElementById('btnSiguiente').addEventListener('click', () => {
+    let allAnswered = true;
+    document.querySelectorAll('#seccionCliente .pregunta').forEach(pregunta => {
+        if (pregunta.style.display !== 'none') {
+            const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
+            if (inputs.length === 0) {
+                alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
+                allAnswered = false;
             }
-        });
-        if (allAnswered) {
-            switchSection('seccionCliente', 'seccionActividades');
-            toggleNavigationButtons('seccionActividades');
         }
     });
+    
+    if (allAnswered) {
+        // 🔹 Aseguramos que se agregue la clase .active correctamente
+        document.getElementById('seccionCliente').classList.remove('active');
+        document.getElementById('seccionActividades').classList.add('active');
+
+        // 🔹 Mostramos los botones de navegación en Sección 3
+        document.getElementById('btnVolverActividades').style.visibility = "visible";
+        document.getElementById('btnSiguienteActividades').style.visibility = "visible";
+    }
+});
+
 
 // Función para activar la Sección 3 y mostrar los botones correctos
 function activarSeccion3() {
