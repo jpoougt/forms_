@@ -222,43 +222,46 @@ select:focus {
   cursor: pointer;
 }
 
-
-/* ✅ Botones específicos para la Sección 3 */
+/* ✅ Botones específicos para la Sección 3 (dentro del contenedor) */
 #btnVolverActividades,
 #btnSiguienteActividades {
-  position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
+  width: 100px;
+  height: 40px;
   color: white;
   border: none;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  display: inline-block; /* Asegura que se mantengan dentro del flujo */
+  text-align: center;
+  margin: 20px 10px; /* Espaciado entre los botones */
   transition: background-color 0.3s ease, transform 0.2s ease;
   cursor: pointer;
-  z-index: 1000;
   visibility: hidden; /* ⛔ Ocultos por defecto */
 }
 
 /* 🟥 Botón Volver en la Sección 3 */
 #btnVolverActividades {
-  left: 20px;
   background-color: #f44336;
 }
 
 /* 🟩 Botón Siguiente en la Sección 3 */
 #btnSiguienteActividades {
-  right: 20px;
   background-color: #28a745;
 }
 
 /* ✅ Cuando la Sección 3 esté activa, los botones se mostrarán */
-.seccion-actividades-activa #btnVolverActividades,
-.seccion-actividades-activa #btnSiguienteActividades {
+#seccionActividades.active #btnVolverActividades,
+#seccionActividades.active #btnSiguienteActividades {
   visibility: visible;
+  display: inline-block; /* Asegura que se vean */
+}
+
+/* 🟢 Efecto hover */
+#btnVolverActividades:hover {
+  background-color: #d32f2f;
+}
+
+#btnSiguienteActividades:hover {
+  background-color: #218838;
 }
