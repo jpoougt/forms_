@@ -130,6 +130,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+    document.getElementById('nextBtn')?.addEventListener('click', () => {
+        const paisSeleccionado = document.getElementById('pais').value;
+        if (paisSeleccionado) {
+            resetPreguntas();
+            loadClientsByCountry(paisSeleccionado);
+            switchSection('seccionPais', 'seccionCliente');
+            toggleNavigationButtons('seccionCliente');
+            handleDependencias();
+        } else {
+            alert("Debe seleccionar un país antes de continuar.");
+        }
+    });
+
     document.getElementById('clientes')?.addEventListener('change', () => {
         document.getElementById('preguntas').style.display = 'block';
         handleDependencias();
@@ -161,4 +174,3 @@ document.addEventListener("DOMContentLoaded", function () {
     loadCountries();
     handleDependencias();
 });
-
