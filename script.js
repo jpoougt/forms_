@@ -60,31 +60,33 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    function handleDependencias() {
-        document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
-            input.addEventListener('change', () => {
-                const dependencias = {
-                    "pregunta2": "pregunta2_1",
-                    "pregunta3": ["pregunta3_1", "pregunta3_2"],
-                    "pregunta4": ["pregunta4_1", "pregunta4_2"],
-                    "pregunta6": "pregunta6_1"
-                };
-                
-                Object.keys(dependencias).forEach(pregunta => {
-                    const seleccion = document.querySelector(`input[name="${pregunta}"]:checked`);
-                    const dependientes = Array.isArray(dependencias[pregunta]) ? dependencias[pregunta] : [dependencias[pregunta]];
-                    
-                    if (seleccion && seleccion.value === "si") {
-                        dependientes.forEach(id => document.getElementById(id).style.display = 'block');
-                    } else {
-                        dependientes.forEach(id => {
-                            document.getElementById(id).style.display = 'none';
-                            document.querySelectorAll(`#${id} input`).forEach(input => input.checked = false);
-                        });
-                    }
+    function loadClientsByCountry(paisSeleccionado) {
+        const clientesDropdown = document.getElementById('clientes');
+        if (clientesDropdown) {
+            clientesDropdown.innerHTML = '<option value="">Seleccione un cliente</option>';
+            if (clientesPorPais[paisSeleccionado]) {
+                clientesPorPais[paisSeleccionado].forEach(cliente => {
+                    const option = document.createElement('option');
+                    option.value = cliente;
+                    option.textContent = cliente;
+                    clientesDropdown.appendChild(option);
                 });
-            });
-        });
+                console.log("👥 Clientes cargados para:", paisSeleccionado, clientesPorPais[paisSeleccionado]);
+            }
+        }
+    }
+
+    function toggleNavigationButtons(section) {
+        const btnVolver = document.getElementById('btnVolver');
+        const btnSiguiente = document.getElementById('btnSiguiente');
+
+        if (section === 'seccionCliente') {
+            btnVolver.style.visibility = 'visible';
+            btnSiguiente.style.visibility = 'visible';
+        } else {
+            btnVolver.style.visibility = 'hidden';
+            btnSiguiente.style.visibility = 'hidden';
+        }
     }
 
     document.getElementById('nextBtn')?.addEventListener('click', () => {
