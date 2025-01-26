@@ -171,19 +171,23 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Manejar botón "Volver" en la Sección 3 (Regresa a Sección 2)
-document.getElementById('btnVolverActividades')?.addEventListener('click', () => {
-    resetPreguntas(); // Opcional: Resetea preguntas si es necesario
-    document.getElementById('preguntas').style.display = 'block'; // Asegura que las preguntas de la Sección 2 sigan visibles
-    switchSection('seccionActividades', 'seccionCliente');
-});
+// Función para activar la Sección 3 y mostrar los botones correctos
+function activarSeccion3() {
+    document.getElementById('seccionCliente').classList.remove('active');
+    document.getElementById('seccionActividades').classList.add('active', 'seccion-actividades-activa');
+}
 
-// Manejar botón "Siguiente" en la Sección 3 (Validar respuestas antes de avanzar)
-document.getElementById('btnSiguienteActividades')?.addEventListener('click', () => {
+// Función para volver de la Sección 3 a la Sección 2
+function volverASeccion2() {
+    document.getElementById('seccionActividades').classList.remove('active', 'seccion-actividades-activa');
+    document.getElementById('seccionCliente').classList.add('active');
+}
+
+// Función para avanzar de la Sección 3 a la siguiente
+function avanzarDesdeSeccion3() {
     let allAnswered = true;
-
     document.querySelectorAll('#seccionActividades .pregunta').forEach(pregunta => {
-        if (pregunta.style.display !== 'none') { // Solo valida preguntas visibles
+        if (pregunta.style.display !== 'none') {
             const inputs = pregunta.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked');
             if (inputs.length === 0) {
                 alert(`Debe responder la pregunta: "${pregunta.querySelector('p').innerText}"`);
@@ -191,12 +195,14 @@ document.getElementById('btnSiguienteActividades')?.addEventListener('click', ()
             }
         }
     });
-
     if (allAnswered) {
-        alert("✅ Todas las preguntas han sido respondidas. ¡Puedes avanzar!");
-     
+        alert("✔️ Sección completada. Aquí iría la siguiente sección o acción.");
     }
-});
+}
+
+// Event listeners para los botones de la Sección 3
+document.getElementById('btnVolverActividades')?.addEventListener('click', volverASeccion2);
+document.getElementById('btnSiguienteActividades')?.addEventListener('click', avanzarDesdeSeccion3);
 
 
     loadCountries();
