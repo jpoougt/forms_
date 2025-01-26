@@ -265,3 +265,23 @@ select:focus {
 #btnSiguienteActividades:hover {
   background-color: #218838;
 }
+
+/* 📌 Input de cantidad (más redondeado y moderno) */
+.actividad-inputs input[type="number"] {
+  width: 90px;
+  padding: 8px;
+  font-size: 1rem;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 15px; /* Más redondeado */
+  background: white;
+  transition: all 0.3s ease;
+}
+
+/* 🎨 Efecto cuando el usuario selecciona el input */
+.actividad-inputs input[type="number"]:focus {
+  border-color: #28a745;
+  box-shadow: 0 0 8px rgba(40, 167, 69, 0.5);
+  outline: none;
+}
+
