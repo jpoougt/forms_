@@ -93,6 +93,16 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 500);
     }
 
+    function toggleNavigationButtons(currentSection) {
+        document.querySelectorAll('.btn-navegacion').forEach(btn => {
+            btn.style.visibility = 'hidden';
+        });
+        if (currentSection === 'seccionCliente' || currentSection === 'seccionActividades') {
+            document.getElementById('btnVolver').style.visibility = 'visible';
+            document.getElementById('btnSiguiente').style.visibility = 'visible';
+        }
+    }
+
     function handleDependencias() {
         document.querySelectorAll('.pregunta input[type="radio"]').forEach(input => {
             input.addEventListener('change', () => {
