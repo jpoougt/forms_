@@ -1,118 +1,245 @@
 /* Reinicio de estilos */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Century Gothic', sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Century Gothic', sans-serif;
 }
 
 /* Contenedor principal */
 .container {
-    width: 80%;
-    max-width: 600px;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
+  width: 80%;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
 }
 
-/* Botones de navegación */
-.btn-navegacion {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    visibility: hidden;
-    z-index: 1000;
-}
-
+/* 🔄 Botón Volver (Izquierda, fijo en pantalla) */
 .btn-volver {
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #f44336;
-    color: white;
+  position: fixed;
+  left: 20px; /* Distancia desde el borde izquierdo */
+  top: 50%; /* Centrado verticalmente */
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  visibility: hidden;
+  z-index: 1000; /* Se mantiene por encima de otros elementos */
 }
 
+/* ⏩ Botón Siguiente (Derecha, fijo en pantalla) */
 .btn-siguiente {
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #28a745;
-    color: white;
+  position: fixed;
+  right: 20px; /* Distancia desde el borde derecho */
+  top: 50%; /* Centrado verticalmente */
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+  visibility: hidden;
+  z-index: 1000; /* Se mantiene por encima de otros elementos */
 }
 
+/* ✅ Mostrar los botones SOLO en la sección de selección de clientes */
+.seccion-activa .btn-volver,
+.seccion-activa .btn-siguiente {
+  visibility: visible;
+}
+
+/* 🟢 Efecto hover */
 .btn-navegacion:hover {
-    transform: scale(1.1);
+  background-color: #218838;
+  transform: scale(1.1);
 }
 
-/* Mostrar botones en la sección activa */
-.section.active + .btn-navegacion {
-    visibility: visible;
+/* 📱 Ajuste en móviles */
+@media (max-width: 768px) {
+  .btn-volver {
+    left: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .btn-siguiente {
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
 }
 
-/* Secciones ocultas por defecto */
+/* Títulos */
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* 🎨 Estilo tradicional para dropdowns */
+select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 8px; /* Bordes curvados */
+  background-color: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  appearance: auto; /* Se mantiene el estilo estándar del sistema */
+}
+
+/* Mejorar el efecto cuando el usuario hace clic */
+select:focus {
+  border-color: #28a745;
+  outline: none;
+  box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+}
+
+#seccionPais select {
+  margin-bottom: 25px;
+}
+
+/* Espaciado entre el dropdown de clientes y la cinta */
+#clientes {
+  margin-bottom: 30px;
+}
+
+/* ✨ Secciones con transición de barrido */
 .section {
-    display: none;
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  display: none;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 }
 
 .section.active {
-    display: block;
-    opacity: 1;
-    transform: translateX(0);
+  display: block;
+  opacity: 1;
+  transform: translateX(0);
 }
 
-/* Dropdowns */
-select {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    background-color: white;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
+/* ✅ Botón "Continuar" con diseño mejorado */
+.btn-continuar {
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 12px;
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-select:focus {
-    border-color: #28a745;
-    outline: none;
-    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+.btn-continuar:hover {
+  background-color: #218838;
 }
 
-/* Preguntas y opciones */
+/* Categoría de preguntas */
+.categoria-preguntas {
+  background-color: #2D3748;
+  color: #ffffff;
+  padding: 12px;
+  text-align: left;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* 🟩 Preguntas con mejor espaciado */
 .pregunta {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
+/* Opciones "Sí" y "No" en línea horizontal */
 .pregunta .opciones {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .pregunta .opciones label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 1rem;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
-.dependiente {
-    display: none;
+.opciones-checkbox {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.opciones-checkbox label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Estiliza los checkboxes */
+.opciones-checkbox input[type="checkbox"] {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+
+#btnVolverActividades {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#btnVolverActividades:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
 }
 
